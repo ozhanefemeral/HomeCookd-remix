@@ -2,6 +2,52 @@ import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import { faker } from '@faker-js/faker';
 
+// generate 50 fake meal names
+const fakeMealNames = [
+  "Chicken and Broccoli",
+  "Chicken and Rice",
+  "Chicken Curry",
+  "Chicken Fajitas",
+  "Stir Fry",
+  "Tacos",
+  "Chicken Tikka Masala",
+  "Tortilla Soup",
+  "Vegetable Soup",
+  "Dumplings",
+  "oodles",
+  "Pasta",
+  "Baked Potatoes",
+  "Chicken and Vegetables",
+  "Chicken Parmesan",
+  "Pot Pie",
+  "Veggie Burgers",
+  "Meatloaf",
+  "Meatballs",
+  "Burgers",
+  "Pizza",
+  "Salmon",
+  "Shrimp",
+  "Tuna",
+  "Steak",
+  "Pork Chops",
+  "Chicken Nuggets",
+  "Fried Chicken",
+  "Chicken Tenders",
+  "Chicken Salad",
+  "Chicken Quesadillas",
+  "Hamburgers",
+  "Cheeseburgers",
+  "Hot Dogs",
+  "Mac and Cheese",
+  "Lasagna",
+  "Spaghetti",
+  "Ravioli",
+  "Tacos",
+  "Enchiladas",
+  "Burritos",
+  "Salad",
+]
+
 const prisma = new PrismaClient();
 
 async function seed() {
@@ -39,17 +85,17 @@ async function seed() {
   const meals = await prisma.meal.createMany({
     data: [
       {
-        title: faker.commerce.productName(),
+        title: fakeMealNames[Math.floor(Math.random() * fakeMealNames.length)],
         cookId: cook.id,
         price: Number(faker.commerce.price(5, 40, 0)),
       },
       {
-        title: faker.commerce.productName(),
+        title: fakeMealNames[Math.floor(Math.random() * fakeMealNames.length)],
         cookId: cook.id,
         price: Number(faker.commerce.price(5, 40, 0)),
       },
       {
-        title: faker.commerce.productName(),
+        title: fakeMealNames[Math.floor(Math.random() * fakeMealNames.length)],
         cookId: cook.id,
         price: Number(faker.commerce.price(5, 40, 0)),
       },
