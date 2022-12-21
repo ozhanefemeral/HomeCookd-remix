@@ -129,13 +129,13 @@ async function seed() {
       {
         subscriptionId: subscriptions.id,
         mealId: mealsData[1].id,
-        price: Math.round(Number(mealsData[0].price * 0.9)),
+        price: Math.round(Number(mealsData[1].price * 0.9)),
         quantity: 1,
       },
       {
         subscriptionId: subscriptions.id,
         mealId: mealsData[2].id,
-        price: Math.round(Number(mealsData[0].price * 0.9)),
+        price: Math.round(Number(mealsData[2].price * 0.9)),
         quantity: 1,
       },
     ],
