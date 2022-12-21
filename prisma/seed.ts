@@ -70,8 +70,6 @@ async function seed() {
   // cast meals to prisma meal type and resolve Cannot access 'PrismaClient.meal' because 'PrismaClient' is a type, but not a namespace.
 
   const mealsData = await prisma.meal.findMany();
-  console.log(mealsData[0]);
-
 
   // each subscription meal has a price that is 10% off the meal price and rounded to the nearest without decimal
   const subscriptionMeals = await prisma.subscriptionMeal.createMany({
