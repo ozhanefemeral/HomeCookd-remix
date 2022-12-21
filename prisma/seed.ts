@@ -58,7 +58,7 @@ async function seed() {
 
   const subscriptions = await prisma.subscription.create({
     data: {
-      title: faker.commerce.productName(),
+      title: "My First Subscription",
       cookId: cook.id,
       price: Number(faker.commerce.price(5, 40, 0)),
       userId: user.id,
