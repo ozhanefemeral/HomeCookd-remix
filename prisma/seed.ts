@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 async function seed() {
   console.log("seeding database... 🌱");
 
-  const email = "abc@example.com";
+  const email = "efe@example.com";
 
   // cleanup the existing database
   await prisma.subscriptionMeal.deleteMany();
@@ -16,7 +16,7 @@ async function seed() {
   await prisma.cook.deleteMany();
   await prisma.user.deleteMany();
 
-  const hashedPassword = await bcrypt.hash("abc", 10);
+  const hashedPassword = await bcrypt.hash("1234567890", 10);
 
   const user = await prisma.user.create({
     data: {
