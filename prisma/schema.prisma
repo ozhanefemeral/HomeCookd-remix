@@ -16,6 +16,67 @@ model User {
 
   password Password?
   notes    Note[]
+  subscriptions Subscription[]
+}
+
+model Cook {
+  id    String @id @default(cuid())
+  name String
+  email String @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  meals Meal[]
+  subscriptions Subscription[]
+}
+
+model Meal {
+  id    String @id @default(cuid())
+  title String
+  price Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  cook   Cook   @relation(fields: [cookId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  cookId String
+
+  subscriptionMeals SubscriptionMeal[]
+}
+
+model Subscription {
+  id    String @id @default(cuid())
+  title String
+  price Int
+  start DateTime @default(now())
+  end   DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  cook   Cook   @relation(fields: [cookId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  cookId String
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String
+
+  subscriptionMeals SubscriptionMeal[]
+}
+
+model SubscriptionMeal {
+  id    String @id @default(cuid())
+  price Int
+  quantity Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  subscription   Subscription   @relation(fields: [subscriptionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  subscriptionId String
+
+  meal   Meal   @relation(fields: [mealId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  mealId String
 }
 
 model Password {
