@@ -7,7 +7,10 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useSearchParams,
 } from "@remix-run/react";
+import SubscribeToMealModal from "./components/SubscribeToMealModal";
+import { useMemo } from "react";
 
 import { getUser } from "./session.server";
 import tailwindStylesheetUrl from "./styles/tailwind.css";
@@ -29,6 +32,11 @@ export async function loader({ request }: LoaderArgs) {
 }
 
 export default function App() {
+  const [searchParams] = useSearchParams();
+
+  let subscribe = searchParams.get("subscribe")
+
+
   return (
     <html lang="en" className="h-full">
       <head>
@@ -40,6 +48,7 @@ export default function App() {
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
+        {subscribe && <SubscribeToMealModal subscribe={subscribe} />}
       </body>
     </html>
   );
