@@ -32,7 +32,7 @@ export default function HomePage() {
               <h2 className="text-lg font-semibold text-gray-700">{meal.title}</h2>
               {/* button to subscribe */}
               <button className="px-4 py-2 mt-2 text-sm font-medium text-white bg-blue-500 rounded hover:bg-blue-600">
-                Subscribe
+              <Link to="?subscribe=123">Subscribe</Link>
               </button>
             </div>
           ))}
