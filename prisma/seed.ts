@@ -72,12 +72,13 @@ async function seed() {
   await prisma.cook.deleteMany();
   await prisma.user.deleteMany();
 
-  const hashedPassword = await bcrypt.hash("1234567890", 10);
+  const userPassword = await bcrypt.hash("1234567890", 10);
+  const cookPassword = await bcrypt.hash("1234567890", 10);
 
   const user = await prisma.user.create({
     data: {
       email,
-      password: hashedPassword
+      password: userPassword
     },
   });
 
@@ -85,6 +86,7 @@ async function seed() {
     data: {
       name: faker.name.firstName(),
       email: faker.internet.email(),
+      password: cookPassword,
     }
   });
 
