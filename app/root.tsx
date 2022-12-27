@@ -7,9 +7,10 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLoaderData,
   useSearchParams,
 } from "@remix-run/react";
-import SubscribeToMealModal from "./components/SubscribeToMealModal";
+import SubscribeToMealModal from "./routes/subscribe";
 import { useMemo } from "react";
 
 import { getUser } from "./session.server";
@@ -33,9 +34,8 @@ export async function loader({ request }: LoaderArgs) {
 
 export default function App() {
   const [searchParams] = useSearchParams();
-
-  let subscribe = searchParams.get("subscribe")
-
+  const { user } = useLoaderData();
+  let mealId = searchParams.get("meal")
 
   return (
     <html lang="en" className="h-full">
@@ -48,7 +48,7 @@ export default function App() {
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
-        {subscribe && <SubscribeToMealModal subscribe={subscribe} />}
+        {/* {mealId && <SubscribeToMealModal userId={user.id} mealId={mealId} />} */}
       </body>
     </html>
   );

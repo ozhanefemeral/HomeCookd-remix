@@ -15,12 +15,16 @@ export async function getSubscriptionById(id: Subscription["id"]) {
     where: {
       id,
     },
+  });
+}
+
+export async function getSubscriptionMeals(id: Subscription["id"]) {
+  return prisma.subscriptionMeal.findMany({
+    where: {
+      subscriptionId: id,
+    },
     include: {
-      subscriptionMeals: {
-        include: {
-          meal: true,
-        },
-      },
+      meal: true,
     },
   });
 }
