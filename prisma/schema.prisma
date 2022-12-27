@@ -7,6 +7,16 @@ generator client {
   provider = "prisma-client-js"
 }
 
+enum DeliveryDay {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
 model User {
   id    String @id @default(cuid())
   email String @unique
@@ -65,15 +75,17 @@ model Subscription {
 }
 
 model SubscriptionMeal {
-  id    String @id @default(cuid())
-  price Int
+  id       String @id @default(cuid())
+  price    Int
   quantity Int
-  deliveredAt DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  subscription   Subscription   @relation(fields: [subscriptionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  deliveryDay  DeliveryDay
+  deliveryHour String
+
+  subscription   Subscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   subscriptionId String
 
   meal   Meal   @relation(fields: [mealId], references: [id], onDelete: Cascade, onUpdate: Cascade)
