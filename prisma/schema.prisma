@@ -24,7 +24,7 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  password Password?
+  password String
   notes    Note[]
   subscriptions Subscription[]
 }
@@ -90,13 +90,6 @@ model SubscriptionMeal {
 
   meal   Meal   @relation(fields: [mealId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   mealId String
-}
-
-model Password {
-  hash String
-
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  userId String @unique
 }
 
 model Note {
