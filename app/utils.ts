@@ -2,6 +2,7 @@ import { useMatches } from "@remix-run/react";
 import { useMemo } from "react";
 
 import type { User } from "~/models/user.server";
+import type { Cook } from "~/models/cook.server";
 
 const DEFAULT_REDIRECT = "/";
 
@@ -41,11 +42,17 @@ export function useMatchesData(
     () => matchingRoutes.find((route) => route.id === id),
     [matchingRoutes, id]
   );
+  console.log(route?.data);
+
   return route?.data;
 }
 
 function isUser(user: any): user is User {
   return user && typeof user === "object" && typeof user.email === "string";
+}
+
+function isCook(cook: any): cook is Cook {
+  return cook && typeof cook === "object" && typeof cook.email === "string";
 }
 
 export function useOptionalUser(): User | undefined {
@@ -56,6 +63,16 @@ export function useOptionalUser(): User | undefined {
   return data.user;
 }
 
+export function useOptionalCook(): Cook | undefined {
+  const data = useMatchesData("root");
+
+  if (!data || !isCook(data.cook)) {
+    return undefined;
+  }
+  return data.cook;
+}
+
+
 export function useUser(): User {
   const maybeUser = useOptionalUser();
   if (!maybeUser) {
@@ -64,6 +81,16 @@ export function useUser(): User {
     );
   }
   return maybeUser;
+}
+
+export function useCook(): Cook {
+  const maybeCook = useOptionalCook();
+  if (!maybeCook) {
+    throw new Error(
+      "No cook found in root loader, but cook is required by useCook. If cook is optional, try useOptionalCook instead."
+    );
+  }
+  return maybeCook;
 }
 
 export function validateEmail(email: unknown): email is string {

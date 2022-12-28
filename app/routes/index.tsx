@@ -1,9 +1,11 @@
 import { Link } from "@remix-run/react";
 
-import { useOptionalUser } from "~/utils";
+import { useOptionalCook, useOptionalUser } from "~/utils";
 
 export default function Index() {
   const user = useOptionalUser();
+  const cook = useOptionalCook();
+
   return (
     <main className="relative min-h-screen bg-white sm:flex sm:items-center sm:justify-center">
       <div className="relative sm:pb-16 sm:pt-8">
@@ -19,32 +21,45 @@ export default function Index() {
                 </span>
               </h1>
               <p className="mx-auto mt-6 max-w-lg text-center text-xl sm:max-w-3xl">
-              ‟Get a taste of home, no matter where you are”
+                ‟Get a taste of home, no matter where you are”
               </p>
               <div className="mx-auto mt-10 max-w-sm sm:flex sm:max-w-none sm:justify-center">
-                {user ? (
+                {user && (
                   <Link
                     to="/subscriptions"
                     className="flex items-center justify-center rounded-md border border-transparent bg-primary px-4 py-3 text-base font-medium text-light shadow-sm hover:bg-blue-50 hover:text-primary sm:px-8"
                   >
                     View Subscriptions for {user.email}
                   </Link>
-                ) : (
-                  <div className="space-y-4 sm:mx-auto sm:inline-grid sm:grid-cols-2 sm:gap-5 sm:space-y-0">
-                    <Link
-                      to="/join"
-                      className="flex items-center justify-center rounded-md border border-transparent bg-white px-4 py-3 text-base font-medium text-blue-700 shadow-sm hover:bg-blue-50 sm:px-8"
-                    >
-                      Sign up
-                    </Link>
-                    <Link
-                      to="/login"
-                      className="flex items-center justify-center rounded-md bg-blue-500 px-4 py-3 font-medium text-white hover:bg-blue-600"
-                    >
-                      Log In
-                    </Link>
-                  </div>
                 )}
+                {cook && (
+                  <Link
+                    to="/subscriptions"
+                    className="flex items-center justify-center rounded-md border border-transparent bg-primary px-4 py-3 text-base font-medium text-light shadow-sm hover:bg-blue-50 hover:text-primary sm:px-8"
+                  >
+                    View Subscriptions for {cook.email}
+                  </Link>
+                )}
+                {!user && !cook && <div className="space-y-4 sm:mx-auto sm:inline-grid sm:grid-cols-2 sm:gap-5 sm:space-y-0">
+                  <Link
+                    to="/join"
+                    className="flex items-center justify-center rounded-md border border-transparent bg-white px-4 py-3 text-base font-medium text-blue-700 shadow-sm hover:bg-blue-50 sm:px-8"
+                  >
+                    Sign up
+                  </Link>
+                  <Link
+                    to="/login"
+                    className="flex items-center justify-center rounded-md bg-blue-500 px-4 py-3 font-medium text-white hover:bg-blue-600"
+                  >
+                    Log In
+                  </Link>
+                  <Link
+                    to="/cook-login"
+                    className="flex items-center justify-center rounded-md bg-red-500 px-4 py-3 font-medium text-white hover:bg-red-600"
+                  >
+                    Cook Log In
+                  </Link>
+                </div>}
               </div>
             </div>
           </div>
