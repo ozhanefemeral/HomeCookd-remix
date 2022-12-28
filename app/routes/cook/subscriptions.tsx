@@ -49,7 +49,7 @@ export default function SubscriptionsPage() {
                     }
                     to={subscription.id}
                   >
-                    📝 {subscription.title}
+                    📝 {subscription.meal.title}
                   </NavLink>
                 </li>
               ))}
