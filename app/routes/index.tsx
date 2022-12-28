@@ -26,7 +26,7 @@ export default function Index() {
               <div className="mx-auto mt-10 max-w-sm sm:flex sm:max-w-none sm:justify-center">
                 {user && (
                   <Link
-                    to="/subscriptions"
+                    to="/user/subscriptions"
                     className="flex items-center justify-center rounded-md border border-transparent bg-primary px-4 py-3 text-base font-medium text-light shadow-sm hover:bg-blue-50 hover:text-primary sm:px-8"
                   >
                     View Subscriptions for {user.email}
@@ -34,7 +34,7 @@ export default function Index() {
                 )}
                 {cook && (
                   <Link
-                    to="/subscriptions"
+                    to="/cook/subscriptions"
                     className="flex items-center justify-center rounded-md border border-transparent bg-primary px-4 py-3 text-base font-medium text-light shadow-sm hover:bg-blue-50 hover:text-primary sm:px-8"
                   >
                     View Subscriptions for {cook.email}
