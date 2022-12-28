@@ -113,7 +113,6 @@ async function seed() {
   const subscriptions = await prisma.subscription.create({
     data: {
       title: "My First Subscription",
-      cookId: cook.id,
       price: Number(faker.commerce.price(5, 40, 0)),
       userId: user.id,
       start: faker.date.past(),
@@ -134,7 +133,8 @@ async function seed() {
         price: Math.round(Number(mealsData[0].price * 0.9)),
         quantity: 1,
         deliveryDay: DeliveryDay.MONDAY,
-        deliveryHour: "12:00"
+        deliveryHour: "12:00",
+        cookId: cook.id,
       },
       {
         subscriptionId: subscriptions.id,
@@ -142,7 +142,8 @@ async function seed() {
         price: Math.round(Number(mealsData[1].price * 0.9)),
         quantity: 1,
         deliveryDay: DeliveryDay.SATURDAY,
-        deliveryHour: "18:00"
+        deliveryHour: "18:00",
+        cookId: cook.id,
       },
       {
         subscriptionId: subscriptions.id,
@@ -150,7 +151,8 @@ async function seed() {
         price: Math.round(Number(mealsData[2].price * 0.9)),
         quantity: 1,
         deliveryDay: DeliveryDay.SUNDAY,
-        deliveryHour: "10:00"
+        deliveryHour: "10:00",
+        cookId: cook.id,
       },
     ],
   });

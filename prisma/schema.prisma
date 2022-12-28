@@ -24,22 +24,22 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  password String
-  notes    Note[]
+  password      String
+  notes         Note[]
   subscriptions Subscription[]
 }
 
 model Cook {
-  id    String @id @default(cuid())
-  name String
-  email String @unique
+  id       String @id @default(cuid())
+  name     String
+  email    String @unique
   password String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  meals Meal[]
-  subscriptions Subscription[]
+  meals            Meal[]
+  SubscriptionMeal SubscriptionMeal[]
 }
 
 model Meal {
@@ -57,7 +57,7 @@ model Meal {
 }
 
 model Subscription {
-  id    String @id @default(cuid())
+  id    String   @id @default(cuid())
   title String
   price Int
   start DateTime @default(now())
@@ -65,9 +65,6 @@ model Subscription {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  cook   Cook   @relation(fields: [cookId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  cookId String
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String
@@ -91,6 +88,9 @@ model SubscriptionMeal {
 
   meal   Meal   @relation(fields: [mealId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   mealId String
+
+  cook   Cook   @relation(fields: [cookId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  cookId String
 }
 
 model Note {
