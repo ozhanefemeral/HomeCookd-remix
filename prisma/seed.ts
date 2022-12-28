@@ -85,7 +85,7 @@ async function seed() {
   const cook = await prisma.cook.create({
     data: {
       name: faker.name.firstName(),
-      email: faker.internet.email(),
+      email: "Davon13@hotmail.com",
       password: cookPassword,
     }
   });
