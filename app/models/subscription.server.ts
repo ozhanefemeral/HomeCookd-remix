@@ -38,3 +38,11 @@ export async function getSubscriptionById(id: Subscription["id"], includeUser = 
     }
   });
 }
+
+export async function deleteSubscription(id: Subscription["id"]) {
+  return prisma.subscription.delete({
+    where: {
+      id,
+    },
+  });
+}

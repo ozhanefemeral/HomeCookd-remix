@@ -3,7 +3,7 @@ import { json, redirect } from "@remix-run/node";
 import { Form, useCatch, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 
-import { getSubscriptionById } from "~/models/subscription.server";
+import { deleteSubscription, getSubscriptionById } from "~/models/subscription.server";
 import { requireUserId } from "~/session.server";
 
 export async function loader({ request, params }: LoaderArgs) {
@@ -20,8 +20,10 @@ export async function loader({ request, params }: LoaderArgs) {
 export async function action({ request, params }: ActionArgs) {
   const userId = await requireUserId(request);
   invariant(params.subscriptionId, "subscriptionId not found");
-  // todo: delete subscription
-  return redirect("/subscriptions");
+  if (confirm("Are you sure you want to delete this subscription?")) {
+    await deleteSubscription(params.subscriptionId);
+    return redirect("/cook/subscriptions");
+  }
 }
 
 export default function NoteDetailsPage() {
