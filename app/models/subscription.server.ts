@@ -11,10 +11,13 @@ export async function getUserSubscriptions(id: User["id"]) {
 }
 
 export async function getCookSubscriptions(id: User["id"]) {
-  return prisma.subscription.findMany({
+  return prisma.subscriptionMeal.findMany({
     where: {
       cookId: id,
     },
+    include: {
+      meal: true,
+    }
   });
 }
 
