@@ -3,25 +3,26 @@ import { json, redirect } from "@remix-run/node";
 import { Form, useCatch, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 
-import { deleteSubscription, getSubscriptionById } from "~/models/subscription.server";
+import { deleteSubscription } from "~/models/subscription.server";
+import { getSubscriptionMealById, deleteSubscriptionMeal } from "~/models/subscriptionMeal.server";
 import { requireCookId } from "~/session.server";
 
 export async function loader({ request, params }: LoaderArgs) {
   const cookId = await requireCookId(request);
   invariant(params.subscriptionId, "subscriptionId not found");
 
-  const subscription = await getSubscriptionById(params.subscriptionId, true);
-  if (!subscription) {
+  const subMeal = await getSubscriptionMealById(params.subscriptionId);
+  if (!subMeal) {
     throw new Response("Not Found", { status: 404 });
   }
-  return json({ subscription });
+  return json({ subMeal });
 }
 
 export async function action({ request, params }: ActionArgs) {
   const cookId = await requireCookId(request);
   invariant(params.subscriptionId, "subscriptionId not found");
 
-  await deleteSubscription(params.subscriptionId);
+  await deleteSubscriptionMeal(params.subscriptionId);
   return redirect("/cook/subscriptions");
 }
 
@@ -30,18 +31,12 @@ export default function NoteDetailsPage() {
 
   return (
     <div>
-      <h3 className="text-2xl font-bold">{data.subscription.title}</h3>
+      <h3 className="text-2xl font-bold">{data.subMeal.meal.title}</h3>
       <hr className="my-4" />
-      <ul>
-        {data.subscription.subscriptionMeals.map((subMeal) => (
-          <li key={subMeal.id}>
-            <p>{subMeal.meal.title} - {subMeal.quantity} - {subMeal.price}</p>
-          </li>
-        ))}
-      </ul>
-      <p>
-        User: {data.subscription.user.email}
-      </p>
+      <p>Total Price: {data.subMeal.meal.price}</p>
+      {/* quantity: */}
+      <p>Quantity:{data.subMeal.quantity}</p>
+      <p>Delivery Date: {data.subMeal.deliveryDay} - {data.subMeal.deliveryHour}</p>
       <Form method="post"
         onSubmit={(event) => {
           if (!confirm("Are you sure?")) {
