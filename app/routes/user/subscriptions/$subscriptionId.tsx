@@ -20,10 +20,6 @@ export async function loader({ request, params }: LoaderArgs) {
 export async function action({ request, params }: ActionArgs) {
   const userId = await requireUserId(request);
   invariant(params.subscriptionId, "subscriptionId not found");
-  if (confirm("Are you sure you want to delete this subscription?")) {
-    await deleteSubscription(params.subscriptionId);
-    return redirect("/cook/subscriptions");
-  }
 }
 
 export default function NoteDetailsPage() {
@@ -40,7 +36,13 @@ export default function NoteDetailsPage() {
           </li>
         ))}
       </ul>
-      <Form method="post">
+      <Form method="post"
+        onSubmit={(event) => {
+          if (!confirm("Are you sure?")) {
+            event.preventDefault();
+          }
+        }}
+      >
         <button
           type="submit"
           className="rounded bg-blue-500  py-2 px-4 text-white hover:bg-blue-600 focus:bg-blue-400"
