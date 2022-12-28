@@ -14,8 +14,6 @@ export async function loader({ request, params }: LoaderArgs) {
   if (!subscription) {
     throw new Response("Not Found", { status: 404 });
   }
-  console.log(subscription);
-
   return json({ subscription });
 }
 

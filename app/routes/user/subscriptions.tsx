@@ -9,8 +9,6 @@ import { getUserSubscriptions } from "~/models/subscription.server";
 
 export async function loader({ request }: LoaderArgs) {
   const userId = await requireUserId(request);
-  console.log("userId", userId);
-  
   const subscriptions = await getUserSubscriptions(userId);
   return json({ subscriptions });
 }

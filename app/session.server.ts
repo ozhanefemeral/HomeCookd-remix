@@ -23,7 +23,6 @@ const COOK_SESSION_KEY = "cookId";
 
 export async function getSession(request: Request) {
   const cookie = request.headers.get("Cookie");
-  // console.log((await sessionStorage.getSession(cookie)).data);
   return sessionStorage.getSession(cookie);
 }
 
@@ -103,7 +102,6 @@ export async function getCook(request: Request) {
   if (cookId === undefined) return null;
 
   const cook = await getCookById(cookId);
-  console.log("cook", cook);
   if (cook) return cook;
 
   throw await logout(request);
