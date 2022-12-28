@@ -10,7 +10,15 @@ export async function getUserSubscriptions(id: User["id"]) {
   });
 }
 
-export async function getSubscriptionById(id: Subscription["id"]) {
+export async function getCookSubscriptions(id: User["id"]) {
+  return prisma.subscription.findMany({
+    where: {
+      cookId: id,
+    },
+  });
+}
+
+export async function getSubscriptionById(id: Subscription["id"], includeUser = false) {
   return prisma.subscription.findUnique({
     where: {
       id,
@@ -21,6 +29,12 @@ export async function getSubscriptionById(id: Subscription["id"]) {
           meal: true,
         },
       },
-    },
+      user: includeUser && {
+        select: {
+          id: true,
+          email: true,
+        }
+      },
+    }
   });
 }
