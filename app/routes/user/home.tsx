@@ -15,11 +15,9 @@ export default function HomePage() {
   const data = useLoaderData<typeof loader>();
   const user = useUser();
 
-  // put meals as grid 
   return (
     <div>
       <main>
-        {/* grid container */}
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 m-4">
           {data.meals.map((meal) => (
             <div className="flex flex-col items-center justify-end h-64 bg-gray-100 rounded-lg shadow-md p-4" key={meal.id}>
@@ -30,9 +28,8 @@ export default function HomePage() {
                 alt=""
               />
               <h2 className="text-lg font-semibold text-gray-700">{meal.title}</h2>
-              {/* button to subscribe */}
               <button className="px-4 py-2 mt-2 text-sm font-medium text-white bg-blue-500 rounded hover:bg-blue-600">
-                Subscribe
+                <Link to={`/subscribe?meal=${meal.id}`}>Subscribe</Link>
               </button>
             </div>
           ))}
