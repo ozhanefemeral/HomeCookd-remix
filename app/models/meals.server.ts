@@ -31,3 +31,7 @@ export async function getRandomMeal() {
   return prisma.meal.findFirst({
   });
 }
+
+export async function getAllMeals() {
+  return prisma.meal.findMany();
+}
