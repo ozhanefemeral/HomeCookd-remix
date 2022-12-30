@@ -73,8 +73,6 @@ export default function NewSubscription() {
 
   const [mealList, setMealList] = useState<SubMealTemplate[]>([]);
 
-  console.log(mealList);
-
   const totalPrice = mealList.reduce((total, meal) => {
     return total + meal.meal.price * meal.quantity;
   }, 0);
