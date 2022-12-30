@@ -3,7 +3,7 @@ import { json, redirect } from "@remix-run/node";
 import { Form, useCatch, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 
-import { deleteSubscription, getSubscriptionById } from "~/models/subscription.server";
+import { deleteSubscription, getSubscriptionById, getSubscriptionMeals } from "~/models/subscription.server";
 import { requireUserId } from "~/session.server";
 
 export async function loader({ request, params }: LoaderArgs) {
@@ -11,15 +11,23 @@ export async function loader({ request, params }: LoaderArgs) {
   invariant(params.subscriptionId, "subscriptionId not found");
 
   const subscription = await getSubscriptionById(params.subscriptionId);
+  const subMeals = await getSubscriptionMeals(params.subscriptionId);
   if (!subscription) {
     throw new Response("Not Found", { status: 404 });
   }
-  return json({ subscription });
+  return json({ subscription, subMeals });
 }
 
 export async function action({ request, params }: ActionArgs) {
-  const userId = await requireUserId(request);
-  invariant(params.subscriptionId, "subscriptionId not found");
+  // const userId = await requireUserId(request);
+  // invariant(params.subscriptionId, "subscriptionId not found");
+  // DELETE subscription
+  if (!params.subscriptionId) {
+    throw new Response("Not Found", { status: 404 });
+  }
+  await deleteSubscription(params.subscriptionId);
+
+  return redirect("/user/subscriptions");
 }
 
 export default function NoteDetailsPage() {
@@ -30,7 +38,7 @@ export default function NoteDetailsPage() {
       <h3 className="text-2xl font-bold">{data.subscription.title}</h3>
       <hr className="my-4" />
       <ul>
-        {data.subscription.subscriptionMeals.map((subMeal) => (
+        {data.subMeals.map((subMeal) => (
           <li key={subMeal.id}>
             <p>{subMeal.meal.title} - {subMeal.quantity} - {subMeal.price}</p>
           </li>
