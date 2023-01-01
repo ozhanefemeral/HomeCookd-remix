@@ -2,10 +2,12 @@ import type { LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Form, Link, NavLink, Outlet, useLoaderData } from "@remix-run/react";
 
-
 import { requireCookId } from "~/session.server";
 import { useCook } from "~/utils";
 import { getCookSubscriptions } from "~/models/subscription.server";
+
+// days of week in small letters
+const days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
 
 export async function loader({ request }: LoaderArgs) {
   const cookId = await requireCookId(request);
@@ -41,7 +43,7 @@ export default function SubscriptionsPage() {
             <p className="p-4">No subscriptions yet</p>
           ) : (
             <ol>
-              {data.subscriptions.map((subscription) => (
+              {/* {data.subscriptions.map((subscription) => (
                 <li key={subscription.id}>
                   <NavLink
                     className={({ isActive }) =>
@@ -50,6 +52,18 @@ export default function SubscriptionsPage() {
                     to={subscription.id}
                   >
                     📝 {subscription.meal.title}
+                  </NavLink>
+                </li>
+              ))} */}
+              {days.map((day) => (
+                <li key={day}>
+                  <NavLink
+                    className={({ isActive }) =>
+                      `block border-b p-4 text-xl ${isActive ? "bg-white" : ""}`
+                    }
+                    to={day}
+                  >
+                    {day}
                   </NavLink>
                 </li>
               ))}
