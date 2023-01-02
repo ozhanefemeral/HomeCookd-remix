@@ -1,4 +1,4 @@
-import type { Subscription } from "@prisma/client";
+import type { Prisma, Subscription } from "@prisma/client";
 
 import { prisma } from "~/db.server";
 
@@ -11,6 +11,12 @@ export enum DeliveryDay {
   SATURDAY = "SATURDAY",
   SUNDAY = "SUNDAY",
 }
+
+export type SubscriptionMealWithMeal = Prisma.SubscriptionMealGetPayload<{
+  include: {
+    meal: true;
+  };
+}>;
 
 export async function getSubscriptionMeals(id: Subscription["id"]) {
   return prisma.subscriptionMeal.findMany({
