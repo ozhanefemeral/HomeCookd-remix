@@ -84,30 +84,19 @@ async function seed() {
 
   const cook = await prisma.cook.create({
     data: {
-      name: faker.name.firstName(),
+      name: faker.name.fullName(),
       email: "Davon13@hotmail.com",
       password: cookPassword,
     }
   });
 
   const meals = await prisma.meal.createMany({
-    data: [
-      {
-        title: fakeMealNames[Math.floor(Math.random() * fakeMealNames.length)],
-        cookId: cook.id,
-        price: Number(faker.commerce.price(5, 40, 0)),
-      },
-      {
-        title: fakeMealNames[Math.floor(Math.random() * fakeMealNames.length)],
-        cookId: cook.id,
-        price: Number(faker.commerce.price(5, 40, 0)),
-      },
-      {
-        title: fakeMealNames[Math.floor(Math.random() * fakeMealNames.length)],
-        cookId: cook.id,
-        price: Number(faker.commerce.price(5, 40, 0)),
-      },
-    ],
+    // create 10 fake meals
+    data: Array.from({ length: 10 }).map((_, i) => ({
+      title: fakeMealNames[i * 4],
+      price: Number(faker.commerce.price(5, 40, 0)),
+      cookId: cook.id,
+    })),
   });
 
   const subscriptions = await prisma.subscription.create({
