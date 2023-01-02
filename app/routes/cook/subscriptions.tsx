@@ -9,15 +9,7 @@ import { getCookSubscriptions } from "~/models/subscription.server";
 // days of week in small letters
 const days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
 
-export async function loader({ request }: LoaderArgs) {
-  const cookId = await requireCookId(request);
-
-  const subscriptions = await getCookSubscriptions(cookId);
-  return json({ subscriptions });
-}
-
 export default function SubscriptionsPage() {
-  const data = useLoaderData<typeof loader>();
   const cook = useCook();
 
   return (
@@ -39,39 +31,34 @@ export default function SubscriptionsPage() {
 
       <main className="flex h-full bg-white">
         <div className="h-full w-80 border-r bg-gray-50">
-          {data.subscriptions.length === 0 ? (
-            <p className="p-4">No subscriptions yet</p>
-          ) : (
-            <ol>
-              {/* {data.subscriptions.map((subscription) => (
-                <li key={subscription.id}>
-                  <NavLink
-                    className={({ isActive }) =>
-                      `block border-b p-4 text-xl ${isActive ? "bg-white" : ""}`
-                    }
-                    to={subscription.id}
-                  >
-                    📝 {subscription.meal.title}
-                  </NavLink>
-                </li>
-              ))} */}
-              {days.map((day) => (
-                <li key={day}>
-                  <NavLink
-                    className={({ isActive }) =>
-                      `block border-b p-4 text-xl ${isActive ? "bg-white" : ""}`
-                    }
-                    to={day}
-                  >
-                    {day}
-                  </NavLink>
-                </li>
-              ))}
-            </ol>
-          )}
+          <ol>
+            {days.map((day) => (
+              <li key={day}>
+                <NavLink
+                  className={({ isActive }) =>
+                    `capitalize block border-b p-4 text-xl ${isActive ? "bg-white text-primary font-bold" : ""}`
+                  }
+                  to={day}
+                >
+                  {day}
+                </NavLink>
+              </li>
+            ))}
+            {/* all subscriptions  */}
+            <li>
+              <NavLink
+                className={({ isActive }) =>
+                  `capitalize block border-b p-4 text-xl text-center ${isActive ? "bg-white text-primary font-bold" : ""}`
+                }
+                to="all"
+              >
+                All Subscriptions 🍕
+              </NavLink>
+            </li>
+          </ol>
         </div>
 
-        <div className="flex-1">
+        <div className="flex-1 p-4">
           <Outlet />
         </div>
       </main>
