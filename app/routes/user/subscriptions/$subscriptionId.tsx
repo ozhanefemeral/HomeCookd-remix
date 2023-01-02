@@ -2,6 +2,7 @@ import type { ActionArgs, LoaderArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Form, useCatch, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
+import SubMealCard from "~/components/SubMealCard";
 
 import { deleteSubscription, getSubscriptionById, getSubscriptionMeals } from "~/models/subscription.server";
 import { requireUserId } from "~/session.server";
@@ -36,28 +37,28 @@ export default function NoteDetailsPage() {
   return (
     <div>
       <h3 className="text-2xl font-bold">{data.subscription.title}</h3>
-      <hr className="my-4" />
-      <ul>
-        {data.subMeals.map((subMeal) => (
-          <li key={subMeal.id}>
-            <p>{subMeal.meal.title} - {subMeal.quantity} - {subMeal.price}</p>
-          </li>
-        ))}
-      </ul>
-      <Form method="post"
-        onSubmit={(event) => {
-          if (!confirm("Are you sure?")) {
-            event.preventDefault();
-          }
-        }}
-      >
-        <button
-          type="submit"
-          className="rounded bg-blue-500  py-2 px-4 text-white hover:bg-blue-600 focus:bg-blue-400"
+      <div>
+        <Form method="post"
+          onSubmit={(event) => {
+            if (!confirm("Are you sure?")) {
+              event.preventDefault();
+            }
+          }}
         >
-          Delete
-        </button>
-      </Form>
+          <button
+            type="submit"
+            className="rounded bg-red-500 mt-2 py-2 px-4 text-white hover:bg-red-600 focus:bg-red-400"
+          >
+            Delete
+          </button>
+        </Form>
+      </div>
+      <hr className="my-4" />
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        {data.subMeals.map((subMeal) => (
+          <SubMealCard key={subMeal.id} subMeal={subMeal} />
+        ))}
+      </div>
     </div>
   );
 }
