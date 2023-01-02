@@ -2,7 +2,9 @@ import type { ActionArgs, LoaderArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Form, useCatch, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
+import MealCardSmall from "~/components/MealCardSmall";
 import SubMealCard from "~/components/SubMealCard";
+import { getAllMeals } from "~/models/meals.server";
 
 import { deleteSubscription, getSubscriptionById, getSubscriptionMeals } from "~/models/subscription.server";
 import { requireUserId } from "~/session.server";
@@ -13,10 +15,12 @@ export async function loader({ request, params }: LoaderArgs) {
 
   const subscription = await getSubscriptionById(params.subscriptionId);
   const subMeals = await getSubscriptionMeals(params.subscriptionId);
+  const recommendedMeals = await getAllMeals();
+
   if (!subscription) {
     throw new Response("Not Found", { status: 404 });
   }
-  return json({ subscription, subMeals });
+  return json({ subscription, subMeals, recommendedMeals });
 }
 
 export async function action({ request, params }: ActionArgs) {
@@ -31,7 +35,7 @@ export async function action({ request, params }: ActionArgs) {
   return redirect("/user/subscriptions");
 }
 
-export default function NoteDetailsPage() {
+export default function SubscriptionPage() {
   const data = useLoaderData<typeof loader>();
 
   return (
@@ -53,11 +57,21 @@ export default function NoteDetailsPage() {
           </button>
         </Form>
       </div>
-      <hr className="my-4" />
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="flex flex-row gap-4 my-4">
         {data.subMeals.map((subMeal) => (
           <SubMealCard key={subMeal.id} subMeal={subMeal} />
         ))}
+      </div>
+
+      {/* more meals */}
+      <div className="mt-4">
+        <h3 className="text-xl font-bold my-2">Discover more</h3>
+        {/* smaller, chip sized food cards */}
+        <div className="flex flex-row gap-4 flex-wrap">
+          {data.recommendedMeals.map((meal) => (
+            <MealCardSmall key={meal.id} meal={meal} />
+          ))}
+        </div>
       </div>
     </div>
   );
