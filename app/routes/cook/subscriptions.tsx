@@ -1,4 +1,4 @@
-import type { LoaderArgs } from "@remix-run/node";
+import { LoaderArgs, redirect } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Form, Link, NavLink, Outlet, useLoaderData } from "@remix-run/react";
 
@@ -8,6 +8,9 @@ import { getCookSubscriptions } from "~/models/subscription.server";
 
 // days of week in small letters
 const days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
+
+// TODO
+// AUTOMATICALLY NAVIGATE TO THAT DAY OF THE WEEK
 
 export default function SubscriptionsPage() {
   const cook = useCook();
