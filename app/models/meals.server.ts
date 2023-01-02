@@ -1,6 +1,13 @@
-import type { Meal, Cook } from "@prisma/client";
+import type { Meal, Cook, Prisma } from "@prisma/client";
 
 import { prisma } from "~/db.server";
+
+export type MealWithCook = Prisma.MealGetPayload<{
+  include: {
+    cook: true;
+  };
+}>;
+
 
 export async function getMealsByCookId(id: Cook["id"]) {
   return prisma.meal.findMany({
@@ -33,5 +40,9 @@ export async function getRandomMeal() {
 }
 
 export async function getAllMeals() {
-  return prisma.meal.findMany();
+  return prisma.meal.findMany({
+    include: {
+      cook: true,
+    }
+  });
 }
