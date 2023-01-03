@@ -8,15 +8,6 @@ export type MealWithCook = Prisma.MealGetPayload<{
   };
 }>;
 
-
-export async function getMealsByCookId(id: Cook["id"]) {
-  return prisma.meal.findMany({
-    where: {
-      cookId: id,
-    },
-  });
-}
-
 export async function getMealById(id: Meal["id"]) {
   return prisma.meal.findUnique({
     where: {

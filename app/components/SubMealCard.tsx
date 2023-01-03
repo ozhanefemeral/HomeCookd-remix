@@ -21,7 +21,7 @@ export default function SubMealCard({ subMeal }: { subMeal: SubscriptionMealWith
         <p className="mt-1">${subMeal.meal.price}</p>
       </div>
       <div className="flex items-center flex-wrap ">
-        <NavLink className="text-indigo-500 inline-flex items-center md:mb-2 lg:mb-0" to={`/cook/${subMeal.meal.owner}`}>
+        <NavLink className="text-indigo-500 inline-flex items-center md:mb-2 lg:mb-0" to={`/cook/${subMeal.meal.berke}`}>
           See more from the same cook
           <svg
             className="w-4 h-4 ml-2"

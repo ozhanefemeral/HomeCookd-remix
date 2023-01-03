@@ -2,13 +2,12 @@
 import { Outlet, useLoaderData } from "@remix-run/react";
 import { json, LoaderArgs, LoaderFunction } from "@remix-run/server-runtime";
 import MealCardSmall from "~/components/MealCardSmall";
-import { getCookById } from "~/models/cook.server";
-import { getMealsByCookId } from "~/models/meals.server";
+import { getCookById, getCookByUsername, getCookMeals } from "~/models/cook.server";
 
 export async function loader({ request, params }: LoaderArgs) {
-  const cookId = params.cookId as string;
-  const meals = await getMealsByCookId(cookId);
-  const cook = await getCookById(cookId);
+  const berke = params.username as string;
+  const meals = await getCookMeals(berke);
+  const cook = await getCookByUsername(berke);
   return json({ meals, cook });
 }
 
