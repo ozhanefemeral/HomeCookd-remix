@@ -5,8 +5,8 @@ import { MealWithCook } from "~/models/meals.server";
 export default function MealCardSmall({ meal }: { meal: MealWithCook }) {
 
   return (
-    <div className=" border-solid border-2 p-2 rounded-lg">
-      <div className="flex flex-row items-center w-64 h-16 items-start">
+    <div className=" border-solid border-2 p-2 rounded-lg relative">
+      <div className="flex flex-row w-64 h-20 items-start">
         <img
           className="object-cover object-center w-16 h-16 rounded-lg"
           src="https://dummyimage.com/64x64"
@@ -22,22 +22,9 @@ export default function MealCardSmall({ meal }: { meal: MealWithCook }) {
           {/* price */}
           <p className="text-sm text-black">${meal.price}</p>
         </div>
-
-        {/* big arrow to right */}
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-6 w-6 ml-auto"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M9 5l7 7-7 7"
-          />
-        </svg>
+      </div>
+      <div className="absolute bottom-1 right-1">
+        {/* 🔥 💎 🌿 🏋️‍♀️ 👪 */}
       </div>
     </div>
   );
