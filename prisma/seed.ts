@@ -87,6 +87,7 @@ async function seed() {
       name: faker.name.fullName(),
       email: "Davon13@hotmail.com",
       password: cookPassword,
+      username: "Davon13",
     }
   });
 
@@ -109,6 +110,13 @@ async function seed() {
     }
   })
 
+  const recipes = await prisma.recipe.createMany({
+    data: Array.from({ length: 10 }).map((_, i) => ({
+      title: fakeMealNames[i * 3],
+      body: faker.lorem.paragraph(),
+      cookId: cook.id,
+    })),
+  });
   // cast meals to prisma meal type and resolve Cannot access 'PrismaClient.meal' because 'PrismaClient' is a type, but not a namespace.
 
   const mealsData = await prisma.meal.findMany();

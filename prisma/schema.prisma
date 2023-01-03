@@ -34,6 +34,9 @@ model Cook {
   name     String
   email    String @unique
   password String
+  username String @unique
+
+  recipes Recipe[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -103,4 +106,16 @@ model Note {
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String
+}
+
+model Recipe {
+  id    String @id @default(cuid())
+  title String
+  body  String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  cook   Cook   @relation(fields: [cookId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  cookId String
 }
