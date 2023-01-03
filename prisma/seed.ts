@@ -96,7 +96,7 @@ async function seed() {
     data: Array.from({ length: 10 }).map((_, i) => ({
       title: fakeMealNames[i * 4],
       price: Number(faker.commerce.price(5, 40, 0)),
-      cookId: cook.id,
+      owner: cook.username,
     })),
   });
 
@@ -114,7 +114,7 @@ async function seed() {
     data: Array.from({ length: 10 }).map((_, i) => ({
       title: fakeMealNames[i * 3],
       body: faker.lorem.paragraph(),
-      cookId: cook.id,
+      owner: cook.username,
     })),
   });
   // cast meals to prisma meal type and resolve Cannot access 'PrismaClient.meal' because 'PrismaClient' is a type, but not a namespace.
@@ -131,7 +131,7 @@ async function seed() {
         quantity: 1,
         deliveryDay: DeliveryDay.MONDAY,
         deliveryHour: "12:00",
-        cookId: cook.id,
+        owner: cook.username,
       },
       {
         subscriptionId: subscriptions.id,
@@ -140,7 +140,7 @@ async function seed() {
         quantity: 1,
         deliveryDay: DeliveryDay.SATURDAY,
         deliveryHour: "18:00",
-        cookId: cook.id,
+        owner: cook.username,
       },
       {
         subscriptionId: subscriptions.id,
@@ -149,7 +149,7 @@ async function seed() {
         quantity: 1,
         deliveryDay: DeliveryDay.SUNDAY,
         deliveryHour: "10:00",
-        cookId: cook.id,
+        owner: cook.username,
       },
     ],
   });

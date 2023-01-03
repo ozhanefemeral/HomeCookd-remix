@@ -13,6 +13,10 @@ export async function getCookMeals(id: Cook["id"]) {
   return prisma.cook.findUnique({ where: { id } }).meals();
 }
 
+export async function getCookByUsername(username: Cook["username"]) {
+  return prisma.cook.findUnique({ where: { username } });
+}
+
 export async function verifyLogin(
   email: Cook["email"],
   password: string

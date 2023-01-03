@@ -1,16 +1,17 @@
-// remix page where cookId is a param and is used in the loader function
-// Path: app\routes\cook\$cookId.tsx
+// remix page where username is a param and is used in the loader function
+// Path: app\routes\cook\$username.tsx
 
 import { Form, Outlet, useCatch, useLoaderData } from "@remix-run/react";
 import { json, LoaderArgs } from "@remix-run/server-runtime";
-import { getCookById, getCookMeals } from "~/models/cook.server";
+import { getCookByUsername, getCookMeals } from "~/models/cook.server";
 
 
-// get cookId from params and use it in the loader function
+// get username from params and use it in the loader function
 export async function loader({ request, params }: LoaderArgs) {
-  const { cookId } = params as { cookId: string };
-  const cook = await getCookById(cookId);
-  const meals = await getCookMeals(cookId);
+  const { username } = params as { username: string };
+  const cook = await getCookByUsername(username);
+  // if (!cook) return json({ cook: null }, { status: 404 });
+  const meals = await getCookMeals(cook!.id);
   return json({ meals, cook });
 }
 
