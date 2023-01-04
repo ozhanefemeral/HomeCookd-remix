@@ -91,6 +91,18 @@ async function seed() {
     }
   });
 
+  const cookProfile = await prisma.cookProfile.create({
+    data: {
+      berke: cook.username,
+      banner: faker.image.imageUrl(),
+      avatar: faker.image.avatar(),
+      description: faker.lorem.paragraph(),
+      instagram: faker.internet.url(),
+      facebook: faker.internet.url(),
+      youtube: faker.internet.url(),
+    }
+  })
+
   const meals = await prisma.meal.createMany({
     // create 10 fake meals
     data: Array.from({ length: 10 }).map((_, i) => ({
