@@ -4,9 +4,12 @@ import MealCardBig from "~/components/MealCardBig";
 import { getCookByUsername, getCookMeals } from "~/models/cook.server";
 
 export async function loader({ request, params }: LoaderArgs) {
-  const berke = params.username as string;
-  const meals = await getCookMeals(berke);
-  const cook = await getCookByUsername(berke);
+  const { username } = params;
+  if (!username) {
+    return json({ meals: [], cook: null }, { status: 404 });
+  }
+  const meals = await getCookMeals(username);
+  const cook = await getCookByUsername(username);
   return json({ meals, cook });
 }
 

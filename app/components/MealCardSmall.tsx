@@ -16,7 +16,7 @@ export default function MealCardSmall({ meal }: { meal: MealWithCook }) {
           <NavLink to={`/meals/${meal.id}`}>
             <h3 className="text-md font-semibold text-primary">{meal.title}</h3>
           </NavLink>
-          <NavLink to={`/cook/${meal.cook.id}`}>
+          <NavLink to={`/cook/${meal.cook.username}`}>
             <h3 className="text-sm text-black">{meal.cook.name}</h3>
           </NavLink>
           {/* price */}

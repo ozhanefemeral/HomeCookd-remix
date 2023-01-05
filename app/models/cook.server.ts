@@ -48,5 +48,5 @@ export async function verifyLogin(
 }
 
 export async function getCookProfile(username: Cook["username"]) {
-  return prisma.cookProfile.findUnique({ where: { berke: username } });
+  return prisma.cookProfile.findUnique({ where: { username } });
 }

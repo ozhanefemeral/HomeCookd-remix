@@ -85,15 +85,15 @@ async function seed() {
   const cook = await prisma.cook.create({
     data: {
       name: faker.name.fullName(),
-      email: "Davon13@hotmail.com",
+      email: "cook@example.com",
       password: cookPassword,
-      username: "Davon13",
+      username: "the-cook",
     }
   });
 
   const cookProfile = await prisma.cookProfile.create({
     data: {
-      berke: cook.username,
+      username: cook.username,
       banner: faker.image.imageUrl(),
       avatar: faker.image.avatar(),
       description: faker.lorem.paragraph(),
@@ -108,7 +108,7 @@ async function seed() {
     data: Array.from({ length: 10 }).map((_, i) => ({
       title: fakeMealNames[i * 4],
       price: Number(faker.commerce.price(5, 40, 0)),
-      berke: cook.username,
+      cookedBy: cook.username,
     })),
   });
 
@@ -126,14 +126,12 @@ async function seed() {
     data: Array.from({ length: 10 }).map((_, i) => ({
       title: fakeMealNames[i * 3],
       body: faker.lorem.paragraph(),
-      berke: cook.username,
+      username: cook.username,
     })),
   });
-  // cast meals to prisma meal type and resolve Cannot access 'PrismaClient.meal' because 'PrismaClient' is a type, but not a namespace.
 
   const mealsData = await prisma.meal.findMany();
 
-  // each subscription meal has a price that is 10% off the meal price and rounded to the nearest without decimal
   const subscriptionMeals = await prisma.subscriptionMeal.createMany({
     data: [
       {
@@ -143,7 +141,7 @@ async function seed() {
         quantity: 1,
         deliveryDay: DeliveryDay.MONDAY,
         deliveryHour: "12:00",
-        berke: cook.username,
+        cookedBy: cook.username,
       },
       {
         subscriptionId: subscriptions.id,
@@ -152,7 +150,7 @@ async function seed() {
         quantity: 1,
         deliveryDay: DeliveryDay.SATURDAY,
         deliveryHour: "18:00",
-        berke: cook.username,
+        cookedBy: cook.username,
       },
       {
         subscriptionId: subscriptions.id,
@@ -161,7 +159,7 @@ async function seed() {
         quantity: 1,
         deliveryDay: DeliveryDay.SUNDAY,
         deliveryHour: "10:00",
-        berke: cook.username,
+        cookedBy: cook.username,
       },
     ],
   });
