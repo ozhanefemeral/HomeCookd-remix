@@ -59,7 +59,7 @@ export async function createSubscription(body: any) {
 
     const _meal = meal;
     _meal.mealId = meal.meal.id;
-    _meal.cookId = meal.meal.cookId;
+    _meal.cookedBy = meal.meal.cookedBy;
     delete _meal.meal;
 
     return _meal;

@@ -1,9 +1,9 @@
 import { SubscriptionMeal } from "@prisma/client";
-import { NavLink } from "@remix-run/react";
+import { NavLink, useFetcher } from "@remix-run/react";
 import { SubscriptionMealWithMeal } from "~/models/subscriptionMeal.server";
 
 export default function SubMealCard({ subMeal }: { subMeal: SubscriptionMealWithMeal }) {
-  // card with tailwind, placeholder image at top, subMeal.meal.title as title, subMeal.meal.price as price, subMeal.meal.image as image
+  const fetcher = useFetcher();
 
   return (
     <div className=" border-solid border-2 p-2 rounded-lg">
@@ -37,6 +37,30 @@ export default function SubMealCard({ subMeal }: { subMeal: SubscriptionMealWith
           </svg>
         </NavLink>
       </div>
+
+      {/* delete button */}
+      <fetcher.Form
+        method="post"
+        action="/delete-subscription-meal"
+        onClick={(e) => {
+          if (!confirm("Are you sure you want to delete this meal?")) {
+            e.preventDefault();
+          }
+        }}
+      >
+        {/* red delete button as submit */}
+        <button
+          type="submit"
+          className="flex mx-auto text-white bg-red-500 py-1 px-2 hover:bg-red-600 rounded"
+        >
+          Delete
+        </button>
+        <input
+          type="hidden"
+          name="id"
+          value={subMeal.id}
+        />
+      </fetcher.Form>
     </div>
   );
 }
