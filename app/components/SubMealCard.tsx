@@ -18,7 +18,7 @@ export default function SubMealCard({ subMeal }: { subMeal: SubscriptionMealWith
         <h2 className="text-lg font-medium text-gray-900 title-font">
           {subMeal.meal.title}
         </h2>
-        <p className="mt-1">${subMeal.meal.price}</p>
+        <p className="mt-1">${subMeal.meal.price} x {subMeal.quantity} = <span className="font-bold">${subMeal.price} total</span></p>
       </div>
       <div className="flex items-center flex-wrap ">
         <NavLink className="text-indigo-500 inline-flex items-center md:mb-2 lg:mb-0" to={`/cook/${subMeal.meal.cookedBy}`}>
