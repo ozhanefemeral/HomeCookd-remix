@@ -141,7 +141,6 @@ async function seed() {
         quantity: 1,
         deliveryDay: DeliveryDay.MONDAY,
         deliveryHour: "12:00",
-        cookedBy: cook.username,
       },
       {
         subscriptionId: subscriptions.id,
@@ -150,7 +149,6 @@ async function seed() {
         quantity: 1,
         deliveryDay: DeliveryDay.SATURDAY,
         deliveryHour: "18:00",
-        cookedBy: cook.username,
       },
       {
         subscriptionId: subscriptions.id,
@@ -159,7 +157,6 @@ async function seed() {
         quantity: 1,
         deliveryDay: DeliveryDay.SUNDAY,
         deliveryHour: "10:00",
-        cookedBy: cook.username,
       },
     ],
   });
