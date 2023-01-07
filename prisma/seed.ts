@@ -172,7 +172,7 @@ async function seed() {
       {
         subscriptionId: subscriptions.id,
         mealId: mealsData[0].id,
-        price: Math.round(Number(mealsData[0].price * 0.9)),
+        price: mealsData[0].price,
         quantity: 1,
         deliveryDay: DeliveryDay.MONDAY,
         deliveryHour: "12:00",
@@ -180,7 +180,7 @@ async function seed() {
       {
         subscriptionId: subscriptions.id,
         mealId: mealsData[1].id,
-        price: Math.round(Number(mealsData[1].price * 0.9)),
+        price: mealsData[1].price,
         quantity: 1,
         deliveryDay: DeliveryDay.SATURDAY,
         deliveryHour: "18:00",
@@ -188,7 +188,7 @@ async function seed() {
       {
         subscriptionId: subscriptions.id,
         mealId: mealsData[2].id,
-        price: Math.round(Number(mealsData[2].price * 0.9)),
+        price: mealsData[2].price,
         quantity: 1,
         deliveryDay: DeliveryDay.SUNDAY,
         deliveryHour: "10:00",
