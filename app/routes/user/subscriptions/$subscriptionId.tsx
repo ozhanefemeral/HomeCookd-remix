@@ -1,10 +1,13 @@
+import { Meal } from "@prisma/client";
 import type { ActionArgs, LoaderArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { Form, useCatch, useLoaderData } from "@remix-run/react";
+import { Form, useCatch, useLoaderData, useSearchParams } from "@remix-run/react";
+import { useState } from "react";
 import invariant from "tiny-invariant";
 import MealCardSmall from "~/components/MealCardSmall";
 import SubMealCard from "~/components/SubMealCard";
-import { getAllMeals } from "~/models/meals.server";
+import SubscribeMealModal from "~/components/SubscribeMealModal";
+import { getAllMeals, MealWithCook } from "~/models/meals.server";
 
 import { deleteSubscription, getSubscriptionById, getSubscriptionMeals } from "~/models/subscription.server";
 import { requireUserId } from "~/session.server";
@@ -37,6 +40,17 @@ export async function action({ request, params }: ActionArgs) {
 
 export default function SubscriptionPage() {
   const data = useLoaderData<typeof loader>();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { subscription, subMeals, recommendedMeals } = data;
+
+  const showSubscribeMealModal = searchParams.get("subscribe") && searchParams.get("mealId") && searchParams.get("subscriptionId");
+
+  const [clickedMeal, setClickedMeal] = useState<Meal>();
+
+  function handleSubscribe(meal: Meal) {
+    setClickedMeal(meal);
+    setSearchParams({ subscribe: "true", mealId: meal.id, subscriptionId: subscription.id });
+  }
 
   return (
     <div>
@@ -58,7 +72,7 @@ export default function SubscriptionPage() {
         </Form>
       </div>
       <div className="flex flex-row gap-4 my-4">
-        {data.subMeals.map((subMeal) => (
+        {subMeals.map((subMeal) => (
           <SubMealCard key={subMeal.id} subMeal={subMeal} />
         ))}
       </div>
@@ -68,11 +82,13 @@ export default function SubscriptionPage() {
         <h3 className="text-xl font-bold my-2">Discover more</h3>
         {/* smaller, chip sized food cards */}
         <div className="flex flex-row gap-4 flex-wrap">
-          {data.recommendedMeals.map((meal) => (
-            <MealCardSmall key={meal.id} meal={meal} />
+          {recommendedMeals.map((meal) => (
+            <MealCardSmall key={meal.id} meal={meal} handleSubscribe={() => handleSubscribe(meal)} />
           ))}
         </div>
       </div>
+
+      <SubscribeMealModal meal={clickedMeal!} subscription={subscription!} open={!!showSubscribeMealModal} />
     </div>
   );
 }

@@ -69,3 +69,26 @@ export async function getSubscriptionMealsByDay(day: string) {
     }
   });
 }
+
+// type for body of createSubscriptionMeal
+export type CreateSubscriptionMealBody = {
+  subscriptionId: Subscription["id"];
+  mealId: Prisma.SubscriptionMealUncheckedCreateInput["mealId"];
+  deliveryDay: Prisma.SubscriptionMealUncheckedCreateInput["deliveryDay"];
+  quantity: Prisma.SubscriptionMealUncheckedCreateInput["quantity"];
+  price: Prisma.SubscriptionMealUncheckedCreateInput["price"];
+  deliveryHour: Prisma.SubscriptionMealUncheckedCreateInput["deliveryHour"];
+};
+
+export async function createSubscriptionMeal(body: CreateSubscriptionMealBody) {
+  return prisma.subscriptionMeal.create({
+    data: {
+      mealId: body.mealId,
+      subscriptionId: body.subscriptionId,
+      deliveryDay: body.deliveryDay,
+      deliveryHour: body.deliveryHour,
+      quantity: body.quantity,
+      price: body.price,
+    }
+  })
+}

@@ -1,9 +1,13 @@
 import { SubscriptionMeal } from "@prisma/client";
-import { NavLink } from "@remix-run/react";
+import { Link, NavLink, useFetcher } from "@remix-run/react";
 import { MealWithCook } from "~/models/meals.server";
 
-export default function MealCardSmall({ meal }: { meal: MealWithCook }) {
+type MealCardSmallProps = {
+  meal: MealWithCook;
+  handleSubscribe: () => void;
+}
 
+export default function MealCardSmall({ meal, handleSubscribe }: MealCardSmallProps) {
   return (
     <div className=" border-solid border-2 p-2 rounded-lg relative">
       <div className="flex flex-row w-64 h-20 items-start">
@@ -23,8 +27,20 @@ export default function MealCardSmall({ meal }: { meal: MealWithCook }) {
           <p className="text-sm text-black">${meal.price}</p>
         </div>
       </div>
-      <div className="absolute bottom-1 right-1">
-        {/* 🔥 💎 🌿 🏋️‍♀️ 👪 */}
+      {/* <div className="absolute bottom-1 right-1">
+        🔥 💎 🌿 🏋️‍♀️ 👪
+      </div> */}
+
+      <div
+        className="flex flex-col items-end"
+      >
+        <input type="hidden" name="mealId" value={meal.id} />
+        <button
+          className="flex text-white bg-primary py-1 px-2 hover:bg-primary-dark rounded"
+          onClick={handleSubscribe}
+        >
+          Subscribe
+        </button>
       </div>
     </div>
   );
