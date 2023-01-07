@@ -3,6 +3,7 @@ import { useMemo } from "react";
 
 import type { User } from "~/models/user.server";
 import type { Cook } from "~/models/cook.server";
+import { MealTags } from "@prisma/client";
 
 const DEFAULT_REDIRECT = "/";
 
@@ -99,3 +100,19 @@ export const deliveryHours = Array.from({ length: 48 }, (_, i) => {
   const minute = i % 2 === 0 ? "00" : "30";
   return `${hour}:${minute}`;
 });
+
+// [MealTags.VEGETARIAN]: "🌱",
+// [MealTags.GLUTEN_FREE]: "🍞",
+// [MealTags.DAIRY_FREE]: "🥛",
+// [MealTags.BIG_PORTION]: "🍽️",
+// [MealTags.NEW]: "🔥",
+// [MealTags.TRENDING]: "💎",
+export const mapTagToEmoji = {
+  [MealTags.VEGETARIAN]: "🌱",
+  [MealTags.GLUTEN_FREE]: "🍞",
+  [MealTags.DAIRY_FREE]: "🥛",
+  [MealTags.BIG_PORTION]: "🍽️",
+  [MealTags.NEW]: "🔥",
+  [MealTags.TRENDING]: "💎",
+  [MealTags.HIGH_PROTEIN]: "🍗",
+};

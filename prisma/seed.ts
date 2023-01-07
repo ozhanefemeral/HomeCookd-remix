@@ -60,6 +60,37 @@ enum DeliveryDay {
   SUNDAY = "SUNDAY",
 }
 
+enum MealTags {
+  VEGETARIAN = "VEGETARIAN",
+  GLUTEN_FREE = "GLUTEN_FREE",
+  DAIRY_FREE = "DAIRY_FREE",
+  TRENDING = "TRENDING",
+  NEW = "NEW",
+  BIG_PORTION = "BIG_PORTION",
+  HIGH_PROTEIN = "HIGH_PROTEIN",
+}
+
+const mealTags: MealTags[] = [
+  MealTags.VEGETARIAN,
+  MealTags.GLUTEN_FREE,
+  MealTags.DAIRY_FREE,
+  MealTags.TRENDING,
+  MealTags.NEW,
+  MealTags.BIG_PORTION,
+  MealTags.HIGH_PROTEIN,
+];
+
+const generateRandomTags = () => {
+  const getRandomIndex = () => Math.floor(Math.random() * mealTags.length);
+
+  const randomTags = new Set<MealTags>();
+  while (randomTags.size < 3) {
+    randomTags.add(mealTags[getRandomIndex()]);
+  }
+
+  return randomTags;
+}
+
 async function seed() {
   console.log("seeding database... 🌱");
 
@@ -103,12 +134,16 @@ async function seed() {
     }
   })
 
+  // pick 3 random tags
+
   const meals = await prisma.meal.createMany({
     // create 10 fake meals
     data: Array.from({ length: 10 }).map((_, i) => ({
       title: fakeMealNames[i * 4],
       price: Number(faker.commerce.price(5, 40, 0)),
       cookedBy: cook.username,
+      // create random 3 tags for each meal
+      tags: [...generateRandomTags()],
     })),
   });
 

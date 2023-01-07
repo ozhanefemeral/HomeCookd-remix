@@ -17,6 +17,16 @@ enum DeliveryDay {
   SUNDAY
 }
 
+enum MealTags {
+  VEGETARIAN
+  GLUTEN_FREE
+  DAIRY_FREE
+  TRENDING
+  NEW
+  BIG_PORTION
+  HIGH_PROTEIN
+}
+
 model User {
   id    String @id @default(cuid())
   email String @unique
@@ -72,6 +82,8 @@ model Meal {
 
   cook     Cook   @relation(fields: [cookedBy], references: [username], onDelete: Cascade, onUpdate: Cascade)
   cookedBy String
+
+  tags MealTags[]
 
   subscriptionMeals SubscriptionMeal[]
 }
