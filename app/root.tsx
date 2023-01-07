@@ -15,9 +15,15 @@ import { useMemo } from "react";
 
 import { getCook, getUser } from "./session.server";
 import tailwindStylesheetUrl from "./styles/tailwind.css";
+import reactTooltipStylesheetUrl from "react-tooltip/dist/react-tooltip.css"
+// import 'react-tooltip/dist/react-tooltip.css'
+
 
 export const links: LinksFunction = () => {
-  return [{ rel: "stylesheet", href: tailwindStylesheetUrl }];
+  return [
+    { rel: "stylesheet", href: tailwindStylesheetUrl },
+    { rel: "stylesheet", href: reactTooltipStylesheetUrl },
+  ];
 };
 
 export const meta: MetaFunction = () => ({

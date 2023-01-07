@@ -1,7 +1,8 @@
 import { SubscriptionMeal } from "@prisma/client";
 import { Link, NavLink, useFetcher } from "@remix-run/react";
 import { MealWithCook } from "~/models/meals.server";
-import { mapTagToEmoji } from "~/utils";
+import { mapMealTagToEmoji, sortMealTags } from "~/utils";
+import MealTagTooltip from "./MealTagTooltip";
 
 type MealCardSmallProps = {
   meal: MealWithCook;
@@ -30,13 +31,8 @@ export default function MealCardSmall({ meal, handleSubscribe }: MealCardSmallPr
       </div>
       {/* map meal tags with corresponding emojis */}
       <div className="flex flex-row items-start gap-4">
-        {meal.tags.map((tag) => (
-          <span
-            key={tag}
-            className="flex items-center justify-center"
-          >
-            {mapTagToEmoji[tag]}
-          </span>
+        {sortMealTags(meal.tags).map(tag => (
+          <MealTagTooltip tag={tag} key={`${meal.id}-${tag}`} id={`${meal.id}-${tag}`} />
         ))}
       </div>
 

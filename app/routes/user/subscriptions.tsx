@@ -6,6 +6,7 @@ import { Form, Link, NavLink, Outlet, useLoaderData } from "@remix-run/react";
 import { requireUserId } from "~/session.server";
 import { useUser } from "~/utils";
 import { getUserSubscriptions } from "~/models/subscription.server";
+import { Tooltip } from "react-tooltip";
 
 export async function loader({ request }: LoaderArgs) {
   const userId = await requireUserId(request);

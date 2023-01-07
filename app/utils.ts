@@ -101,13 +101,8 @@ export const deliveryHours = Array.from({ length: 48 }, (_, i) => {
   return `${hour}:${minute}`;
 });
 
-// [MealTags.VEGETARIAN]: "🌱",
-// [MealTags.GLUTEN_FREE]: "🍞",
-// [MealTags.DAIRY_FREE]: "🥛",
-// [MealTags.BIG_PORTION]: "🍽️",
-// [MealTags.NEW]: "🔥",
-// [MealTags.TRENDING]: "💎",
-export const mapTagToEmoji = {
+
+export const mapMealTagToEmoji = {
   [MealTags.VEGETARIAN]: "🌱",
   [MealTags.GLUTEN_FREE]: "🍞",
   [MealTags.DAIRY_FREE]: "🥛",
@@ -116,3 +111,18 @@ export const mapTagToEmoji = {
   [MealTags.TRENDING]: "💎",
   [MealTags.HIGH_PROTEIN]: "🍗",
 };
+
+export const formatMealTag = {
+  [MealTags.VEGETARIAN]: "Vegetarian",
+  [MealTags.GLUTEN_FREE]: "Gluten Free",
+  [MealTags.DAIRY_FREE]: "Dairy Free",
+  [MealTags.BIG_PORTION]: "Big Portion",
+  [MealTags.NEW]: "New",
+  [MealTags.TRENDING]: "Trending",
+  [MealTags.HIGH_PROTEIN]: "High Protein",
+}
+
+export const sortMealTags = (tags: MealTags[]) => {
+  const sorted = [...tags].sort((a, b) => a - b);
+  return sorted;
+}
