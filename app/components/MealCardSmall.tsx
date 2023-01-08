@@ -12,10 +12,10 @@ type MealCardSmallProps = {
 export default function MealCardSmall({ meal, handleSubscribe }: MealCardSmallProps) {
   return (
     <div className=" border-solid border-2 p-2 rounded-lg relative">
-      <div className="flex flex-row w-64 h-20 items-start">
+      <div className="flex flex-row w-64 items-start">
         <img
-          className="object-cover object-center w-16 h-16 rounded-lg"
-          src="https://dummyimage.com/64x64"
+          className="object-cover object-center w-24 h-24 rounded-lg"
+          src="https://dummyimage.com/96x96"
           alt={meal.title}
         />
         <div className="flex flex-col ml-2 h-full justify-start">
@@ -30,7 +30,7 @@ export default function MealCardSmall({ meal, handleSubscribe }: MealCardSmallPr
         </div>
       </div>
       {/* map meal tags with corresponding emojis */}
-      <div className="flex flex-row items-start gap-4">
+      <div className="flex flex-row items-start gap-4 mt-2">
         {sortMealTags(meal.tags).map(tag => (
           <MealTagTooltip tag={tag} key={`${meal.id}-${tag}`} id={`${meal.id}-${tag}`} />
         ))}
@@ -41,7 +41,7 @@ export default function MealCardSmall({ meal, handleSubscribe }: MealCardSmallPr
       >
         <input type="hidden" name="mealId" value={meal.id} />
         <button
-          className="flex text-white bg-primary py-1 px-2 hover:bg-primary-dark rounded"
+          className="flex text-white bg-primary py-2 px-4 hover:bg-primary-dark rounded"
           onClick={handleSubscribe}
         >
           Subscribe
