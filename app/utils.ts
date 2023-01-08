@@ -126,3 +126,23 @@ export const sortMealTags = (tags: MealTags[]) => {
   const sorted = [...tags].sort((a, b) => a - b);
   return sorted;
 }
+
+export const daysAbbrCapitalized = {
+  MONDAY: "Mon",
+  TUESDAY: "Tue",
+  WEDNESDAY: "Wed",
+  THURSDAY: "Thu",
+  FRIDAY: "Fri",
+  SATURDAY: "Sat",
+  SUNDAY: "Sun",
+}
+
+export const daysCapitalized = {
+  MONDAY: "Monday",
+  TUESDAY: "Tuesday",
+  WEDNESDAY: "Wednesday",
+  THURSDAY: "Thursday",
+  FRIDAY: "Friday",
+  SATURDAY: "Saturday",
+  SUNDAY: "Sunday",
+}
