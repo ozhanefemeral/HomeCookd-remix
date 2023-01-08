@@ -68,7 +68,7 @@ model CookProfile {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  cook     Cook   @relation(fields: [username], references: [username])
+  cook Cook @relation(fields: [username], references: [username], onDelete: Cascade, onUpdate: Cascade)
   username String @unique
 }
 
