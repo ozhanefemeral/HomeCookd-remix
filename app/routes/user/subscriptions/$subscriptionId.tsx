@@ -1,8 +1,8 @@
-import { Meal } from "@prisma/client";
+import { Meal, MealTags } from "@prisma/client";
 import type { ActionArgs, LoaderArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Form, useCatch, useLoaderData, useSearchParams } from "@remix-run/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import invariant from "tiny-invariant";
 import MealCardSmall from "~/components/MealCardSmall";
 import SubMealCard from "~/components/SubMealCard";
@@ -11,6 +11,7 @@ import { getAllMeals, MealWithCook } from "~/models/meals.server";
 
 import { deleteSubscription, getSubscriptionById, getSubscriptionMeals } from "~/models/subscription.server";
 import { requireUserId } from "~/session.server";
+import { formatMealTag, mapMealTagToEmoji } from "~/utils";
 
 export async function loader({ request, params }: LoaderArgs) {
   const userId = await requireUserId(request);
@@ -41,7 +42,10 @@ export async function action({ request, params }: ActionArgs) {
 export default function SubscriptionPage() {
   const data = useLoaderData<typeof loader>();
   const [searchParams, setSearchParams] = useSearchParams();
-  const { subscription, subMeals, recommendedMeals } = data;
+  const { subscription, subMeals, recommendedMeals } = data
+
+  const [filteredMeals, setFilteredMeals] = useState<MealWithCook[]>(recommendedMeals);
+  const [appliedTags, setAppliedTags] = useState<MealTags[]>([]);
 
   const showSubscribeMealModal = searchParams.get("subscribe") && searchParams.get("mealId") && searchParams.get("subscriptionId");
 
@@ -51,6 +55,18 @@ export default function SubscriptionPage() {
     setClickedMeal(meal);
     setSearchParams({ subscribe: "true", mealId: meal.id, subscriptionId: subscription.id });
   }
+
+  useEffect(() => {
+    if (appliedTags.length === 0) {
+      setFilteredMeals(recommendedMeals);
+    } else {
+      setFilteredMeals(
+        recommendedMeals.filter((meal) => {
+          return appliedTags.every((tag) => meal.tags.includes(tag));
+        })
+      );
+    }
+  }, [appliedTags, recommendedMeals]);
 
   return (
     <div>
@@ -71,18 +87,52 @@ export default function SubscriptionPage() {
           </button>
         </Form>
       </div>
-      <div className="flex flex-row gap-4 my-4">
+      {/* map submealcards with horizontal scroll */}
+      <div className="flex flex-row gap-4 flex-nowrap overflow-x-auto my-4">
         {subMeals.map((subMeal) => (
           <SubMealCard key={subMeal.id} subMeal={subMeal} />
         ))}
       </div>
 
+      <hr />
+
       {/* more meals */}
       <div className="mt-4">
         <h3 className="text-xl font-bold my-2">Discover more</h3>
-        {/* smaller, chip sized food cards */}
+        {/* filter */}
         <div className="flex flex-row gap-4 flex-wrap">
-          {recommendedMeals.map((meal) => (
+          {Object.values(MealTags).map((tag) => (
+            <button
+              key={tag}
+              // bg primary and white text if applied, light gray bg and black text if not applied
+              className={`rounded px-4 py-2 ${appliedTags.includes(tag) ? "bg-primary text-white" : "bg-gray-200 text-gray-900"
+                }`}
+              onClick={() => {
+                if (appliedTags.includes(tag)) {
+                  setAppliedTags(appliedTags.filter((t) => t !== tag));
+                } else {
+                  setAppliedTags([...appliedTags, tag]);
+                }
+              }}
+            >
+              {mapMealTagToEmoji[tag]} {formatMealTag[tag]} {appliedTags.includes(tag) && <span className="text-white">✓</span>}
+            </button>
+          ))}
+          {/* clear all */}
+          {appliedTags.length > 0 && (
+            <button
+              className="rounded px-4 py-2 bg-gray-200 text-gray-900"
+              onClick={() => {
+                setAppliedTags([]);
+              }}
+            >
+              Show all
+            </button>
+          )}
+        </div>
+        {/* smaller, chip sized food cards */}
+        <div className="flex flex-row gap-4 flex-wrap mt-4">
+          {filteredMeals.map((meal) => (
             <MealCardSmall key={meal.id} meal={meal} handleSubscribe={() => handleSubscribe(meal)} />
           ))}
         </div>
