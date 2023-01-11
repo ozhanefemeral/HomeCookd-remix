@@ -133,14 +133,3 @@ model SubscriptionMeal {
   mealId String
 }
 
-model Recipe {
-  id    String @id @default(cuid())
-  title String
-  body  String
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  cook     Cook   @relation(fields: [username], references: [username], onDelete: Cascade, onUpdate: Cascade)
-  username String
-}
