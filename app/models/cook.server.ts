@@ -17,6 +17,10 @@ export async function getCookMeals(username: Cook["username"]) {
   });
 }
 
+export async function getCookRecipes(username: Cook["username"]) {
+  return prisma.cook.findUnique({ where: { username } }).recipes();
+}
+
 export async function getCookByUsername(username: Cook["username"]) {
   return prisma.cook.findUnique({ where: { username } });
 }
