@@ -37,3 +37,13 @@ export async function getAllMeals() {
     }
   });
 }
+
+export async function createMeal(
+  data: Prisma.MealCreateInput
+) {
+  return prisma.meal.create({
+    data: {
+      ...data,
+    },
+  });
+}

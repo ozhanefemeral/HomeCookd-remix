@@ -76,6 +76,7 @@ model Meal {
   id    String @id @default(cuid())
   title String
   price Int
+  image String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

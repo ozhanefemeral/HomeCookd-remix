@@ -142,6 +142,7 @@ async function seed() {
       title: fakeMealNames[i * 4],
       price: Number(faker.commerce.price(5, 40, 0)),
       cookedBy: cook.username,
+      image: faker.image.imageUrl(),
       // create random 3 tags for each meal
       tags: [...generateRandomTags()],
     })),
