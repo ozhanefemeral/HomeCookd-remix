@@ -12,7 +12,7 @@ export default function SubMealCard({ subMeal }: { subMeal: SubscriptionMealWith
       <div className="flex flex-col items-center justify-center w-full h-48 bg-gray-100 rounded-lg mb-2">
         <img
           className="object-cover object-center w-full h-full rounded-lg"
-          src="https://dummyimage.com/720x600"
+          src={subMeal.meal.image || "https://dummyimage.com/720x600"}
           alt={subMeal.meal.title}
           id={`tooltip-${subMeal.meal.id}-tags`}
         />

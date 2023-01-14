@@ -15,7 +15,7 @@ export default function MealCardSmall({ meal, handleSubscribe }: MealCardSmallPr
       <div className="flex flex-row w-64 items-start">
         <img
           className="object-cover object-center w-24 h-24 rounded-lg"
-          src="https://dummyimage.com/96x96"
+          src={meal.image || "https://dummyimage.com/96x96"}
           alt={meal.title}
         />
         <div className="flex flex-col ml-2 h-full justify-start">
