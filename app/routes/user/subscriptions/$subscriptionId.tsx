@@ -88,7 +88,7 @@ export default function SubscriptionPage() {
         </Form>
       </div>
       {/* map submealcards with horizontal scroll */}
-      <div className="flex flex-row gap-4 flex-nowrap overflow-x-auto my-4">
+      <div className="flex flex-row gap-4 flex-nowrap overflow-x-auto py-4">
         {subMeals.map((subMeal) => (
           <SubMealCard key={subMeal.id} subMeal={subMeal} />
         ))}

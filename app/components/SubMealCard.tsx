@@ -8,7 +8,7 @@ export default function SubMealCard({ subMeal }: { subMeal: SubscriptionMealWith
   const fetcher = useFetcher();
 
   return (
-    <div className="border-solid border-2 p-2 rounded-lg">
+    <div className="border-solid border-2 p-2 rounded-lg flex-shrink-0">
       <div className="flex flex-col items-center justify-center w-full h-48 bg-gray-100 rounded-lg mb-2">
         <img
           className="object-cover object-center w-full h-full rounded-lg"
