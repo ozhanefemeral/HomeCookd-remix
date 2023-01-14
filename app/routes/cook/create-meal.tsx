@@ -61,9 +61,9 @@ export default function CreateMeal() {
       <h1 className="text-2xl font-bold text-primary">Create Meal</h1>
       <Form method="post" className="flex flex-col justify-center space-y-4" encType="multipart/form-data">
         <input type="hidden" name="cookId" value={data.cook!.id} />
-        <input type="text" name="title" placeholder="Meal Name" className="w-96 p-2 border border-gray-300 rounded-md" defaultValue="Meal Name" />
-        <input type="text" name="description" placeholder="Meal Description" defaultValue="Meal Description" className="w-96 p-2 border border-gray-300 rounded-md" />
-        <input type="text" name="price" placeholder="Meal Price" className="w-96 p-2 border border-gray-300 rounded-md" defaultValue="100"
+        <input type="text" name="title" placeholder="Meal Name" className="w-96 p-2 border border-gray-300 rounded-md" />
+        <input type="text" name="description" placeholder="Meal Description" className="w-96 p-2 border border-gray-300 rounded-md" />
+        <input type="text" name="price" placeholder="Meal Price" className="w-96 p-2 border border-gray-300 rounded-md"
         />
         <input type="file" name="image" placeholder="Meal Image" className="w-96 p-2 border border-gray-300 rounded-md" />
 
