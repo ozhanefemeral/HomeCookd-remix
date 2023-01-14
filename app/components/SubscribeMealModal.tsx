@@ -50,8 +50,10 @@ export default function SubscribeMealModal({ subscription, meal, open }: Props) 
       <div className="fixed inset-0 bg-black opacity-50" />
       <div className="fixed inset-0 flex items-center justify-center">
         <div className="bg-white rounded-lg shadow-lg p-4">
-          <h2 className="text-2xl font-bold mb-4">Subscribe to {meal.title}</h2>
-          <div className="mt-4">
+          <img src={meal.image} alt={meal.title} className="object-cover object-center w-64 rounded-lg mx-auto"
+          />
+          <h2 className="text-2xl font-bold my-4">Subscribe to {meal.title}</h2>
+          <div>
             <label htmlFor="deliveryDay" className="font-semibold">Delivery Day</label>
             <br />
             <select
@@ -92,10 +94,11 @@ export default function SubscribeMealModal({ subscription, meal, open }: Props) 
               defaultValue={1}
               onChange={(e) => setQuantity(parseInt(e.target.value))}
             />
-            <p>
-              <span className="font-semibold">Total Price is ${totalPrice} </span>
-            </p>
           </div>
+          <p className="text-right mb-2">
+            Total Price is
+            <span className="font-semibold">&nbsp;${totalPrice} </span>
+          </p>
           <div className="flex justify-end">
             <div
               className="bg-red-500 text-white rounded-lg px-4 py-2 mr-2 hover:cursor-pointer"
