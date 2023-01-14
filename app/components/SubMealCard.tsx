@@ -23,7 +23,7 @@ export default function SubMealCard({ subMeal }: { subMeal: SubscriptionMealWith
           <div className="flex flex-col flex-wrap gap-2">
             {sortMealTags(subMeal.meal.tags).map((tag) => (
               <span>
-                {mapMealTagToEmoji[tag]} {formatMealTag[tag]}
+                {mapMealTagToEmoji(tag)} {formatMealTag(tag)}
               </span>
             ))}
           </div>

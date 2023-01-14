@@ -10,12 +10,12 @@ export default function MealTagTooltip({ tag, id }: { tag: MealTags, id: string 
   return (
     <>
       <div id={id}>
-        {mapMealTagToEmoji[tag]}
+        {mapMealTagToEmoji(tag)}
       </div>
       <Tooltip
         place="top"
         anchorId={id}
-        content={formatMealTag[tag]}
+        content={formatMealTag(tag)}
       />
 
       {/* <a id="props-basic"> ◕‿‿◕ </a>

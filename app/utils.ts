@@ -102,30 +102,90 @@ export const deliveryHours = Array.from({ length: 48 }, (_, i) => {
 });
 
 
-export const mapMealTagToEmoji = {
-  [MealTags.VEGETARIAN]: "🌱",
-  [MealTags.GLUTEN_FREE]: "🍞",
-  [MealTags.DAIRY_FREE]: "🥛",
-  [MealTags.BIG_PORTION]: "🍽️",
-  [MealTags.NEW]: "🔥",
-  [MealTags.TRENDING]: "💎",
-  [MealTags.HIGH_PROTEIN]: "🍗",
-};
+export const mapMealTagToEmoji = (tag: MealTags): string => {
+  switch (tag) {
+    case MealTags.VEGETARIAN:
+      return "🥦";
+    case MealTags.GLUTEN_FREE:
+      return "🍞";
+    case MealTags.DAIRY_FREE:
+      return "🥛";
+    case MealTags.BIG_PORTION:
+      return "🍽";
+    case MealTags.NEW:
+      return "🔥";
+    case MealTags.TRENDING:
+      return "💎";
+    case MealTags.HIGH_PROTEIN:
+      return "🏋️‍♂️";
+    default:
+      return "";
+  }
+}
 
-export const formatMealTag = {
-  [MealTags.VEGETARIAN]: "Vegetarian",
-  [MealTags.GLUTEN_FREE]: "Gluten Free",
-  [MealTags.DAIRY_FREE]: "Dairy Free",
-  [MealTags.BIG_PORTION]: "Big Portion",
-  [MealTags.NEW]: "New",
-  [MealTags.TRENDING]: "Trending",
-  [MealTags.HIGH_PROTEIN]: "High Protein",
+export const formatMealTag = (tag: MealTags): string => {
+  switch (tag) {
+    case MealTags.VEGETARIAN:
+      return "Vegetarian";
+    case MealTags.GLUTEN_FREE:
+      return "Gluten Free";
+    case MealTags.DAIRY_FREE:
+      return "Dairy Free";
+    case MealTags.BIG_PORTION:
+      return "Big Portion";
+    case MealTags.NEW:
+      return "New";
+    case MealTags.TRENDING:
+      return "Trending";
+    case MealTags.HIGH_PROTEIN:
+      return "High Protein";
+    default:
+      return "";
+  }
 }
 
 export const sortMealTags = (tags: MealTags[]) => {
   const sorted = [...tags].sort((a, b) => a - b);
   return sorted;
 }
+
+export const mealTags = [
+  {
+    tag: MealTags.VEGETARIAN,
+    emoji: "🥦",
+    label: "Vegetarian",
+  },
+  {
+    tag: MealTags.GLUTEN_FREE,
+    emoji: "🍞",
+    label: "Gluten Free",
+  },
+  {
+    tag: MealTags.DAIRY_FREE,
+    emoji: "🥛",
+    label: "Dairy Free",
+  },
+  {
+    tag: MealTags.BIG_PORTION,
+    emoji: "🍽",
+    label: "Big Portion",
+  },
+  {
+    tag: MealTags.NEW,
+    emoji: "🔥",
+    label: "New",
+  },
+  {
+    tag: MealTags.TRENDING,
+    emoji: "💎",
+    label: "Trending",
+  },
+  {
+    tag: MealTags.HIGH_PROTEIN,
+    emoji: "🏋️‍♂️",
+    label: "High Protein",
+  },
+];
 
 export const daysAbbrCapitalized = {
   MONDAY: "Mon",

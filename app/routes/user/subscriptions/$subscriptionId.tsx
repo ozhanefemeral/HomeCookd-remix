@@ -115,7 +115,7 @@ export default function SubscriptionPage() {
                 }
               }}
             >
-              {mapMealTagToEmoji[tag]} {formatMealTag[tag]} {appliedTags.includes(tag) && <span className="text-white">✓</span>}
+              {mapMealTagToEmoji(tag)} {formatMealTag(tag)} {appliedTags.includes(tag) && <span className="text-white">✓</span>}
             </button>
           ))}
           {/* clear all */}
