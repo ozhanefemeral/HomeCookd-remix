@@ -1,6 +1,9 @@
 -- CreateEnum
 CREATE TYPE "DeliveryDay" AS ENUM ('MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY');
 
+-- CreateEnum
+CREATE TYPE "MealTags" AS ENUM ('VEGETARIAN', 'GLUTEN_FREE', 'DAIRY_FREE', 'TRENDING', 'NEW', 'BIG_PORTION', 'HIGH_PROTEIN');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
@@ -46,11 +49,27 @@ CREATE TABLE "Meal" (
     "id" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "price" INTEGER NOT NULL,
+    "image" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "username" TEXT NOT NULL,
+    "cookedBy" TEXT NOT NULL,
+    "tags" "MealTags"[],
 
     CONSTRAINT "Meal_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "MealDetail" (
+    "id" TEXT NOT NULL,
+    "carbs" DOUBLE PRECISION NOT NULL,
+    "fat" DOUBLE PRECISION NOT NULL,
+    "protein" DOUBLE PRECISION NOT NULL,
+    "calories" DOUBLE PRECISION NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "mealId" TEXT NOT NULL,
+
+    CONSTRAINT "MealDetail_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -78,7 +97,6 @@ CREATE TABLE "SubscriptionMeal" (
     "deliveryHour" TEXT NOT NULL,
     "subscriptionId" TEXT NOT NULL,
     "mealId" TEXT NOT NULL,
-    "username" TEXT NOT NULL,
 
     CONSTRAINT "SubscriptionMeal_pkey" PRIMARY KEY ("id")
 );
@@ -108,10 +126,13 @@ CREATE UNIQUE INDEX "Cook_username_key" ON "Cook"("username");
 CREATE UNIQUE INDEX "CookProfile_username_key" ON "CookProfile"("username");
 
 -- AddForeignKey
-ALTER TABLE "CookProfile" ADD CONSTRAINT "CookProfile_username_fkey" FOREIGN KEY ("username") REFERENCES "Cook"("username") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "CookProfile" ADD CONSTRAINT "CookProfile_username_fkey" FOREIGN KEY ("username") REFERENCES "Cook"("username") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Meal" ADD CONSTRAINT "Meal_username_fkey" FOREIGN KEY ("username") REFERENCES "Cook"("username") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Meal" ADD CONSTRAINT "Meal_cookedBy_fkey" FOREIGN KEY ("cookedBy") REFERENCES "Cook"("username") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "MealDetail" ADD CONSTRAINT "MealDetail_mealId_fkey" FOREIGN KEY ("mealId") REFERENCES "Meal"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Subscription" ADD CONSTRAINT "Subscription_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -121,9 +142,6 @@ ALTER TABLE "SubscriptionMeal" ADD CONSTRAINT "SubscriptionMeal_subscriptionId_f
 
 -- AddForeignKey
 ALTER TABLE "SubscriptionMeal" ADD CONSTRAINT "SubscriptionMeal_mealId_fkey" FOREIGN KEY ("mealId") REFERENCES "Meal"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "SubscriptionMeal" ADD CONSTRAINT "SubscriptionMeal_username_fkey" FOREIGN KEY ("username") REFERENCES "Cook"("username") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Recipe" ADD CONSTRAINT "Recipe_username_fkey" FOREIGN KEY ("username") REFERENCES "Cook"("username") ON DELETE CASCADE ON UPDATE CASCADE;

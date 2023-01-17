@@ -68,7 +68,7 @@ model CookProfile {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  cook Cook @relation(fields: [username], references: [username], onDelete: Cascade, onUpdate: Cascade)
+  cook     Cook   @relation(fields: [username], references: [username], onDelete: Cascade, onUpdate: Cascade)
   username String @unique
 }
 
@@ -87,6 +87,22 @@ model Meal {
   tags MealTags[]
 
   subscriptionMeals SubscriptionMeal[]
+  mealDetails       MealDetail[]
+}
+
+model MealDetail {
+  id String @id @default(cuid())
+
+  carbs    Float
+  fat      Float
+  protein  Float
+  calories Float
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  meal   Meal   @relation(fields: [mealId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  mealId String
 }
 
 model Subscription {

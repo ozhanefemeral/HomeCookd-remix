@@ -142,11 +142,12 @@ async function seed() {
       title: fakeMealNames[i * 4],
       price: Number(faker.commerce.price(5, 40, 0)),
       cookedBy: cook.username,
-      image: faker.image.imageUrl(),
+      image: faker.image.food(),
       // create random 3 tags for each meal
       tags: [...generateRandomTags()],
     })),
   });
+
 
   const subscriptions = await prisma.subscription.create({
     data: {
@@ -167,6 +168,16 @@ async function seed() {
   });
 
   const mealsData = await prisma.meal.findMany();
+
+  const mealDetails = await prisma.mealDetail.createMany({
+    data: Array.from({ length: 10 }).map((_, i) => ({
+      mealId: mealsData[i].id,
+      carbs: Number(faker.commerce.price(5, 40, 0)),
+      fat: Number(faker.commerce.price(5, 40, 0)),
+      protein: Number(faker.commerce.price(5, 40, 0)),
+      calories: Number(faker.commerce.price(150, 700, 0)),
+    })),
+  });
 
   const subscriptionMeals = await prisma.subscriptionMeal.createMany({
     data: [
