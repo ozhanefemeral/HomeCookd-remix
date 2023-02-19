@@ -36,6 +36,17 @@ model User {
 
   password      String
   subscriptions Subscription[]
+
+  profile       UserProfile?
+}
+
+model UserProfile {
+  id        String     @id @default(cuid())
+  name      String
+  interests MealTags[]
+  dislikes  MealTags[]
+  User      User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId    String    @unique
 }
 
 model Cook {
@@ -68,7 +79,7 @@ model CookProfile {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  cook Cook @relation(fields: [username], references: [username], onDelete: Cascade, onUpdate: Cascade)
+  cook     Cook   @relation(fields: [username], references: [username], onDelete: Cascade, onUpdate: Cascade)
   username String @unique
 }
 
