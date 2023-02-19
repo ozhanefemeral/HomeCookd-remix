@@ -113,6 +113,15 @@ async function seed() {
     },
   });
 
+  const userProfile = await prisma.userProfile.create({
+    data: {
+      name: faker.name.fullName(),
+      interests: [...generateRandomTags()],
+      dislikes: [...generateRandomTags()],
+      userId: user.id,
+    }
+  })
+
   const cook = await prisma.cook.create({
     data: {
       name: faker.name.fullName(),
