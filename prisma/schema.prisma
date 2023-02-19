@@ -47,6 +47,7 @@ model UserProfile {
   dislikes  MealTags[]
   User      User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId    String    @unique
+  onboardingCompleted Boolean @default(false)
 }
 
 model Cook {
