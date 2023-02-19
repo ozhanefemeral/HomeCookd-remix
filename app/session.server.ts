@@ -1,7 +1,7 @@
 import { createCookieSessionStorage, redirect } from "@remix-run/node";
 import invariant from "tiny-invariant";
 
-import type { User } from "~/models/user.server";
+import { getUserProfileByUserId, User } from "~/models/user.server";
 import { getUserById } from "~/models/user.server";
 import { Cook, getCookById } from "./models/cook.server";
 
@@ -40,6 +40,16 @@ export async function getUser(request: Request) {
 
   const user = await getUserById(userId);
   if (user) return user;
+
+  throw await logout(request);
+}
+
+export async function getUserProfile(request: Request) {
+  const userId = await getUserId(request);
+  if (userId === undefined) return null;
+
+  const userProfile = await getUserProfileByUserId(userId);
+  if (userProfile) return userProfile;
 
   throw await logout(request);
 }

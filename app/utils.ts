@@ -3,7 +3,7 @@ import { useMemo } from "react";
 
 import type { User } from "~/models/user.server";
 import type { Cook } from "~/models/cook.server";
-import { MealTags } from "@prisma/client";
+import { MealTags, UserProfile } from "@prisma/client";
 
 const DEFAULT_REDIRECT = "/";
 
@@ -54,6 +54,22 @@ function isCook(cook: any): cook is Cook {
   return cook && typeof cook === "object" && typeof cook.email === "string";
 }
 
+function isUserProfile(
+  userProfile: any
+): userProfile is UserProfile {
+  return userProfile && typeof userProfile === "object" && typeof userProfile.id === "string";
+}
+
+export function useOptionalUserProfile(): UserProfile | undefined {
+  const data = useMatchesData("root");
+
+  if (!data || !isUserProfile(data.userProfile)) {
+    return undefined;
+  }
+  return data.userProfile;
+}
+
+
 export function useOptionalUser(): User | undefined {
   const data = useMatchesData("root");
   if (!data || !isUser(data.user)) {
@@ -90,6 +106,16 @@ export function useCook(): Cook {
     );
   }
   return maybeCook;
+}
+
+export function useUserProfile() {
+  const maybeUserProfile = useOptionalUserProfile();
+  if (!maybeUserProfile) {
+    throw new Error(
+      "No userProfile found in root loader, but userProfile is required by useUserProfile. If userProfile is optional, try useOptionalUserProfile instead."
+    );
+  }
+  return maybeUserProfile;
 }
 
 export function validateEmail(email: unknown): email is string {

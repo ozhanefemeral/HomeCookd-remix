@@ -13,9 +13,10 @@ import {
 import SubscribeToMealModal from "./routes/subscribe";
 import { useMemo } from "react";
 
-import { getCook, getUser } from "./session.server";
+import { getCook, getUser, getUserProfile } from "./session.server";
 import tailwindStylesheetUrl from "./styles/tailwind.css";
 import reactTooltipStylesheetUrl from "react-tooltip/dist/react-tooltip.css"
+import { getUserProfileByUserId } from "./models/user.server";
 // import 'react-tooltip/dist/react-tooltip.css'
 
 
@@ -33,17 +34,18 @@ export const meta: MetaFunction = () => ({
 });
 
 export async function loader({ request }: LoaderArgs) {
+  const user = await getUser(request)
+  const cook = await getCook(request)
+  const userProfile = await getUserProfile(request)
+
   return json({
-    user: await getUser(request),
-    cook: await getCook(request),
+    user,
+    cook,
+    userProfile,
   });
 }
 
 export default function App() {
-  const [searchParams] = useSearchParams();
-  const { user } = useLoaderData();
-  let mealId = searchParams.get("meal")
-
   return (
     <html lang="en" className="h-full">
       <head>
@@ -55,7 +57,6 @@ export default function App() {
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
-        {/* {mealId && <SubscribeToMealModal userId={user.id} mealId={mealId} />} */}
       </body>
     </html>
   );
