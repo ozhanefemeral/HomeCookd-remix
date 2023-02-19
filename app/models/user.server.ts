@@ -16,12 +16,23 @@ export async function getUserByEmail(email: User["email"]) {
 export async function createUser(email: User["email"], password: string) {
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  return prisma.user.create({
+  const user = await prisma.user.create({
     data: {
       email,
       password: hashedPassword
     },
   });
+
+  // create user profile for the user then return user
+
+  await prisma.userProfile.create({
+    data: {
+      userId: user.id,
+      name: "New User",
+    },
+  });
+
+  return user;
 }
 
 export async function deleteUserByEmail(email: User["email"]) {
