@@ -54,3 +54,7 @@ export async function verifyLogin(
 
   return userWithoutPassword;
 }
+
+export async function getUserProfileByUserId(id: User["id"]) {
+  return prisma.userProfile.findUnique({ where: { userId: id } });
+}

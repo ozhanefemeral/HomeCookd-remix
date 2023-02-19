@@ -2,7 +2,7 @@ import { Form, Link, Outlet, useLoaderData } from "@remix-run/react"
 import { json, LoaderArgs } from "@remix-run/server-runtime";
 import { getUserSubscriptions } from "~/models/subscription.server";
 import { requireUserId } from "~/session.server";
-import { useUser } from "~/utils";
+import { useUserProfile } from "~/utils";
 
 export async function loader({ request }: LoaderArgs) {
   const userId = await requireUserId(request);
@@ -12,12 +12,12 @@ export async function loader({ request }: LoaderArgs) {
 
 const User = () => {
   const data = useLoaderData<typeof loader>();
-  const user = useUser();
+  const profile = useUserProfile();
 
   return <div>
     <header className="flex items-center justify-between bg-slate-800 p-4 text-white">
       <h1 className="text-3xl font-bold">
-        <Link to=".">{user.email}</Link>
+        <Link to=".">{profile!.name}</Link>
       </h1>
       <Form action="/logout" method="post">
         <button
