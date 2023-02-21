@@ -1,4 +1,4 @@
-import type { Meal, Cook, Prisma } from "@prisma/client";
+import type { Meal, Cook, Prisma, MealTags } from "@prisma/client";
 
 import { prisma } from "~/db.server";
 
@@ -44,6 +44,30 @@ export async function createMeal(
   return prisma.meal.create({
     data: {
       ...data,
+    },
+  });
+}
+
+// get 5 random meal which includes interested tags but not including disliked tags
+
+export async function getMealByTags(
+  interested: MealTags[],
+  dislikedTags: MealTags[]
+) {
+  return prisma.meal.findMany({
+    where: {
+      tags: {
+        hasSome: interested,
+      },
+      NOT: {
+        tags: {
+          hasSome: dislikedTags,
+        },
+      },
+    },
+    take: 5,
+    orderBy: {
+      id: "asc",
     },
   });
 }
