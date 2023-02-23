@@ -30,6 +30,7 @@ function TagsStep({
 }: TagsStepProps): JSX.Element {
   // TODO
   // DISLIKES AND INTERESTS CAN'T INCLUDE THE SAME TAG
+
   return (
     <>
       <h2 className="text-xl font-bold">What are you interested in?</h2>
@@ -185,6 +186,15 @@ const ProfileOnboarding = () => {
   const [step, setStep] = useState(0);
   const fetcher = useFetcher();
 
+  // if dislikedTags or interestedTags is empty, disable the next button
+  // also disable the next button if interestedTags and dislikedTags have the same tag
+  const canGoNext =
+    (interestedTags.length > 0 || dislikedTags.length > 0) && !hasSameTag();
+
+  function hasSameTag() {
+    return interestedTags.some((tag) => dislikedTags.includes(tag));
+  }
+
   useEffect(() => {
     if (!userProfile) navigate("/login");
     else if (userProfile.onboardingCompleted) navigate("/user/profile");
@@ -211,7 +221,7 @@ const ProfileOnboarding = () => {
       <button
         className="rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700 disabled:bg-gray-500"
         onClick={() => setStep(step + 1)}
-        disabled={step === 3}
+        disabled={step === 3 || !canGoNext}
       >
         Next
       </button>
