@@ -15,7 +15,7 @@ const User = () => {
   const profile = useUserProfile();
 
   return <div>
-    <header className="flex items-center justify-between bg-slate-800 p-4 text-white">
+    <header className="flex items-center justify-between bg-slate-800 p-4 text-white mb-4">
       <h1 className="text-3xl font-bold">
         <Link to=".">{profile!.name}</Link>
       </h1>
