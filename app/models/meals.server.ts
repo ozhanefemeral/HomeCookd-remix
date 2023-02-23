@@ -26,21 +26,18 @@ export async function getRandomMeals() {
 }
 
 export async function getRandomMeal() {
-  return prisma.meal.findFirst({
-  });
+  return prisma.meal.findFirst({});
 }
 
 export async function getAllMeals() {
   return prisma.meal.findMany({
     include: {
       cook: true,
-    }
+    },
   });
 }
 
-export async function createMeal(
-  data: Prisma.MealCreateInput
-) {
+export async function createMeal(data: Prisma.MealCreateInput) {
   return prisma.meal.create({
     data: {
       ...data,
@@ -68,6 +65,9 @@ export async function getMealByTags(
     take: 5,
     orderBy: {
       id: "asc",
+    },
+    include: {
+      cook: true,
     },
   });
 }
