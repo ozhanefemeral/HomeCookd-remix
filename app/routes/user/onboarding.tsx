@@ -3,28 +3,61 @@
 import { formatMealTag, mapMealTagToEmoji, useUserProfile } from "~/utils";
 import { useFetcher, useNavigate } from "@remix-run/react";
 import { useEffect, useState } from "react";
-import { Meal, MealTags } from "@prisma/client";
+import { DeliveryDay, Meal, MealTags } from "@prisma/client";
 import { json, LoaderArgs } from "@remix-run/server-runtime";
 import { getMealByTags, MealWithCook } from "~/models/meals.server";
 import OnboardingMealCard from "~/components/onboarding/OnboardingMealCard";
 import SubMealTile from "~/components/onboarding/SubMealTile";
 
-const ONBBARDING_STEPS = ["tags", "subscription", "payment", "done"];
+const ONBBARDING_STEPS = {
+  tags: "tags",
+  mealpick: "mealpick",
+  subscription: "subscription",
+  payment: "payment",
+  done: "done",
+} as const;
+
+type subMealDraft = {
+  meal: MealWithCook;
+  quantity: number;
+  deliveryHour: string;
+  deliveryDay: DeliveryDay;
+};
+
+type StepData = {
+  step: keyof typeof ONBBARDING_STEPS;
+  tags: {
+    interestedTags: MealTags[];
+    dislikedTags: MealTags[];
+  };
+  mealpick: {
+    meals: MealWithCook[];
+  };
+  subscription: {
+    drafts: subMealDraft[];
+  };
+};
 
 type TagsStepProps = {
   interestedTags: MealTags[];
   setInterestedTags: (tags: MealTags[]) => void;
   dislikedTags: MealTags[];
+  stepData: StepData;
+  setStepData: (data: StepData) => void;
   setDislikedTags: (tags: MealTags[]) => void;
 };
 
 type MealPickStepProps = {
   meals: MealWithCook[];
+  stepData: StepData;
+  setStepData: (data: StepData) => void;
   nextStep: () => void;
 };
 
 type SubscriptionStepProps = {
   meals: MealWithCook[];
+  stepData: StepData;
+  setStepData: (data: StepData) => void;
   nextStep: () => void;
 };
 
@@ -228,6 +261,20 @@ const ProfileOnboarding = () => {
   const [step, setStep] = useState(0);
   const fetcher = useFetcher();
 
+  const [stepData, setStepData] = useState<StepData>({
+    step: ONBBARDING_STEPS.tags,
+    tags: {
+      interestedTags: [],
+      dislikedTags: [],
+    },
+    mealpick: {
+      meals: [],
+    },
+    subscription: {
+      drafts: [],
+    },
+  });
+
   // if dislikedTags or interestedTags is empty, disable the next button
   // also disable the next button if interestedTags and dislikedTags have the same tag
   const canGoNext =
@@ -281,18 +328,24 @@ const ProfileOnboarding = () => {
           setInterestedTags={setInterestedTags}
           dislikedTags={dislikedTags}
           setDislikedTags={setDislikedTags}
+          setStepData={setStepData}
+          stepData={stepData}
         />
       )}
       {step === 1 && (
         <MealPickStep
           meals={fetcher.data?.meals || []}
           nextStep={() => setStep(step + 1)}
+          setStepData={setStepData}
+          stepData={stepData}
         />
       )}
       {step === 2 && (
         <SubscriptionStep
           meals={fetcher.data?.meals || []}
           nextStep={() => setStep(step + 1)}
+          setStepData={setStepData}
+          stepData={stepData}
         />
       )}
 
