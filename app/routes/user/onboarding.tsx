@@ -133,7 +133,7 @@ function MealPickStep({ meals, nextStep }: MealPickStepProps) {
       <h2 className="text-xl font-bold">Lets subscribe you to a meal!</h2>
       {/* meal grids of 3 */}
       {/* tailwind grid */}
-      <div className="grid grid-cols-3 gap-4 xl:px-[10rem]">
+      <div className="grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-4 xl:px-[10rem]">
         {meals.map((meal) => (
           <OnboardingMealCard
             key={meal.id}
@@ -147,27 +147,15 @@ function MealPickStep({ meals, nextStep }: MealPickStepProps) {
             }}
           />
         ))}
-        <div
-          style={{
-            height: "100%",
-            width: "100%",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            // some colored gradient with bg-violet-400
-            background:
-              "linear-gradient(90deg, rgb(167 139 250) 0%, rgb(255 187 255) 100%)",
-          }}
-          className={`rounded-lg text-2xl font-bold text-white opacity-40 shadow-lg duration-150 ${
-            canGoNext
-              ? "cursor-pointer hover:opacity-100"
-              : "cursor-not-allowed"
-          }`}
-          onClick={handleClick}
-        >
-          Continue
-        </div>
       </div>
+      <button
+        className={`rounded bg-primary px-4 py-2 align-middle text-white ${
+          canGoNext ? "" : "opacity-50 hover:cursor-not-allowed"
+        }}`}
+        onClick={handleClick}
+      >
+        Continue
+      </button>
     </div>
   );
 }
@@ -192,7 +180,7 @@ function SubscriptionStep({ meals, nextStep }: SubscriptionStepProps) {
   return (
     <div>
       <h2 className="text-xl font-bold">You're subscribed to these meals!</h2>
-      <div className="grid grid-cols-2 gap-4 xl:px-[10rem]">
+      <div className="grid gap-4 md:grid-cols-2 xl:px-[10rem]">
         {meals.map((meal) => (
           <SubMealTile key={meal.id} meal={meal} onChange={handleCountChange} />
         ))}
