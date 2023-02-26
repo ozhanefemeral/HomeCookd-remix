@@ -161,14 +161,24 @@ function MealPickStep({ meals, nextStep }: MealPickStepProps) {
 }
 
 function SubscriptionStep({ meals, nextStep }: SubscriptionStepProps) {
-  const [mealCounts, setMealCounts] = useState<Record<string, number>>({});
+  const [mealCounts, setMealCounts] = useState<
+    Record<string, { count: number; deliveryDay: string; deliveryHour: string }>
+  >({});
 
-  function handleCountChange(mealId: string, count: number) {
-    setMealCounts({ ...mealCounts, [mealId]: count });
+  function handleCountChange(
+    mealId: string,
+    count: number,
+    deliveryDay: string,
+    deliveryHour: string
+  ) {
+    setMealCounts({
+      ...mealCounts,
+      [mealId]: { count, deliveryDay, deliveryHour },
+    });
   }
 
   const totalCost = Object.entries(mealCounts).reduce(
-    (acc, [mealId, count]) => {
+    (acc, [mealId, { count }]) => {
       const meal = meals.find((m) => m.id === mealId);
       if (!meal) return acc;
       return acc + meal.price * count;

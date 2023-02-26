@@ -1,17 +1,24 @@
 import { useEffect, useState } from "react";
 import { MealWithCook } from "~/models/meals.server";
-import { formatMealTag, mapMealTagToEmoji } from "~/utils";
+import { deliveryHours, formatMealTag, mapMealTagToEmoji } from "~/utils";
 
 type MealCardProps = {
   meal: MealWithCook;
-  onChange: (mealId: string, count: number) => void;
+  onChange: (
+    mealId: string,
+    count: number,
+    deliveryDay: string,
+    deliveryHour: string
+  ) => void;
 };
 
 export default function SubMealTile({ meal, onChange }: MealCardProps) {
   const [count, setCount] = useState(1);
+  const [deliveryDay, setDeliveryDay] = useState("MONDAY");
+  const [deliveryHour, setDeliveryHour] = useState("12:00");
 
   useEffect(() => {
-    onChange(meal.id, count);
+    onChange(meal.id, count, deliveryDay, deliveryHour);
   }, [count]);
 
   return (
@@ -38,15 +45,61 @@ export default function SubMealTile({ meal, onChange }: MealCardProps) {
               </span>
             ))}
           </div>
-        </div>
-        <div className="flex flex-col gap-2">
-          <button disabled={count <= 1} onClick={() => setCount(count - 1)}>
-            -
-          </button>
-          <span>{count}</span>
-          <button disabled={count >= 10} onClick={() => setCount(count + 1)}>
-            +
-          </button>
+          <div className="flex flex-row gap-8">
+            <div>
+              <label htmlFor="deliveryDay" className="font-semibold">
+                Delivery Day
+              </label>
+              <br />
+              <select
+                id="deliveryDay"
+                name="deliveryDay"
+                onChange={(e) => setDeliveryDay(e.target.value)}
+              >
+                <option value="MONDAY">Monday</option>
+                <option value="TUESDAY">Tuesday</option>
+                <option value="WEDNESDAY">Wednesday</option>
+                <option value="THURSDAY">Thursday</option>
+                <option value="FRIDAY">Friday</option>
+                <option value="SATURDAY">Saturday</option>
+                <option value="SUNDAY">Sunday</option>
+              </select>
+            </div>
+            <div>
+              <label
+                htmlFor="deliveryHour"
+                className="whitespace-nowrap font-semibold"
+              >
+                Delivery Hour
+              </label>
+              <br />
+              <select
+                id="deliveryHour"
+                name="deliveryHour"
+                onChange={(e) => setDeliveryHour(e.target.value)}
+              >
+                {deliveryHours.map((hour) => (
+                  <option key={hour} value={hour}>
+                    {hour}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label htmlFor="quantity" className="font-semibold">
+                Quantity
+              </label>
+              <br></br>
+              <input
+                type="number"
+                id="quantity"
+                name="quantity"
+                min={1}
+                defaultValue={1}
+                onChange={(e) => setCount(parseInt(e.target.value))}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
