@@ -16,11 +16,16 @@ export default function OnboardingMealCard({ meal, onClick }: MealCardProps) {
   };
 
   return (
-    <div className={`rounded-lg p-4 shadow-lg hover:cursor-pointer ${isSelected && "bg-violet-400"}`} onClick={clickHandler}>
+    <div
+      className={`rounded-lg p-4 shadow-lg hover:cursor-pointer ${
+        isSelected && "bg-violet-400"
+      }`}
+      onClick={clickHandler}
+    >
       {/* image on top, meal name and cook name below */}
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col">
         <img src={meal.image} alt={meal.title} className="rounded-lg" />
-        <div className="flex flex-row gap-2 align-bottom">
+        <div className="my-2">
           <h3 className="text-lg font-bold">{meal.title}</h3>
           <span>by {meal.cook.name}</span>
         </div>
