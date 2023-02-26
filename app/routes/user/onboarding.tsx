@@ -7,6 +7,7 @@ import { Meal, MealTags } from "@prisma/client";
 import { json, LoaderArgs } from "@remix-run/server-runtime";
 import { getMealByTags, MealWithCook } from "~/models/meals.server";
 import OnboardingMealCard from "~/components/onboarding/OnboardingMealCard";
+import SubMealTile from "~/components/onboarding/SubMealTile";
 
 const ONBBARDING_STEPS = ["tags", "subscription", "payment", "done"];
 
@@ -15,6 +16,11 @@ type TagsStepProps = {
   setInterestedTags: (tags: MealTags[]) => void;
   dislikedTags: MealTags[];
   setDislikedTags: (tags: MealTags[]) => void;
+};
+
+type MealPickStepProps = {
+  meals: MealWithCook[];
+  nextStep: () => void;
 };
 
 type SubscriptionStepProps = {
@@ -111,7 +117,7 @@ function TagsStep({
   );
 }
 
-function SubscriptionStep({ meals, nextStep }: SubscriptionStepProps) {
+function MealPickStep({ meals, nextStep }: MealPickStepProps) {
   const [selectedMeals, setSelectedMeals] = useState<MealWithCook[]>([]);
 
   const canGoNext = selectedMeals.length > 0;
@@ -162,6 +168,44 @@ function SubscriptionStep({ meals, nextStep }: SubscriptionStepProps) {
           Continue
         </div>
       </div>
+    </div>
+  );
+}
+
+function SubscriptionStep({ meals, nextStep }: SubscriptionStepProps) {
+  const [mealCounts, setMealCounts] = useState<Record<string, number>>({});
+
+  function handleCountChange(mealId: string, count: number) {
+    setMealCounts({ ...mealCounts, [mealId]: count });
+  }
+
+  const totalCost = Object.entries(mealCounts).reduce(
+    (acc, [mealId, count]) => {
+      const meal = meals.find((m) => m.id === mealId);
+      if (!meal) return acc;
+      return acc + meal.price * count;
+    },
+    0
+  );
+
+  // SubMealTile for each meal
+  return (
+    <div>
+      <h2 className="text-xl font-bold">You're subscribed to these meals!</h2>
+      <div className="grid grid-cols-2 gap-4 xl:px-[10rem]">
+        {meals.map((meal) => (
+          <SubMealTile key={meal.id} meal={meal} onChange={handleCountChange} />
+        ))}
+        <div className="rounded-lg p-4 shadow-lg">
+          Total cost per week: ${totalCost}
+        </div>
+      </div>
+      <button
+        className="rounded bg-primary px-4 py-2 text-white"
+        onClick={nextStep}
+      >
+        Continue
+      </button>
     </div>
   );
 }
@@ -242,6 +286,12 @@ const ProfileOnboarding = () => {
         />
       )}
       {step === 1 && (
+        <MealPickStep
+          meals={fetcher.data?.meals || []}
+          nextStep={() => setStep(step + 1)}
+        />
+      )}
+      {step === 2 && (
         <SubscriptionStep
           meals={fetcher.data?.meals || []}
           nextStep={() => setStep(step + 1)}
