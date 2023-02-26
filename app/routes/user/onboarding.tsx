@@ -55,6 +55,45 @@ type SubscriptionStepProps = {
   setStepData: (data: StepData) => void;
 };
 
+type StepToComponentProps = {
+  stepData: StepData;
+  setStepData: (data: StepData) => void;
+  step: keyof typeof ONBBARDING_STEPS;
+  meals: MealWithCook[];
+};
+
+function StepToComponent({
+  step,
+  stepData,
+  setStepData,
+  meals,
+}: StepToComponentProps) {
+  switch (step) {
+    case ONBBARDING_STEPS.tags:
+      return <TagsStep setStepData={setStepData} stepData={stepData} />;
+    case ONBBARDING_STEPS.mealpick:
+      return (
+        <MealPickStep
+          setStepData={setStepData}
+          stepData={stepData}
+          meals={meals}
+        />
+      );
+    case ONBBARDING_STEPS.subscription:
+      return (
+        <SubscriptionStep
+          setStepData={setStepData}
+          stepData={stepData}
+          meals={meals}
+        />
+      );
+    // case ONBBARDING_STEPS.payment:
+    //   return <PaymentStep setStepData={setStepData} stepData={stepData} />;
+    default:
+      return <div>404</div>;
+  }
+}
+
 function TagsStep({ stepData, setStepData }: TagsStepProps): JSX.Element {
   // TODO
   // DISLIKES AND INTERESTS CAN'T INCLUDE THE SAME TAG
@@ -302,6 +341,7 @@ export async function action({ request, context }: LoaderArgs) {
     formData.get("dislikedTags") as string
   ) as MealTags[];
   const meals = await getMealByTags(interestedTags, dislikedTags);
+
   return json({ meals });
 }
 
@@ -343,31 +383,28 @@ const ProfileOnboarding = () => {
     }
   }, [stepData]);
 
+  useEffect(() => {
+    if (fetcher.data && stepData.step === ONBBARDING_STEPS.mealpick) {
+      setStepData({
+        ...stepData,
+        mealpick: {
+          meals: fetcher.data.meals,
+        },
+      });
+    }
+  }, [JSON.stringify(fetcher.data)]);
+
   const { step } = stepData;
 
   return (
     <div>
       <h1 className="text-2xl font-bold">Onboarding for {userProfile.name}</h1>
-      {step === ONBBARDING_STEPS.tags && (
-        <TagsStep setStepData={setStepData} stepData={stepData} />
-      )}
-      {step === ONBBARDING_STEPS.mealpick && (
-        <MealPickStep
-          meals={fetcher.data?.meals || []}
-          setStepData={setStepData}
-          stepData={stepData}
-        />
-      )}
-      {step === ONBBARDING_STEPS.subscription && (
-        <SubscriptionStep
-          meals={fetcher.data?.meals || []}
-          setStepData={setStepData}
-          stepData={stepData}
-        />
-      )}
-
-      {/* first, we need to know what food categories they are interested in */}
-      {/* cards of meal tags */}
+      <StepToComponent
+        setStepData={setStepData}
+        step={step}
+        stepData={stepData}
+        meals={stepData.mealpick.meals}
+      />
     </div>
   );
 };
