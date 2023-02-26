@@ -21,7 +21,7 @@ type subMealDraft = {
   meal: MealWithCook;
   quantity: number;
   deliveryHour: string;
-  deliveryDay: DeliveryDay;
+  deliveryDay: string;
 };
 
 type StepData = {
@@ -39,36 +39,50 @@ type StepData = {
 };
 
 type TagsStepProps = {
-  interestedTags: MealTags[];
-  setInterestedTags: (tags: MealTags[]) => void;
-  dislikedTags: MealTags[];
   stepData: StepData;
   setStepData: (data: StepData) => void;
-  setDislikedTags: (tags: MealTags[]) => void;
 };
 
 type MealPickStepProps = {
   meals: MealWithCook[];
   stepData: StepData;
   setStepData: (data: StepData) => void;
-  nextStep: () => void;
 };
 
 type SubscriptionStepProps = {
   meals: MealWithCook[];
   stepData: StepData;
   setStepData: (data: StepData) => void;
-  nextStep: () => void;
 };
 
-function TagsStep({
-  interestedTags,
-  setInterestedTags,
-  dislikedTags,
-  setDislikedTags,
-}: TagsStepProps): JSX.Element {
+function TagsStep({ stepData, setStepData }: TagsStepProps): JSX.Element {
   // TODO
   // DISLIKES AND INTERESTS CAN'T INCLUDE THE SAME TAG
+
+  const [interestedTags, setInterestedTags] = useState<MealTags[]>(
+    stepData.tags.interestedTags ?? []
+  );
+  const [dislikedTags, setDislikedTags] = useState<MealTags[]>(
+    stepData.tags.dislikedTags ?? []
+  );
+
+  useEffect(() => {
+    setStepData({
+      ...stepData,
+      tags: {
+        interestedTags,
+        dislikedTags,
+      },
+    });
+  }, [interestedTags, dislikedTags]);
+
+  const canGoNext = interestedTags.length > 0 || dislikedTags.length > 0;
+
+  function handleContinueClick() {
+    // TODO
+    // POST TO API
+    if (canGoNext) setStepData({ ...stepData, step: "mealpick" });
+  }
 
   return (
     <>
@@ -146,26 +160,41 @@ function TagsStep({
           </button>
         )}
       </div>
+
+      <button
+        className={`rounded bg-primary px-4 py-2 align-middle text-white ${
+          canGoNext ? "" : "opacity-50 hover:cursor-not-allowed"
+        }}`}
+        onClick={handleContinueClick}
+      >
+        Continue
+      </button>
     </>
   );
 }
 
-function MealPickStep({ meals, nextStep }: MealPickStepProps) {
-  const [selectedMeals, setSelectedMeals] = useState<MealWithCook[]>([]);
+function MealPickStep({ meals, setStepData, stepData }: MealPickStepProps) {
+  const [selectedMeals, setSelectedMeals] = useState<MealWithCook[]>(
+    stepData.mealpick.meals ?? []
+  );
 
   const canGoNext = selectedMeals.length > 0;
 
-  function handleClick() {
+  function handleContinueClick() {
     // TODO
     // POST TO API
-    if (canGoNext) nextStep();
+    setStepData({
+      ...stepData,
+      step: "subscription",
+      mealpick: {
+        meals: selectedMeals,
+      },
+    });
   }
 
   return (
     <div>
       <h2 className="text-xl font-bold">Lets subscribe you to a meal!</h2>
-      {/* meal grids of 3 */}
-      {/* tailwind grid */}
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-4 xl:px-[10rem]">
         {meals.map((meal) => (
           <OnboardingMealCard
@@ -185,7 +214,7 @@ function MealPickStep({ meals, nextStep }: MealPickStepProps) {
         className={`rounded bg-primary px-4 py-2 align-middle text-white ${
           canGoNext ? "" : "opacity-50 hover:cursor-not-allowed"
         }}`}
-        onClick={handleClick}
+        onClick={handleContinueClick}
       >
         Continue
       </button>
@@ -193,31 +222,54 @@ function MealPickStep({ meals, nextStep }: MealPickStepProps) {
   );
 }
 
-function SubscriptionStep({ meals, nextStep }: SubscriptionStepProps) {
-  const [mealCounts, setMealCounts] = useState<
-    Record<string, { count: number; deliveryDay: string; deliveryHour: string }>
-  >({});
+function SubscriptionStep({
+  meals,
+  setStepData,
+  stepData,
+}: SubscriptionStepProps) {
+  const [drafts, setDrafts] = useState<subMealDraft[]>(
+    stepData.subscription.drafts ?? []
+  );
 
-  function handleCountChange(
+  function handleChange(
     mealId: string,
-    count: number,
+    quantity: number,
     deliveryDay: string,
     deliveryHour: string
   ) {
-    setMealCounts({
-      ...mealCounts,
-      [mealId]: { count, deliveryDay, deliveryHour },
-    });
+    const meal = meals.find((m) => m.id === mealId)!;
+    const draft = drafts.find((d) => d.meal === meal)!;
+
+    if (draft) {
+      draft.quantity = quantity;
+      draft.deliveryDay = deliveryDay;
+      draft.deliveryHour = deliveryHour;
+    } else {
+      setDrafts([
+        ...drafts,
+        {
+          meal,
+          quantity,
+          deliveryDay,
+          deliveryHour,
+        },
+      ]);
+    }
   }
 
-  const totalCost = Object.entries(mealCounts).reduce(
-    (acc, [mealId, { count }]) => {
-      const meal = meals.find((m) => m.id === mealId);
-      if (!meal) return acc;
-      return acc + meal.price * count;
-    },
-    0
-  );
+  const totalCost = drafts.reduce((acc, draft) => {
+    return acc + draft.meal.price * draft.quantity;
+  }, 0);
+
+  function handleContinueClick() {
+    setStepData({
+      ...stepData,
+      step: "payment",
+      subscription: {
+        drafts,
+      },
+    });
+  }
 
   // SubMealTile for each meal
   return (
@@ -225,7 +277,7 @@ function SubscriptionStep({ meals, nextStep }: SubscriptionStepProps) {
       <h2 className="text-xl font-bold">You're subscribed to these meals!</h2>
       <div className="grid gap-4 md:grid-cols-2 xl:px-[10rem]">
         {meals.map((meal) => (
-          <SubMealTile key={meal.id} meal={meal} onChange={handleCountChange} />
+          <SubMealTile key={meal.id} meal={meal} onChange={handleChange} />
         ))}
         <div className="rounded-lg p-4 shadow-lg">
           Total cost per week: ${totalCost}
@@ -233,7 +285,7 @@ function SubscriptionStep({ meals, nextStep }: SubscriptionStepProps) {
       </div>
       <button
         className="rounded bg-primary px-4 py-2 text-white"
-        onClick={nextStep}
+        onClick={handleContinueClick}
       >
         Continue
       </button>
@@ -256,9 +308,6 @@ export async function action({ request, context }: LoaderArgs) {
 const ProfileOnboarding = () => {
   const userProfile = useUserProfile();
   const navigate = useNavigate();
-  const [interestedTags, setInterestedTags] = useState<MealTags[]>([]);
-  const [dislikedTags, setDislikedTags] = useState<MealTags[]>([]);
-  const [step, setStep] = useState(0);
   const fetcher = useFetcher();
 
   const [stepData, setStepData] = useState<StepData>({
@@ -275,23 +324,15 @@ const ProfileOnboarding = () => {
     },
   });
 
-  // if dislikedTags or interestedTags is empty, disable the next button
-  // also disable the next button if interestedTags and dislikedTags have the same tag
-  const canGoNext =
-    (interestedTags.length > 0 || dislikedTags.length > 0) && !hasSameTag();
-
-  function hasSameTag() {
-    return interestedTags.some((tag) => dislikedTags.includes(tag));
-  }
-
   useEffect(() => {
     if (!userProfile) navigate("/login");
     else if (userProfile.onboardingCompleted) navigate("/user/profile");
   }, [userProfile]);
 
   useEffect(() => {
-    if (step === 1) {
-      // fetch recommended meals
+    if (stepData.step === ONBBARDING_STEPS.mealpick) {
+      const { interestedTags, dislikedTags } = stepData.tags;
+
       const recommendedMealForm = new FormData();
       recommendedMealForm.append(
         "interestedTags",
@@ -300,50 +341,26 @@ const ProfileOnboarding = () => {
       recommendedMealForm.append("dislikedTags", JSON.stringify(dislikedTags));
       fetcher.submit(recommendedMealForm, { method: "post" });
     }
-  }, [step]);
+  }, [stepData]);
+
+  const { step } = stepData;
 
   return (
     <div>
       <h1 className="text-2xl font-bold">Onboarding for {userProfile.name}</h1>
-      {/* tailwind buttons for next and back */}
-      {/* if step is 0, show tags */}
-      <button
-        className="rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700 disabled:bg-gray-500"
-        onClick={() => setStep(step + 1)}
-        disabled={step === 3 || !canGoNext}
-      >
-        Next
-      </button>
-      <button
-        className="rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700 disabled:bg-gray-500"
-        onClick={() => setStep(step - 1)}
-        disabled={step === 0}
-      >
-        Back
-      </button>
-
-      {step === 0 && (
-        <TagsStep
-          interestedTags={interestedTags}
-          setInterestedTags={setInterestedTags}
-          dislikedTags={dislikedTags}
-          setDislikedTags={setDislikedTags}
-          setStepData={setStepData}
-          stepData={stepData}
-        />
+      {step === ONBBARDING_STEPS.tags && (
+        <TagsStep setStepData={setStepData} stepData={stepData} />
       )}
-      {step === 1 && (
+      {step === ONBBARDING_STEPS.mealpick && (
         <MealPickStep
           meals={fetcher.data?.meals || []}
-          nextStep={() => setStep(step + 1)}
           setStepData={setStepData}
           stepData={stepData}
         />
       )}
-      {step === 2 && (
+      {step === ONBBARDING_STEPS.subscription && (
         <SubscriptionStep
           meals={fetcher.data?.meals || []}
-          nextStep={() => setStep(step + 1)}
           setStepData={setStepData}
           stepData={stepData}
         />
