@@ -19,7 +19,7 @@ export default function SubMealTile({ meal, onChange }: MealCardProps) {
 
   useEffect(() => {
     onChange(meal.id, count, deliveryDay, deliveryHour);
-  }, [count]);
+  }, [count, deliveryDay, deliveryHour]);
 
   return (
     <div className="rounded-lg p-4 shadow-lg">

@@ -1,6 +1,11 @@
 // simple div with h1 for now
 
-import { formatMealTag, mapMealTagToEmoji, useUserProfile } from "~/utils";
+import {
+  daysCapitalized,
+  formatMealTag,
+  mapMealTagToEmoji,
+  useUserProfile,
+} from "~/utils";
 import { useFetcher, useNavigate } from "@remix-run/react";
 import { useEffect, useState } from "react";
 import { DeliveryDay, Meal, MealTags } from "@prisma/client";
@@ -8,6 +13,7 @@ import { json, LoaderArgs } from "@remix-run/server-runtime";
 import { getMealByTags, MealWithCook } from "~/models/meals.server";
 import OnboardingMealCard from "~/components/onboarding/OnboardingMealCard";
 import SubMealTile from "~/components/onboarding/SubMealTile";
+import StaticSubMealTile from "~/components/onboarding/StaticSubMealTile";
 
 const ONBBARDING_STEPS = {
   tags: "tags",
@@ -17,11 +23,11 @@ const ONBBARDING_STEPS = {
   done: "done",
 } as const;
 
-type subMealDraft = {
+export type SubMealDraft = {
   meal: MealWithCook;
   quantity: number;
   deliveryHour: string;
-  deliveryDay: string;
+  deliveryDay: DeliveryDay;
 };
 
 type StepData = {
@@ -34,7 +40,7 @@ type StepData = {
     meals: MealWithCook[];
   };
   subscription: {
-    drafts: subMealDraft[];
+    drafts: SubMealDraft[];
   };
 };
 
@@ -62,6 +68,11 @@ type StepToComponentProps = {
   meals: MealWithCook[];
 };
 
+type PaymentStepProps = {
+  stepData: StepData;
+  setStepData: (data: StepData) => void;
+};
+
 function StepToComponent({
   step,
   stepData,
@@ -87,8 +98,8 @@ function StepToComponent({
           meals={meals}
         />
       );
-    // case ONBBARDING_STEPS.payment:
-    //   return <PaymentStep setStepData={setStepData} stepData={stepData} />;
+    case ONBBARDING_STEPS.payment:
+      return <PaymentStep setStepData={setStepData} stepData={stepData} />;
     default:
       return <div>404</div>;
   }
@@ -266,7 +277,7 @@ function SubscriptionStep({
   setStepData,
   stepData,
 }: SubscriptionStepProps) {
-  const [drafts, setDrafts] = useState<subMealDraft[]>(
+  const [drafts, setDrafts] = useState<SubMealDraft[]>(
     stepData.subscription.drafts ?? []
   );
 
@@ -296,10 +307,6 @@ function SubscriptionStep({
     }
   }
 
-  const totalCost = drafts.reduce((acc, draft) => {
-    return acc + draft.meal.price * draft.quantity || 0;
-  }, 0);
-
   useEffect(() => {
     setStepData({
       ...stepData,
@@ -307,7 +314,7 @@ function SubscriptionStep({
         drafts,
       },
     });
-  }, [stepData]);
+  }, [drafts]);
 
   function handleContinueClick() {
     setStepData({
@@ -327,9 +334,6 @@ function SubscriptionStep({
         {meals.map((meal) => (
           <SubMealTile key={meal.id} meal={meal} onChange={handleChange} />
         ))}
-        <div className="rounded-lg p-4 shadow-lg">
-          Total cost per week: ${totalCost}
-        </div>
       </div>
       <button
         className="rounded bg-primary px-4 py-2 text-white"
@@ -337,6 +341,71 @@ function SubscriptionStep({
       >
         Continue
       </button>
+    </div>
+  );
+}
+
+function PaymentStep({ stepData }: PaymentStepProps) {
+  // map meals to days of the week and group by day
+  const [daysWithDrafts, setDaysWithDrafts] = useState({
+    MONDAY: [],
+    TUESDAY: [],
+    WEDNESDAY: [],
+    THURSDAY: [],
+    FRIDAY: [],
+    SATURDAY: [],
+    SUNDAY: [],
+  } as { [key in DeliveryDay]: SubMealDraft[] });
+
+  const { drafts } = stepData.subscription;
+  useEffect(() => {
+    let draftsMappedToDays = {
+      MONDAY: [],
+      TUESDAY: [],
+      WEDNESDAY: [],
+      THURSDAY: [],
+      FRIDAY: [],
+      SATURDAY: [],
+      SUNDAY: [],
+    } as { [key in DeliveryDay]: SubMealDraft[] };
+
+    drafts.forEach((draft) => {
+      draftsMappedToDays[draft.deliveryDay].push(draft);
+    });
+
+    setDaysWithDrafts(draftsMappedToDays);
+  }, []);
+
+  const totalCost = drafts.reduce((acc, draft) => {
+    return acc + draft.meal.price * draft.quantity || 0;
+  }, 0);
+
+  return (
+    <div>
+      <h2 className="text-xl font-bold">Payment</h2>
+      {/* if mobile columns, if not flex row for days of the week */}
+      <div className="grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-4 xl:px-[10rem]">
+        {Object.entries(daysWithDrafts).map(([day, drafts]) => {
+          // if day is empty return null
+          if (drafts.length === 0) return null;
+          return (
+            <div key={day}>
+              <h3 className="text-lg font-bold">{day}</h3>
+              {drafts.map((draft) => (
+                <OnboardingMealCard
+                  key={draft.meal.id}
+                  draftMeal={draft}
+                  draft
+                  meal={draft.meal}
+                />
+              ))}
+            </div>
+          );
+        })}
+        <div className="rounded-lg p-4 shadow-lg">
+          Total cost per week: ${totalCost}
+        </div>
+      </div>
     </div>
   );
 }
