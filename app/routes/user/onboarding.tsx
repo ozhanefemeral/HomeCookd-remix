@@ -297,8 +297,17 @@ function SubscriptionStep({
   }
 
   const totalCost = drafts.reduce((acc, draft) => {
-    return acc + draft.meal.price * draft.quantity;
+    return acc + draft.meal.price * draft.quantity || 0;
   }, 0);
+
+  useEffect(() => {
+    setStepData({
+      ...stepData,
+      subscription: {
+        drafts,
+      },
+    });
+  }, [stepData]);
 
   function handleContinueClick() {
     setStepData({
