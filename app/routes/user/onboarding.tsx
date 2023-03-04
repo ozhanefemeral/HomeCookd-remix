@@ -13,7 +13,6 @@ import { json, LoaderArgs } from "@remix-run/server-runtime";
 import { getMealByTags, MealWithCook } from "~/models/meals.server";
 import OnboardingMealCard from "~/components/onboarding/OnboardingMealCard";
 import SubMealTile from "~/components/onboarding/SubMealTile";
-import StaticSubMealTile from "~/components/onboarding/StaticSubMealTile";
 
 const ONBBARDING_STEPS = {
   tags: "tags",
@@ -126,14 +125,6 @@ function TagsStep({ stepData, setStepData }: TagsStepProps): JSX.Element {
     });
   }, [interestedTags, dislikedTags]);
 
-  const canGoNext = interestedTags.length > 0 || dislikedTags.length > 0;
-
-  function handleContinueClick() {
-    // TODO
-    // POST TO API
-    if (canGoNext) setStepData({ ...stepData, step: "mealpick" });
-  }
-
   return (
     <>
       <h2 className="text-xl font-bold">What are you interested in?</h2>
@@ -210,15 +201,6 @@ function TagsStep({ stepData, setStepData }: TagsStepProps): JSX.Element {
           </button>
         )}
       </div>
-
-      <button
-        className={`rounded bg-primary px-4 py-2 align-middle text-white ${
-          canGoNext ? "" : "opacity-50 hover:cursor-not-allowed"
-        }}`}
-        onClick={handleContinueClick}
-      >
-        Continue
-      </button>
     </>
   );
 }
@@ -227,20 +209,6 @@ function MealPickStep({ meals, setStepData, stepData }: MealPickStepProps) {
   const [selectedMeals, setSelectedMeals] = useState<MealWithCook[]>(
     stepData.mealpick.meals ?? []
   );
-
-  const canGoNext = selectedMeals.length > 0;
-
-  function handleContinueClick() {
-    // TODO
-    // POST TO API
-    setStepData({
-      ...stepData,
-      step: "subscription",
-      mealpick: {
-        meals: selectedMeals,
-      },
-    });
-  }
 
   return (
     <div>
@@ -260,14 +228,6 @@ function MealPickStep({ meals, setStepData, stepData }: MealPickStepProps) {
           />
         ))}
       </div>
-      <button
-        className={`rounded bg-primary px-4 py-2 align-middle text-white ${
-          canGoNext ? "" : "opacity-50 hover:cursor-not-allowed"
-        }}`}
-        onClick={handleContinueClick}
-      >
-        Continue
-      </button>
     </div>
   );
 }
@@ -316,16 +276,6 @@ function SubscriptionStep({
     });
   }, [drafts]);
 
-  function handleContinueClick() {
-    setStepData({
-      ...stepData,
-      step: "payment",
-      subscription: {
-        drafts,
-      },
-    });
-  }
-
   // SubMealTile for each meal
   return (
     <div>
@@ -335,12 +285,6 @@ function SubscriptionStep({
           <SubMealTile key={meal.id} meal={meal} onChange={handleChange} />
         ))}
       </div>
-      <button
-        className="rounded bg-primary px-4 py-2 text-white"
-        onClick={handleContinueClick}
-      >
-        Continue
-      </button>
     </div>
   );
 }
@@ -410,6 +354,48 @@ function PaymentStep({ stepData }: PaymentStepProps) {
   );
 }
 
+function canGoNextStep(
+  step: keyof typeof ONBBARDING_STEPS,
+  stepData: StepData
+) {
+  switch (step) {
+    case "tags":
+      return stepData.tags.interestedTags.length > 0;
+    case "mealpick":
+      return stepData.mealpick.meals.length > 0;
+    case "subscription":
+      return stepData.subscription.drafts.length > 0;
+    default:
+      return false;
+  }
+}
+
+function getNextStep(step: keyof typeof ONBBARDING_STEPS) {
+  switch (step) {
+    case "tags":
+      return "mealpick";
+    case "mealpick":
+      return "subscription";
+    case "subscription":
+      return "payment";
+    default:
+      return "tags";
+  }
+}
+
+function getPreviousStep(step: keyof typeof ONBBARDING_STEPS) {
+  switch (step) {
+    case "tags":
+      return "tags";
+    case "mealpick":
+      return "tags";
+    case "subscription":
+      return "mealpick";
+    default:
+      return "subscription";
+  }
+}
+
 export async function action({ request, context }: LoaderArgs) {
   const formData = await request.formData();
   const interestedTags = JSON.parse(
@@ -474,9 +460,42 @@ const ProfileOnboarding = () => {
 
   const { step } = stepData;
 
+  const canGoNext = canGoNextStep(step, stepData);
+  const canGoBack = step !== ONBBARDING_STEPS.tags;
+
   return (
     <div>
-      <h1 className="text-2xl font-bold">Onboarding for {userProfile.name}</h1>
+      <h1 className="my-2 text-2xl font-bold">
+        Onboarding for {userProfile.name}
+      </h1>
+
+      <div className="flex">
+        <button
+          className="mr-2 rounded bg-primary px-4 py-2 text-white disabled:opacity-50"
+          onClick={() => {
+            setStepData({
+              ...stepData,
+              step: getPreviousStep(step),
+            });
+          }}
+          disabled={!canGoBack}
+        >
+          Back
+        </button>
+        <button
+          className="rounded bg-primary px-4 py-2 text-white disabled:opacity-50"
+          onClick={() => {
+            setStepData({
+              ...stepData,
+              step: getNextStep(step),
+            });
+          }}
+          disabled={!canGoNext}
+        >
+          Next
+        </button>
+      </div>
+
       <StepToComponent
         setStepData={setStepData}
         step={step}
