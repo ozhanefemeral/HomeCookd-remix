@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
-import { faker } from '@faker-js/faker';
+import { faker } from "@faker-js/faker";
 
 // generate 50 fake meal names
 const fakeMealNames = [
@@ -46,7 +46,7 @@ const fakeMealNames = [
   "Enchiladas",
   "Burritos",
   "Salad",
-]
+];
 
 const prisma = new PrismaClient();
 
@@ -89,7 +89,7 @@ const generateRandomTags = () => {
   }
 
   return randomTags;
-}
+};
 
 async function seed() {
   console.log("seeding database... 🌱");
@@ -97,7 +97,7 @@ async function seed() {
   const email = "efe@example.com";
 
   // cleanup the existing database
-  await prisma.subscriptionMeal.deleteMany();
+  await prisma.subscriptionOrder.deleteMany();
   await prisma.subscription.deleteMany();
   await prisma.meal.deleteMany();
   await prisma.cook.deleteMany();
@@ -109,7 +109,7 @@ async function seed() {
   const user = await prisma.user.create({
     data: {
       email,
-      password: userPassword
+      password: userPassword,
     },
   });
 
@@ -119,8 +119,8 @@ async function seed() {
       interests: [...generateRandomTags()],
       dislikes: [...generateRandomTags()],
       userId: user.id,
-    }
-  })
+    },
+  });
 
   const cook = await prisma.cook.create({
     data: {
@@ -128,7 +128,7 @@ async function seed() {
       email: "cook@example.com",
       password: cookPassword,
       username: "the-cook",
-    }
+    },
   });
 
   const cookProfile = await prisma.cookProfile.create({
@@ -140,8 +140,8 @@ async function seed() {
       instagram: faker.internet.url(),
       facebook: faker.internet.url(),
       youtube: faker.internet.url(),
-    }
-  })
+    },
+  });
 
   // pick 3 random tags
 
@@ -157,15 +157,16 @@ async function seed() {
     })),
   });
 
-  const subscriptions = await prisma.subscription.create({
+  const subscription = await prisma.subscription.create({
     data: {
       title: "My First Subscription",
       price: Number(faker.commerce.price(5, 40, 0)),
-      userId: user.id,
-      start: faker.date.past(),
-      end: faker.date.future(),
-    }
-  })
+      orderHours: ["12:00", "18:00"],
+      limit: 10,
+      reserveCount: 0,
+      cookedBy: cook.username,
+    },
+  });
 
   const recipes = await prisma.recipe.createMany({
     data: Array.from({ length: 10 }).map((_, i) => ({
@@ -177,31 +178,26 @@ async function seed() {
 
   const mealsData = await prisma.meal.findMany();
 
-  const subscriptionMeals = await prisma.subscriptionMeal.createMany({
+  const subscriptionMeals = await prisma.subscriptionOrder.createMany({
     data: [
       {
-        subscriptionId: subscriptions.id,
-        mealId: mealsData[0].id,
-        price: mealsData[0].price,
+        subscriptionId: subscription.id,
         quantity: 1,
-        deliveryDay: DeliveryDay.MONDAY,
-        deliveryHour: "12:00",
+        userId: userProfile.id,
+        // deliveryTime is DateTime
+        deliveryTime: faker.date.future(),
       },
       {
-        subscriptionId: subscriptions.id,
-        mealId: mealsData[1].id,
-        price: mealsData[1].price,
+        subscriptionId: subscription.id,
         quantity: 1,
-        deliveryDay: DeliveryDay.SATURDAY,
-        deliveryHour: "18:00",
+        userId: userProfile.id,
+        deliveryTime: faker.date.future(),
       },
       {
-        subscriptionId: subscriptions.id,
-        mealId: mealsData[2].id,
-        price: mealsData[2].price,
+        subscriptionId: subscription.id,
+        userId: userProfile.id,
         quantity: 1,
-        deliveryDay: DeliveryDay.SUNDAY,
-        deliveryHour: "10:00",
+        deliveryTime: faker.date.future(),
       },
     ],
   });

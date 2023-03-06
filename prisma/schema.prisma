@@ -34,10 +34,9 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  password      String
-  subscriptions Subscription[]
+  password String
 
-  profile       UserProfile?
+  profile UserProfile?
 }
 
 model UserProfile {
@@ -45,8 +44,10 @@ model UserProfile {
   name      String
   interests MealTags[]
   dislikes  MealTags[]
-  User      User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  userId    String    @unique
+  User      User       @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId    String     @unique
+
+  subscriptions SubscriptionOrder[]
 }
 
 model Cook {
@@ -81,6 +82,8 @@ model CookProfile {
 
   cook     Cook   @relation(fields: [username], references: [username], onDelete: Cascade, onUpdate: Cascade)
   username String @unique
+
+  subscriptions Subscription[]
 }
 
 model Meal {
@@ -97,41 +100,47 @@ model Meal {
 
   tags MealTags[]
 
-  subscriptionMeals SubscriptionMeal[]
+  Subscription   Subscription? @relation(fields: [subscriptionId], references: [id])
+  subscriptionId String?
 }
 
 model Subscription {
-  id    String   @id @default(cuid())
+  id    String @id @default(cuid())
   title String
   price Int
-  start DateTime @default(now())
-  end   DateTime
+
+  reserveCount Int
+  limit        Int
+
+  orderHours String[]
+  // dateStart is next day of creation
+  dateStart  DateTime @default(dbgenerated("now() + interval '1 day'"))
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  userId String
+  cook     CookProfile @relation(fields: [cookedBy], references: [username], onDelete: Cascade, onUpdate: Cascade)
+  cookedBy String
 
-  subscriptionMeals SubscriptionMeal[]
+  meals Meal[]
+
+  orders SubscriptionOrder[]
 }
 
-model SubscriptionMeal {
+model SubscriptionOrder {
   id       String @id @default(cuid())
-  price    Int
   quantity Int
+
+  deliveryTime DateTime
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  deliveryDay  DeliveryDay
-  deliveryHour String
 
   subscription   Subscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   subscriptionId String
 
-  meal   Meal   @relation(fields: [mealId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  mealId String
+  user   UserProfile @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String
 }
 
 model Recipe {
