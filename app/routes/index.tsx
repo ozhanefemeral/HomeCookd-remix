@@ -1,10 +1,25 @@
-import { Link } from "@remix-run/react";
+import { Link, useLoaderData } from "@remix-run/react";
+import { json, LoaderArgs } from "@remix-run/server-runtime";
+import { useEffect } from "react";
+import { getFeaturedSubscriptions } from "~/models/subscription.server";
 
 import { useOptionalCook, useOptionalUser } from "~/utils";
+
+export async function loader({ request }: LoaderArgs) {
+  // const userId = await requireUserId(request);
+  const subscriptions = await getFeaturedSubscriptions();
+  return json({ subscriptions });
+}
 
 export default function Index() {
   const user = useOptionalUser();
   const cook = useOptionalCook();
+
+  const { subscriptions } = useLoaderData();
+
+  useEffect(() => {
+    console.log("subscriptions", subscriptions);
+  }, [subscriptions]);
 
   return (
     <main className="relative min-h-screen bg-white sm:flex sm:items-center sm:justify-center">
@@ -40,31 +55,32 @@ export default function Index() {
                     View Subscriptions for {cook.email}
                   </Link>
                 )}
-                {!user && !cook && <div className="space-y-4 sm:mx-auto sm:inline-grid sm:grid-cols-3 sm:gap-5 sm:space-y-0">
-                  <Link
-                    to="/join"
-                    className="flex items-center justify-center rounded-md border border-transparent bg-white px-4 py-3 text-base font-medium text-blue-700 shadow-sm hover:bg-blue-50 sm:px-8"
-                  >
-                    Sign up
-                  </Link>
-                  <Link
-                    to="/login"
-                    className="flex items-center justify-center rounded-md bg-primary px-4 py-3 font-medium text-white hover:bg-primary-dark"
-                  >
-                    Log In
-                  </Link>
-                  <Link
-                    to="/cook-login"
-                    className="flex items-center justify-center rounded-md bg-red-500 px-4 py-3 font-medium text-white hover:bg-red-600"
-                  >
-                    Cook Log In
-                  </Link>
-                </div>}
+                {!user && !cook && (
+                  <div className="space-y-4 sm:mx-auto sm:inline-grid sm:grid-cols-3 sm:gap-5 sm:space-y-0">
+                    <Link
+                      to="/join"
+                      className="flex items-center justify-center rounded-md border border-transparent bg-white px-4 py-3 text-base font-medium text-blue-700 shadow-sm hover:bg-blue-50 sm:px-8"
+                    >
+                      Sign up
+                    </Link>
+                    <Link
+                      to="/login"
+                      className="flex items-center justify-center rounded-md bg-primary px-4 py-3 font-medium text-white hover:bg-primary-dark"
+                    >
+                      Log In
+                    </Link>
+                    <Link
+                      to="/cook-login"
+                      className="flex items-center justify-center rounded-md bg-red-500 px-4 py-3 font-medium text-white hover:bg-red-600"
+                    >
+                      Cook Log In
+                    </Link>
+                  </div>
+                )}
               </div>
             </div>
           </div>
         </div>
-
       </div>
     </main>
   );

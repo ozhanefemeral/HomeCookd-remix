@@ -17,11 +17,14 @@ export async function getCookSubscriptions(id: User["id"]) {
     },
     include: {
       meal: true,
-    }
+    },
   });
 }
 
-export async function getSubscriptionById(id: Subscription["id"], includeUser = false) {
+export async function getSubscriptionById(
+  id: Subscription["id"],
+  includeUser = false
+) {
   return prisma.subscription.findUnique({
     where: {
       id,
@@ -36,7 +39,7 @@ export async function getSubscriptionMeals(id: Subscription["id"]) {
     },
     include: {
       meal: true,
-    }
+    },
   });
 }
 
@@ -52,19 +55,19 @@ export async function createSubscription(body: any) {
   // first subscription,
   // then subscriptionMeals
   // then connect subscriptionMeals to subscription
-  const price = body.meals.reduce((acc: number, meal: SubscriptionMeal) => acc + meal.price, 0);
+  const price = body.meals.reduce(
+    (acc: number, meal: SubscriptionMeal) => acc + meal.price,
+    0
+  );
 
   // change meals field with meal.id and cook with meal.cookId
   body.meals = body.meals.map((meal: any) => {
-
     const _meal = meal;
     _meal.mealId = meal.meal.id;
     delete _meal.meal;
 
     return _meal;
   });
-
-
 
   return prisma.subscription.create({
     data: {
@@ -77,5 +80,12 @@ export async function createSubscription(body: any) {
       start: body.startDate,
       price,
     },
+  });
+}
+
+export async function getFeaturedSubscriptions() {
+  return prisma.subscription.findMany({
+    // random 3 subscriptions
+    take: 3,
   });
 }
