@@ -157,16 +157,35 @@ async function seed() {
     })),
   });
 
-  const subscription = await prisma.subscription.create({
-    data: {
-      title: "My First Subscription",
+  await prisma.subscription.createMany({
+    data: [{
+      title: "Tavuk Sote",
       price: Number(faker.commerce.price(5, 40, 0)),
       orderHours: ["12:00", "18:00"],
       limit: 10,
-      reserveCount: 0,
+      reserveCount: 9,
       cookedBy: cook.username,
     },
+    {
+      title: "Domates Çorbası",
+      price: Number(faker.commerce.price(5, 40, 0)),
+      orderHours: ["12:00", "18:00"],
+      limit: 10,
+      reserveCount: 2,
+      cookedBy: cook.username,
+    },
+    {
+      title: "Kuru Fasulye",
+      price: Number(faker.commerce.price(5, 40, 0)),
+      orderHours: ["12:00", "18:00"],
+      limit: 10,
+      reserveCount: 4,
+      cookedBy: cook.username,
+    }
+  ]
   });
+
+  const subscriptions = await prisma.subscription.findMany();
 
   const recipes = await prisma.recipe.createMany({
     data: Array.from({ length: 10 }).map((_, i) => ({
@@ -181,20 +200,20 @@ async function seed() {
   const subscriptionMeals = await prisma.subscriptionOrder.createMany({
     data: [
       {
-        subscriptionId: subscription.id,
+        subscriptionId: subscriptions[0].id,
         quantity: 1,
         userId: userProfile.id,
         // deliveryTime is DateTime
         deliveryTime: faker.date.future(),
       },
       {
-        subscriptionId: subscription.id,
+        subscriptionId: subscriptions[1].id,
         quantity: 1,
         userId: userProfile.id,
         deliveryTime: faker.date.future(),
       },
       {
-        subscriptionId: subscription.id,
+        subscriptionId: subscriptions[2].id,
         userId: userProfile.id,
         quantity: 1,
         deliveryTime: faker.date.future(),
