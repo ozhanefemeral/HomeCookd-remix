@@ -145,7 +145,7 @@ async function seed() {
 
   // pick 3 random tags
 
-  const meals = await prisma.meal.createMany({
+  await prisma.meal.createMany({
     // create 10 fake meals
     data: Array.from({ length: 10 }).map((_, i) => ({
       title: fakeMealNames[i * 4],
@@ -157,32 +157,38 @@ async function seed() {
     })),
   });
 
+  const meals = await prisma.meal.findMany();
+
   await prisma.subscription.createMany({
-    data: [{
-      title: "Tavuk Sote",
-      price: Number(faker.commerce.price(5, 40, 0)),
-      orderHours: ["12:00", "18:00"],
-      limit: 10,
-      reserveCount: 9,
-      cookedBy: cook.username,
-    },
-    {
-      title: "Domates Çorbası",
-      price: Number(faker.commerce.price(5, 40, 0)),
-      orderHours: ["12:00", "18:00"],
-      limit: 10,
-      reserveCount: 2,
-      cookedBy: cook.username,
-    },
-    {
-      title: "Kuru Fasulye",
-      price: Number(faker.commerce.price(5, 40, 0)),
-      orderHours: ["12:00", "18:00"],
-      limit: 10,
-      reserveCount: 4,
-      cookedBy: cook.username,
-    }
-  ]
+    data: [
+      {
+        title: "Tavuk Sote",
+        price: Number(faker.commerce.price(5, 40, 0)),
+        orderHours: ["12:00", "18:00"],
+        limit: 10,
+        reserveCount: 9,
+        cookedBy: cook.username,
+        mealId: meals[0].id,
+      },
+      {
+        title: "Domates Çorbası",
+        price: Number(faker.commerce.price(5, 40, 0)),
+        orderHours: ["12:00", "18:00"],
+        limit: 10,
+        reserveCount: 2,
+        cookedBy: cook.username,
+        mealId: meals[1].id,
+      },
+      {
+        title: "Kuru Fasulye",
+        price: Number(faker.commerce.price(5, 40, 0)),
+        orderHours: ["12:00", "18:00"],
+        limit: 10,
+        reserveCount: 4,
+        cookedBy: cook.username,
+        mealId: meals[2].id,
+      },
+    ],
   });
 
   const subscriptions = await prisma.subscription.findMany();

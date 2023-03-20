@@ -18,6 +18,14 @@ export type SubscriptionMealWithMeal = Prisma.SubscriptionMealGetPayload<{
   };
 }>;
 
+export type SubscriptionWithCookAndMeal = Prisma.SubscriptionGetPayload<{
+  include: {
+    cook: true;
+    meal: true
+    };
+  }
+>;
+
 export async function getSubscriptionMeals(id: Subscription["id"]) {
   return prisma.subscriptionMeal.findMany({
     where: {

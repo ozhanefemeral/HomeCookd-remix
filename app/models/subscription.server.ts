@@ -87,5 +87,9 @@ export async function getFeaturedSubscriptions() {
   return prisma.subscription.findMany({
     // random 3 subscriptions
     take: 3,
+    include: {
+      cook: true,
+      meal: true,
+    },
   });
 }
