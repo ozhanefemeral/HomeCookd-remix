@@ -2,6 +2,7 @@ import { Subscription } from "@prisma/client";
 import { SubscriptionWithCookAndMeal } from "~/models/subscriptionMeal.server";
 import { mapMealTagToEmoji, formatMealTag } from "~/utils";
 import MealTagTooltip from "../MealTagTooltip";
+import CardTags from "./CardTags";
 
 const FeaturedSubscriptionHomePage = ({
   subscription,
@@ -47,14 +48,7 @@ const FeaturedSubscriptionHomePage = ({
         </div>
 
         {/* meal tags */}
-        <div className="absolute bottom-6 left-6 flex items-center gap-2">
-          {meal.tags.map((tag) => (
-            <div className="rounded-lg bg-gray-200 px-2 py-1 text-xs text-gray-700">
-              {mapMealTagToEmoji(tag)}
-              {formatMealTag(tag)}
-            </div>
-          ))}
-        </div>
+        <CardTags meal={meal} />
       </div>
 
       <div className="absolute top-6 left-6 flex items-center gap-2 rounded-lg bg-gray-200 px-3 py-2 text-xs text-gray-700">
