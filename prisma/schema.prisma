@@ -76,6 +76,7 @@ model CookProfile {
   banner      String
   avatar      String
   description String
+  name        String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -95,12 +96,11 @@ model Meal {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  cook     Cook   @relation(fields: [cookedBy], references: [username], onDelete: Cascade, onUpdate: Cascade)
-  cookedBy String
+  cook          Cook           @relation(fields: [cookedBy], references: [username], onDelete: Cascade, onUpdate: Cascade)
+  cookedBy      String
   subscriptions Subscription[]
 
   tags MealTags[]
-
 }
 
 model Subscription {
@@ -120,8 +120,8 @@ model Subscription {
 
   cook     CookProfile @relation(fields: [cookedBy], references: [username], onDelete: Cascade, onUpdate: Cascade)
   cookedBy String
-  meal    Meal         @relation(fields: [mealId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  mealId  String
+  meal     Meal        @relation(fields: [mealId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  mealId   String
 
   orders SubscriptionOrder[]
 }

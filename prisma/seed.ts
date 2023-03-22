@@ -140,6 +140,7 @@ async function seed() {
       instagram: faker.internet.url(),
       facebook: faker.internet.url(),
       youtube: faker.internet.url(),
+      name: cook.name,
     },
   });
 
