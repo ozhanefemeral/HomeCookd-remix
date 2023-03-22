@@ -87,7 +87,7 @@ const FeaturedSubscriptionHomePage = ({
         </div> */}
       <div className="flex w-full flex-col p-6">
         <h1 className="text-2xl font-bold">{subscription.title}</h1>
-        <h3 className="mt-2 mb-8 text-sm">{cook.username}</h3>
+        <h3 className="mt-2 mb-8 text-sm">{cook.name}</h3>
         {/* green 700, full width, rounded lg button "Sipariş Ver" */}
         <button className="w-full rounded-lg bg-green-700 py-2 text-white">
           Sipariş Ver
