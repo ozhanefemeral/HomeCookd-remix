@@ -93,3 +93,20 @@ export async function getFeaturedSubscriptions() {
     },
   });
 }
+
+export async function orderSubscription(
+  id: Subscription["id"],
+  quantity: number,
+  deliveryTime: Date,
+  userId: User["id"]
+) {
+  // create SubscriptionOrder
+  return prisma.subscriptionOrder.create({
+    data: {
+      subscriptionId: id,
+      quantity,
+      deliveryTime,
+      userId,
+    },
+  });
+}
