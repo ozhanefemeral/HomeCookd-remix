@@ -48,7 +48,7 @@ const FeaturedSubscriptionHomePage = ({
                 strokeLinejoin="round"
               />
             </svg>
-            {subscription!.orderHours[1]}
+            {subscription!.orderHours[0]}
           </div>
         </div>
 
