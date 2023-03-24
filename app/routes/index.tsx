@@ -24,7 +24,7 @@ export default function Index() {
   const [mealModalEnabled, setMealModalEnabled] = useState(false);
 
   useEffect(() => {
-    console.log("subscriptions", subscriptions);
+    // console.log("subscriptions", subscriptions);
   }, [subscriptions]);
 
   function handleSubscribeClick(subscription: SubscriptionWithCookAndMeal) {

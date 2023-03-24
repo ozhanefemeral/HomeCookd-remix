@@ -3,7 +3,6 @@ import React from "react";
 import { formatMealTag, mapMealTagToEmoji } from "~/utils";
 
 function CardTags({ meal }: { meal?: Meal }) {
-  console.log(meal);
 
   return (
     <div className="absolute bottom-6 left-6 flex items-center gap-2">
