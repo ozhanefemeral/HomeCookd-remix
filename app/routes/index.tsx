@@ -48,6 +48,7 @@ export default function Index() {
                 <FeaturedSubscriptionHomePage
                   subscription={subscription}
                   handleSubscribeClick={handleSubscribeClick}
+                  key={subscription.id}
                 />
               ))}
             </div>
