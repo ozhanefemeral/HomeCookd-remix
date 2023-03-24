@@ -1,8 +1,10 @@
 import { Link, useLoaderData } from "@remix-run/react";
 import { json, LoaderArgs } from "@remix-run/server-runtime";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import FeaturedSubscriptionHomePage from "~/components/Subscriptions/FeaturedSubscriptionHomePage";
+import SubscribeModal from "~/components/Subscriptions/SubscribeModal";
 import { getFeaturedSubscriptions } from "~/models/subscription.server";
+import { SubscriptionWithCookAndMeal } from "~/models/subscriptionMeal.server";
 
 import { useOptionalCook, useOptionalUser } from "~/utils";
 
@@ -17,10 +19,18 @@ export default function Index() {
   const cook = useOptionalCook();
 
   const { subscriptions } = useLoaderData<typeof loader>();
+  const [clickedSubscription, setClickedSubscription] =
+    useState<SubscriptionWithCookAndMeal>();
+  const [mealModalEnabled, setMealModalEnabled] = useState(false);
 
   useEffect(() => {
     console.log("subscriptions", subscriptions);
   }, [subscriptions]);
+
+  function handleSubscribeClick(subscription: SubscriptionWithCookAndMeal) {
+    setClickedSubscription(subscription);
+    setMealModalEnabled(true);
+  }
 
   return (
     <main className="relative min-h-screen bg-white sm:flex sm:items-center sm:justify-center">
@@ -35,9 +45,19 @@ export default function Index() {
 
             <div className="relative grid grid-cols-1 gap-y-12 gap-x-6 p-4 sm:grid-cols-2 lg:grid-cols-3">
               {subscriptions.map((subscription) => (
-                <FeaturedSubscriptionHomePage subscription={subscription} />
+                <FeaturedSubscriptionHomePage
+                  subscription={subscription}
+                  handleSubscribeClick={handleSubscribeClick}
+                />
               ))}
             </div>
+
+            {mealModalEnabled && (
+              <SubscribeModal
+                open={mealModalEnabled}
+                subscription={clickedSubscription}
+              />
+            )}
           </div>
         </div>
       </div>
