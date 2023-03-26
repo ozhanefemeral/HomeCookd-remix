@@ -3,7 +3,10 @@ import { json, LoaderArgs } from "@remix-run/server-runtime";
 import { useEffect, useState } from "react";
 import FeaturedSubscriptionHomePage from "~/components/Subscriptions/FeaturedSubscriptionHomePage";
 import SubscribeModal from "~/components/Subscriptions/SubscribeModal";
-import { getFeaturedSubscriptions, HomepageSubscription } from "~/models/subscription.server";
+import {
+  getFeaturedSubscriptions,
+  HomepageSubscription,
+} from "~/models/subscription.server";
 import { SubscriptionWithCookAndMeal } from "~/models/subscriptionMeal.server";
 
 import { useOptionalCook, useOptionalUser } from "~/utils";
@@ -64,6 +67,7 @@ export default function Index() {
               <SubscribeModal
                 open={mealModalEnabled}
                 subscription={clickedSubscription}
+                setOpen={setMealModalEnabled}
               />
             )}
           </div>

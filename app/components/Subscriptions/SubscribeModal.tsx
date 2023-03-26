@@ -9,12 +9,12 @@ import ReserveCount from "./ReserveCount";
 type Props = {
   subscription?: HomepageSubscription;
   open: boolean;
+  setOpen: (open: boolean) => void;
 };
 
-function SubscribeModal({ subscription, open }: Props) {
+function SubscribeModal({ subscription, open, setOpen }: Props) {
   const [quantity, setQuantity] = useState(1);
   const fetcher = useFetcher();
-  const [show, setShow] = useState(false);
 
   const { meal, cook } = subscription || {};
 
@@ -26,9 +26,9 @@ function SubscribeModal({ subscription, open }: Props) {
   useEffect(() => {
     setQuantity(1);
     if (open && subscription) {
-      setShow(true);
+      setOpen(true);
     } else {
-      setShow(false);
+      setOpen(false);
     }
   }, [subscription, open]);
 
@@ -51,6 +51,30 @@ function SubscribeModal({ subscription, open }: Props) {
               alt="meal"
               className="h-full w-full object-cover"
             />
+            <div className="absolute top-0 right-0 p-4">
+              <button
+                type="button"
+                className="rounded-full bg-gray-200 p-2 text-gray-600 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                onClick={() => setOpen(false)}
+              >
+                {/* x svg */}
+                <svg
+                  className="h-3 w-3"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
             <div className="absolute -bottom-10 right-6 mt-10 h-20 w-20">
               <img
                 className="h-full w-full rounded-full ring-4 ring-white"
