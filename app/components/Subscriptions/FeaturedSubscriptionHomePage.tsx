@@ -60,7 +60,7 @@ const FeaturedSubscriptionHomePage = ({
       </div>
 
       <ReserveCount
-        reservationCount={subscription!.reservationCount}
+        reservationCount={subscription!.reservationCount!}
         limit={subscription!.limit}
       />
 
