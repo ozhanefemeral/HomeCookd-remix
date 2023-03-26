@@ -1,10 +1,10 @@
 import React from "react";
 
 function ReserveCount({
-  reserveCount,
+  reservationCount,
   limit,
 }: {
-  reserveCount: number;
+  reservationCount: number;
   limit: number;
 }) {
   return (
@@ -23,7 +23,7 @@ function ReserveCount({
           strokeLinejoin="round"
         />
       </svg>
-      {reserveCount} / {limit}
+      {reservationCount} / {limit}
     </div>
   );
 }

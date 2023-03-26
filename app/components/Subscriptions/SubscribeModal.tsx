@@ -82,7 +82,7 @@ function SubscribeModal({ subscription, open }: Props) {
           </div>
 
           <ReserveCount
-            reserveCount={subscription!.reservationCount}
+            reservationCount={subscription!.reservationCount!}
             limit={subscription!.limit}
           />
 

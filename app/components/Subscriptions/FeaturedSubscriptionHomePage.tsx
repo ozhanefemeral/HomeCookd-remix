@@ -17,6 +17,8 @@ const FeaturedSubscriptionHomePage = ({
 }: Props) => {
   const { meal, cook } = subscription! || {};
 
+  const canOrder = subscription?.reservationCount! < subscription?.limit!;
+
   return (
     //card with max width of 360px
     <div className="xs:w-full relative flex flex-col divide-y divide-gray-200 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm sm:w-full md:w-96">
@@ -58,7 +60,7 @@ const FeaturedSubscriptionHomePage = ({
       </div>
 
       <ReserveCount
-        reserveCount={subscription!.reservationCount}
+        reservationCount={subscription!.reservationCount}
         limit={subscription!.limit}
       />
 
@@ -67,8 +69,11 @@ const FeaturedSubscriptionHomePage = ({
         <h3 className="mt-2 mb-8 text-sm">{cook!.name}</h3>
         {/* green 700, full width, rounded lg button "Sipariş Ver" */}
         <button
-          className="w-full rounded-lg bg-green-700 py-2 text-white"
+          className={`w-full rounded-lg bg-green-700 py-2 text-white ${
+            !canOrder && "opacity-50 cursor-not-allowed"
+          }`}
           onClick={() => handleSubscribeClick(subscription!)}
+          disabled={!canOrder}
         >
           Sipariş Ver
         </button>

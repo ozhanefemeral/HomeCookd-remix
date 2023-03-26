@@ -130,7 +130,28 @@ export async function orderSubscription(
   deliveryTime: Date,
   userId: User["id"]
 ) {
-  // create SubscriptionOrder
+  const subscription = await prisma.subscription.findUnique({
+    where: {
+      id,
+    },
+    select: {
+      orders: true,
+      limit: true,
+    },
+  });
+
+  const totalOrders = subscription!.orders.reduce(
+    (acc, order) => acc + order.quantity,
+    0
+  );
+
+  if (
+    !subscription ||
+    totalOrders + quantity > subscription.limit
+  ) {
+    return null;
+  }
+
   return prisma.subscriptionOrder.create({
     data: {
       subscriptionId: id,
