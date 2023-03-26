@@ -4,7 +4,7 @@ import { formatMealTag, mapMealTagToEmoji } from "~/utils";
 
 function CardTags({ meal }: { meal?: Meal }) {
   return (
-    <div className="absolute bottom-6 left-6 flex flex-col items-start md:items-center gap-2 sm:top-12 md:flex-row">
+    <div className="absolute bottom-6 left-6 flex flex-col items-start md:items-end gap-2 sm:top-12 md:flex-row">
       {meal!.tags.map((tag) => (
         <div
           className="rounded-lg bg-gray-200 px-2 py-1 text-xs text-gray-700"
