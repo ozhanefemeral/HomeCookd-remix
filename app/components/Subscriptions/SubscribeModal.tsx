@@ -1,12 +1,13 @@
 import { Meal, Subscription } from "@prisma/client";
 import { useFetcher } from "@remix-run/react";
 import React, { useEffect, useState } from "react";
+import { HomepageSubscription } from "~/models/subscription.server";
 import { SubscriptionWithCookAndMeal } from "~/models/subscriptionMeal.server";
 import CardTags from "./CardTags";
 import ReserveCount from "./ReserveCount";
 
 type Props = {
-  subscription?: SubscriptionWithCookAndMeal;
+  subscription?: HomepageSubscription;
   open: boolean;
 };
 
@@ -19,7 +20,7 @@ function SubscribeModal({ subscription, open }: Props) {
 
   const totalPrice = meal?.price! * quantity;
   const canIncrement =
-    quantity + subscription?.reserveCount! < subscription?.limit!;
+    quantity + subscription?.reservationCount! < subscription?.limit!;
   const canDecrement = quantity > 1;
 
   useEffect(() => {
@@ -81,7 +82,7 @@ function SubscribeModal({ subscription, open }: Props) {
           </div>
 
           <ReserveCount
-            reserveCount={subscription!.reserveCount}
+            reserveCount={subscription!.reservationCount}
             limit={subscription!.limit}
           />
 

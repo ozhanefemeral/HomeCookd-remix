@@ -2,6 +2,10 @@ import type { Subscription, SubscriptionMeal, User } from "@prisma/client";
 
 import { prisma } from "~/db.server";
 
+export type HomepageSubscription = Subscription & {
+  reservationCount?: number;
+};
+
 export async function getUserSubscriptions(id: User["id"]) {
   return prisma.subscription.findMany({
     where: {
@@ -84,13 +88,39 @@ export async function createSubscription(body: any) {
 }
 
 export async function getFeaturedSubscriptions() {
-  return prisma.subscription.findMany({
+  // get 3 random subscriptions
+  const subscriptions = (await prisma.subscription.findMany({
     // random 3 subscriptions
     take: 3,
     include: {
       cook: true,
       meal: true,
     },
+  })) as HomepageSubscription[];
+
+  // find how many reservations each subscription has
+  const reservations = await prisma.subscriptionOrder.findMany({
+    where: {
+      subscriptionId: {
+        in: subscriptions.map((s) => s.id),
+      },
+    },
+    select: {
+      subscriptionId: true,
+      quantity: true,
+    },
+  });
+
+  // add reservations to subscriptions
+  return subscriptions.map((s) => {
+    const _s = s;
+
+    // each reservation has a quantity so we need to sum them
+    _s.reservationCount = reservations
+      .filter((r) => r.subscriptionId === s.id)
+      .reduce((acc, r) => acc + r.quantity, 0);
+
+    return _s;
   });
 }
 

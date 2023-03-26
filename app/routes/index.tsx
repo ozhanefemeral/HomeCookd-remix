@@ -1,9 +1,9 @@
-import { Link, useLoaderData } from "@remix-run/react";
+import { Link, useLoaderData, useNavigate } from "@remix-run/react";
 import { json, LoaderArgs } from "@remix-run/server-runtime";
 import { useEffect, useState } from "react";
 import FeaturedSubscriptionHomePage from "~/components/Subscriptions/FeaturedSubscriptionHomePage";
 import SubscribeModal from "~/components/Subscriptions/SubscribeModal";
-import { getFeaturedSubscriptions } from "~/models/subscription.server";
+import { getFeaturedSubscriptions, HomepageSubscription } from "~/models/subscription.server";
 import { SubscriptionWithCookAndMeal } from "~/models/subscriptionMeal.server";
 
 import { useOptionalCook, useOptionalUser } from "~/utils";
@@ -17,19 +17,26 @@ export async function loader({ request }: LoaderArgs) {
 export default function Index() {
   const user = useOptionalUser();
   const cook = useOptionalCook();
+  const navigate = useNavigate();
 
   const { subscriptions } = useLoaderData<typeof loader>();
   const [clickedSubscription, setClickedSubscription] =
-    useState<SubscriptionWithCookAndMeal>();
+    useState<HomepageSubscription>();
   const [mealModalEnabled, setMealModalEnabled] = useState(false);
 
   useEffect(() => {
     // console.log("subscriptions", subscriptions);
   }, [subscriptions]);
 
-  function handleSubscribeClick(subscription: SubscriptionWithCookAndMeal) {
-    setClickedSubscription(subscription);
-    setMealModalEnabled(true);
+  function handleSubscribeClick(subscription: HomepageSubscription) {
+    // if we have user show meal modal
+    // else, redirect to login
+    if (user) {
+      setClickedSubscription(subscription);
+      setMealModalEnabled(true);
+    } else {
+      navigate("/login");
+    }
   }
 
   return (
