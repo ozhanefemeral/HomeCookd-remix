@@ -14,7 +14,7 @@ export function ModalBase({
       {/* TODO switch to radixUI with tailwind */}
       <div className="fixed inset-0 bg-black opacity-80" />
       <div className="fixed inset-0 flex items-center justify-center">
-        <div className="xs:w-full relative flex flex-col divide-y divide-gray-200 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm sm:w-full md:w-1/2">
+        <div className="xs:w-full relative flex flex-col divide-y divide-gray-200 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm sm:w-full md:w-1/3">
           {showCloseButton && (
             <div className="absolute top-0 right-0 z-10 p-4">
               <button

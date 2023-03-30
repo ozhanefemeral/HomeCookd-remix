@@ -35,7 +35,7 @@ const FeaturedSubscriptionHomePage = ({
             src={cook.avatar || "https://dummyimage.com/256x256"}
             alt="avatar"
           />
-          <div className="slate-900 mt-5 flex items-center justify-center gap-2 text-lg font-bold">
+          <div className="slate-900 mt-2 flex items-center justify-center gap-2 text-lg font-bold">
             <svg
               width="16"
               height="16"

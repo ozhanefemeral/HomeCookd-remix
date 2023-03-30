@@ -64,7 +64,7 @@ function SubscribeModal({ subscription, open, setOpen }: Props) {
               src={cook!.avatar || "https://dummyimage.com/256x256"}
               alt="avatar"
             />
-            <div className="slate-900 mt-5 flex items-center justify-center gap-2 text-lg font-bold">
+            <div className="slate-900 mt-2 flex items-center justify-center gap-2 text-lg font-bold">
               <svg
                 width="16"
                 height="16"
@@ -85,7 +85,6 @@ function SubscribeModal({ subscription, open, setOpen }: Props) {
           </div>
 
           {/* meal tags */}
-          <CardTags meal={meal} />
         </div>
 
         <ReserveCount
@@ -93,12 +92,15 @@ function SubscribeModal({ subscription, open, setOpen }: Props) {
           limit={subscription!.limit}
         />
 
-        <div className="flex w-full flex-col p-6">
-          <h1 className="text-2xl font-bold">{subscription!.title}</h1>
-          <h3 className="mt-2 text-sm">{cook!.name}</h3>
-
+        <div className="flex w-full flex-col gap-4 p-6">
+          <div>
+            <h1 className="text-2xl font-bold">{subscription!.title}</h1>
+            <h3 className="text-sm">{cook!.name}</h3>
+          </div>
           {/* - button on left to decrement, quantity in middle and + button on right to increment */}
-          <div className="my-4 flex items-center justify-center gap-3">
+          <CardTags meal={meal} isCentered />
+
+          <div className="flex items-center justify-center gap-3">
             <button
               type="button"
               className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100"
@@ -116,7 +118,7 @@ function SubscribeModal({ subscription, open, setOpen }: Props) {
             </button>
           </div>
 
-          <button className="w-full rounded-lg bg-green-700 py-2 text-white">
+          <button className="w-full rounded-lg bg-amber-600 py-2 text-white">
             Sipariş Ver ({totalPrice}₺)
           </button>
         </div>
