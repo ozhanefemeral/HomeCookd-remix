@@ -1,10 +1,21 @@
 import type { Subscription, SubscriptionMeal, User } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 
 import { prisma } from "~/db.server";
+// export type HomepageSubscription = Subscription & {
+//   reservationCount?: number;
+// };
 
-export type HomepageSubscription = Subscription & {
-  reservationCount?: number;
-};
+const selectHomepageSubscription = Prisma.validator<Prisma.SubscriptionArgs>()({
+include: {
+  cook: true,
+  meal: true,
+}
+})
+
+export type HomepageSubscription = Prisma.SubscriptionGetPayload<typeof selectHomepageSubscription> & {
+  reservationCount: number;
+}
 
 export async function getUserSubscriptions(id: User["id"]) {
   return prisma.subscription.findMany({

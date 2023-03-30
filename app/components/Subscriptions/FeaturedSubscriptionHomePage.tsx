@@ -7,7 +7,7 @@ import CardTags from "./CardTags";
 import ReserveCount from "./ReserveCount";
 
 type Props = {
-  subscription?: HomepageSubscription;
+  subscription: HomepageSubscription;
   handleSubscribeClick: (subscription: HomepageSubscription) => void;
 };
 
@@ -15,9 +15,9 @@ const FeaturedSubscriptionHomePage = ({
   subscription,
   handleSubscribeClick,
 }: Props) => {
-  const { meal, cook } = subscription! || {};
+  const { meal, cook } = subscription;
 
-  const canOrder = subscription?.reservationCount! < subscription?.limit!;
+  const canOrder = subscription.reservationCount < subscription.limit;
 
   return (
     //card with max width of 360px
@@ -25,14 +25,14 @@ const FeaturedSubscriptionHomePage = ({
       {/* meal image */}
       <div className="relative flex h-52 w-full flex-col items-center justify-center">
         <img
-          src={meal!.image || "https://dummyimage.com/256x256"}
+          src={meal.image || "https://dummyimage.com/256x256"}
           alt="meal"
           className="h-full w-full object-cover"
         />
         <div className="absolute -bottom-10 right-6 mt-10 h-20 w-20">
           <img
             className="h-full w-full rounded-full ring-4 ring-white"
-            src={cook!.avatar || "https://dummyimage.com/256x256"}
+            src={cook.avatar || "https://dummyimage.com/256x256"}
             alt="avatar"
           />
           <div className="slate-900 mt-5 flex items-center justify-center gap-2 text-lg font-bold">
@@ -51,26 +51,28 @@ const FeaturedSubscriptionHomePage = ({
                 strokeLinejoin="round"
               />
             </svg>
-            {subscription!.orderHours[0]}
+            {subscription.orderHours[0]}
           </div>
         </div>
 
         {/* meal tags */}
-        <CardTags meal={meal} />
       </div>
 
       <ReserveCount
-        reservationCount={subscription!.reservationCount!}
-        limit={subscription!.limit}
+        reservationCount={subscription.reservationCount}
+        limit={subscription.limit}
       />
 
-      <div className="flex w-full flex-col p-6">
-        <h1 className="text-2xl font-bold">{subscription!.title}</h1>
-        <h3 className="mt-2 mb-8 text-sm">{cook!.name}</h3>
+      <div className="flex w-full flex-col gap-4 p-6">
+        <div>
+          <h1 className="text-2xl font-bold">{subscription.title}</h1>
+          <h3 className="text-sm">{cook.name}</h3>
+        </div>
         {/* green 700, full width, rounded lg button "Sipariş Ver" */}
+        <CardTags meal={meal} />
         <button
-          className={`w-full rounded-lg bg-green-700 py-2 text-white ${
-            !canOrder && "opacity-50 cursor-not-allowed"
+          className={`w-full rounded-lg bg-amber-600 py-2 text-white ${
+            !canOrder && "cursor-not-allowed opacity-50"
           }`}
           onClick={() => handleSubscribeClick(subscription!)}
           disabled={!canOrder}

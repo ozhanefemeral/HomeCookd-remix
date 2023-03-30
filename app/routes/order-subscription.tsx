@@ -31,11 +31,6 @@ export const action: ActionFunction = async ({ request }) => {
   invariant(subscriptionId, "subscriptionId is required");
   invariant(userId, "userId is required");
 
-  console.log("quantity", quantity);
-  console.log("subscriptionId", subscriptionId);
-  console.log("userId", userId);
-  console.log("deliveryTime", deliveryTime);
-
   try {
     await orderSubscription(
       subscriptionId as string,

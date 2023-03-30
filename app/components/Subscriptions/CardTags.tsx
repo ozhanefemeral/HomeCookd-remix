@@ -4,13 +4,14 @@ import { formatMealTag, mapMealTagToEmoji } from "~/utils";
 
 function CardTags({ meal }: { meal?: Meal }) {
   return (
-    <div className="absolute bottom-6 left-6 flex flex-col items-start md:items-end gap-2 sm:top-12 md:flex-row">
+    <div className="flex flex-col items-center justify-between gap-2 md:flex-row md:items-end">
       {meal!.tags.map((tag) => (
         <div
-          className="rounded-lg bg-gray-200 px-2 py-1 text-xs text-gray-700"
+          className="rounded-lg px-2 py-1 text-sm text-black bg-gray-100 border-gray-300 border overflow-ellipsis whitespace-nowrap overflow-hidden"
           key={`${meal!.id}-${tag}`}
         >
           {mapMealTagToEmoji(tag)}
+          &nbsp;
           {formatMealTag(tag)}
         </div>
       ))}

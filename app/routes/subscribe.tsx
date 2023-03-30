@@ -20,11 +20,6 @@ export async function loader({ request }: LoaderArgs) {
   return json({ mealId, subscriptions, meal });
 }
 
-export async function action({ params }: ActionArgs) {
-  console.log(params);
-  return json({ params });
-}
-
 export default function SubscribeToMealModal() {
   let [isOpen, setIsOpen] = useState(true);
   const [quantity, setQuantity] = useState(1);
