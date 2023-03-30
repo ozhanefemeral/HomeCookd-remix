@@ -9,7 +9,6 @@ import {
   getFeaturedSubscriptions,
   HomepageSubscription,
 } from "~/models/subscription.server";
-import { SubscriptionWithCookAndMeal } from "~/models/subscriptionMeal.server";
 
 import { useOptionalCook, useOptionalUser } from "~/utils";
 
