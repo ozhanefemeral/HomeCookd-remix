@@ -1,13 +1,16 @@
 import { RemixBrowser } from "@remix-run/react";
 import { startTransition, StrictMode } from "react";
 import { hydrateRoot } from "react-dom/client";
+import DialogContextProvider from "./contexts/dialog";
 
 const hydrate = () => {
   startTransition(() => {
     hydrateRoot(
       document,
       <StrictMode>
-        <RemixBrowser />
+        <DialogContextProvider>
+          <RemixBrowser />
+        </DialogContextProvider>
       </StrictMode>
     );
   });
