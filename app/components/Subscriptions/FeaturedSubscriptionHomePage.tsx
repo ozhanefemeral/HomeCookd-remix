@@ -1,8 +1,7 @@
 import { Subscription } from "@prisma/client";
 import { HomepageSubscription } from "~/models/subscription.server";
-import { SubscriptionWithCookAndMeal } from "~/models/subscriptionMeal.server";
+import { SubscriptionWithCookAndMeal } from "~/models/subscriptionOrder.server";
 import { mapMealTagToEmoji, formatMealTag } from "~/utils";
-import MealTagTooltip from "../MealTagTooltip";
 import CardTags from "./CardTags";
 import ReserveCount from "./ReserveCount";
 
@@ -55,7 +54,6 @@ const FeaturedSubscriptionHomePage = ({
           </div>
         </div>
 
-        {/* meal tags */}
       </div>
 
       <ReserveCount
