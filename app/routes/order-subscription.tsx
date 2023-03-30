@@ -32,14 +32,17 @@ export const action: ActionFunction = async ({ request }) => {
   invariant(userId, "userId is required");
 
   try {
-    await orderSubscription(
+    const order = await orderSubscription(
       subscriptionId as string,
       quantity,
       deliveryTime,
       userId
     );
 
-    return json({ status: 201 });
+    invariant(order, "order is required");
+    return redirect(`/orders/${order.id}`);
+
+    // return json({ status: 201 });
   } catch (e) {
     console.log(e);
 

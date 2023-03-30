@@ -1,4 +1,4 @@
-import type { Subscription, SubscriptionMeal, User } from "@prisma/client";
+import type { Subscription, SubscriptionOrder, User } from "@prisma/client";
 import { Prisma } from "@prisma/client";
 
 import { prisma } from "~/db.server";
@@ -7,34 +7,17 @@ import { prisma } from "~/db.server";
 // };
 
 const selectHomepageSubscription = Prisma.validator<Prisma.SubscriptionArgs>()({
-include: {
-  cook: true,
-  meal: true,
-}
-})
+  include: {
+    cook: true,
+    meal: true,
+  },
+});
 
-export type HomepageSubscription = Prisma.SubscriptionGetPayload<typeof selectHomepageSubscription> & {
+export type HomepageSubscription = Prisma.SubscriptionGetPayload<
+  typeof selectHomepageSubscription
+> & {
   reservationCount: number;
-}
-
-export async function getUserSubscriptions(id: User["id"]) {
-  return prisma.subscription.findMany({
-    where: {
-      userId: id,
-    },
-  });
-}
-
-export async function getCookSubscriptions(id: User["id"]) {
-  return prisma.subscriptionMeal.findMany({
-    where: {
-      cookId: id,
-    },
-    include: {
-      meal: true,
-    },
-  });
-}
+};
 
 export async function getSubscriptionById(
   id: Subscription["id"],
@@ -43,17 +26,6 @@ export async function getSubscriptionById(
   return prisma.subscription.findUnique({
     where: {
       id,
-    },
-  });
-}
-
-export async function getSubscriptionMeals(id: Subscription["id"]) {
-  return prisma.subscriptionMeal.findMany({
-    where: {
-      subscriptionId: id,
-    },
-    include: {
-      meal: true,
     },
   });
 }
@@ -156,10 +128,7 @@ export async function orderSubscription(
     0
   );
 
-  if (
-    !subscription ||
-    totalOrders + quantity > subscription.limit
-  ) {
+  if (!subscription || totalOrders + quantity > subscription.limit) {
     return null;
   }
 
@@ -169,6 +138,22 @@ export async function orderSubscription(
       quantity,
       deliveryTime,
       userId,
+    },
+  });
+}
+
+export async function getSubscriptionOrderById(id: SubscriptionOrder["id"]) {
+  return prisma.subscriptionOrder.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      subscription: {
+        include: {
+          meal: true,
+          cook: true,
+        },
+      },
     },
   });
 }
