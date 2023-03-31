@@ -77,12 +77,12 @@ export default function SubscriptionOrder() {
         <h1 className="text-center text-2xl font-semibold">Total cost</h1>
         <div className="mt-4 grid grid-cols-2">
           {/* 16px, 600fw */}
-          <h1 className="text-lg font-semibold">Subtotal</h1>
-          <h1 className="text-right text-lg font-semibold">{price}</h1>
-          <h1 className="text-lg font-semibold">Delivery</h1>
-          <h1 className="text-right text-lg font-semibold">Free</h1>
-          <h1 className="text-lg font-semibold">Total</h1>
-          <h1 className="text-right text-lg font-semibold">{price}</h1>
+          <div className="text-lg font-semibold">Subtotal</div>
+          <div className="text-right text-lg font-semibold">{price}</div>
+          <div className="text-lg font-semibold">Delivery</div>
+          <div className="text-right text-lg font-semibold">Free</div>
+          <div className="text-lg font-semibold">Total</div>
+          <div className="text-right text-lg font-semibold">{price}</div>
         </div>
         <button className="mt-8 flex w-full items-center justify-center gap-2 rounded-3xl bg-primary py-4 font-semibold text-white">
           <svg
