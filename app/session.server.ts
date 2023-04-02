@@ -75,6 +75,15 @@ export async function requireUser(request: Request) {
   throw await logout(request);
 }
 
+export async function requireUserProfile(request: Request) {
+  const userId = await requireUserId(request);
+
+  const userProfile = await getUserProfileByUserId(userId);
+  if (userProfile) return userProfile;
+
+  throw await logout(request);
+}
+
 export async function createUserSession({
   request,
   userId,
