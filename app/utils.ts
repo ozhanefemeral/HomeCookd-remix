@@ -54,10 +54,12 @@ function isCook(cook: any): cook is Cook {
   return cook && typeof cook === "object" && typeof cook.email === "string";
 }
 
-function isUserProfile(
-  userProfile: any
-): userProfile is UserProfile {
-  return userProfile && typeof userProfile === "object" && typeof userProfile.id === "string";
+function isUserProfile(userProfile: any): userProfile is UserProfile {
+  return (
+    userProfile &&
+    typeof userProfile === "object" &&
+    typeof userProfile.id === "string"
+  );
 }
 
 export function useOptionalUserProfile(): UserProfile | undefined {
@@ -68,7 +70,6 @@ export function useOptionalUserProfile(): UserProfile | undefined {
   }
   return data.userProfile;
 }
-
 
 export function useOptionalUser(): User | undefined {
   const data = useMatchesData("root");
@@ -86,7 +87,6 @@ export function useOptionalCook(): Cook | undefined {
   }
   return data.cook;
 }
-
 
 export function useUser(): User {
   const maybeUser = useOptionalUser();
@@ -127,7 +127,6 @@ export const deliveryHours = Array.from({ length: 48 }, (_, i) => {
   return `${hour}:${minute}`;
 });
 
-
 export const mapMealTagToEmoji = (tag: MealTags): string => {
   switch (tag) {
     case MealTags.VEGETARIAN:
@@ -147,7 +146,7 @@ export const mapMealTagToEmoji = (tag: MealTags): string => {
     default:
       return "";
   }
-}
+};
 
 export const formatMealTag = (tag: MealTags): string => {
   switch (tag) {
@@ -168,12 +167,12 @@ export const formatMealTag = (tag: MealTags): string => {
     default:
       return "";
   }
-}
+};
 
 export const sortMealTags = (tags: MealTags[]) => {
   const sorted = [...tags].sort((a, b) => a - b);
   return sorted;
-}
+};
 
 export const mealTags = [
   {
@@ -221,7 +220,7 @@ export const daysAbbrCapitalized = {
   FRIDAY: "Fri",
   SATURDAY: "Sat",
   SUNDAY: "Sun",
-}
+};
 
 export const daysCapitalized = {
   MONDAY: "Monday",
@@ -231,4 +230,8 @@ export const daysCapitalized = {
   FRIDAY: "Friday",
   SATURDAY: "Saturday",
   SUNDAY: "Sunday",
-}
+};
+
+export const capitalizeFirstLetter = (string: string): string => {
+  return `${string.charAt(0).toUpperCase()}${string.toLowerCase().slice(1)}`;
+};

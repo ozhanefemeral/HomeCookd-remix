@@ -27,6 +27,12 @@ enum MealTags {
   HIGH_PROTEIN
 }
 
+enum AddressType {
+  HOME
+  WORK
+  OTHER
+}
+
 model User {
   id    String @id @default(cuid())
   email String @unique
@@ -36,7 +42,8 @@ model User {
 
   password String
 
-  profile UserProfile?
+  subscriptions SubscriptionOrder[]
+  profile       UserProfile?
 }
 
 model UserProfile {
@@ -46,8 +53,7 @@ model UserProfile {
   dislikes  MealTags[]
   User      User       @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId    String     @unique
-
-  subscriptions SubscriptionOrder[]
+  addresses Address[]
 }
 
 model Cook {
@@ -108,7 +114,7 @@ model Subscription {
   title String
   price Int
 
-  limit        Int
+  limit Int
 
   orderHours String[]
   // dateStart is next day of creation
@@ -137,7 +143,7 @@ model SubscriptionOrder {
   subscription   Subscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   subscriptionId String
 
-  user   UserProfile @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String
 }
 
@@ -151,4 +157,17 @@ model Recipe {
 
   cook     Cook   @relation(fields: [username], references: [username], onDelete: Cascade, onUpdate: Cascade)
   username String
+}
+
+model Address {
+  id    String      @id @default(cuid())
+  title String
+  body  String
+  type  AddressType
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user          UserProfile @relation(fields: [userProfileId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userProfileId String
 }

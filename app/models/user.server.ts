@@ -1,9 +1,16 @@
-import type { User } from "@prisma/client";
+import type { Address, Prisma, User, UserProfile } from "@prisma/client";
 import bcrypt from "bcryptjs";
 
 import { prisma } from "~/db.server";
 
 export type { User } from "@prisma/client";
+
+export type createAddressInput = {
+  addressBody: Address["body"];
+  addressTitle: Address["title"];
+  user: UserProfile["id"];
+  addressType: Address["type"];
+};
 
 export async function getUserById(id: User["id"]) {
   return prisma.user.findUnique({ where: { id } });
@@ -19,7 +26,7 @@ export async function createUser(email: User["email"], password: string) {
   const user = await prisma.user.create({
     data: {
       email,
-      password: hashedPassword
+      password: hashedPassword,
     },
   });
 
@@ -39,11 +46,7 @@ export async function deleteUserByEmail(email: User["email"]) {
   return prisma.user.delete({ where: { email } });
 }
 
-export async function verifyLogin(
-  email: User["email"],
-  password: string
-) {
-
+export async function verifyLogin(email: User["email"], password: string) {
   const userWithPassword = await prisma.user.findUnique({
     where: { email },
   });
@@ -52,10 +55,7 @@ export async function verifyLogin(
     return null;
   }
 
-  const isValid = await bcrypt.compare(
-    password,
-    userWithPassword.password
-  );
+  const isValid = await bcrypt.compare(password, userWithPassword.password);
 
   if (!isValid) {
     return null;
@@ -68,4 +68,21 @@ export async function verifyLogin(
 
 export async function getUserProfileByUserId(id: User["id"]) {
   return prisma.userProfile.findUnique({ where: { userId: id } });
+}
+
+export async function getUserAddresses(id: UserProfile["id"]) {
+  return prisma.address.findMany({ where: { userProfileId: id } });
+}
+
+export async function createAddress(address: createAddressInput) {
+  console.log(address);
+
+  return prisma.address.create({
+    data: {
+      body: address.addressBody,
+      title: address.addressTitle,
+      type: address.addressType,
+      userProfileId: address.user,
+    },
+  });
 }

@@ -2,19 +2,21 @@ type Props = {
   setOpen: (open: boolean) => void;
   showCloseButton?: boolean;
   children: React.ReactNode;
+  title?: string;
 };
 
 export function ModalBase({
   setOpen,
   showCloseButton = true,
   children,
+  title,
 }: Props) {
   return (
     <>
       {/* TODO switch to radixUI with tailwind */}
       <div className="fixed inset-0 bg-black opacity-80" />
-      <div className="fixed inset-0 flex items-center justify-center">
-        <div className="xs:w-full relative flex flex-col divide-y divide-gray-200 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm sm:w-full md:w-1/3">
+      <div className="fixed inset-0 z-10 flex items-center justify-center">
+        <div className="xs:w-full relative flex flex-col overflow-hidden rounded-xl border border-gray-200 bg-white p-8 shadow-sm sm:w-full md:w-1/3">
           {showCloseButton && (
             <div className="absolute top-0 right-0 z-10 p-4">
               <button
@@ -39,6 +41,11 @@ export function ModalBase({
                 </svg>
               </button>
             </div>
+          )}
+          {title && (
+            <h2 className="mb-4 text-center text-2xl font-bold text-primary">
+              {title}
+            </h2>
           )}
           {children}
         </div>

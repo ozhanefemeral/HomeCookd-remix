@@ -8,6 +8,7 @@ import {
   DeliveryDay,
 } from "~/models/subscriptionMeal.server";
 import { getUserId, getUserProfile } from "~/session.server";
+import { getUser } from "../session.server";
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
@@ -23,8 +24,8 @@ export const action: ActionFunction = async ({ request }) => {
   deliveryTime.setMinutes(Number(minutes));
 
   const quantity = Number(form_quantity);
-  const userProfile = await getUserProfile(request);
-  const userId = userProfile?.id;
+  const user = await getUser(request);
+  const userId = user?.id;
 
   // check if all the required fields are present
   invariant(form_quantity, "quantity is required");

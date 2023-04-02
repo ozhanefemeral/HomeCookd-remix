@@ -102,6 +102,9 @@ async function seed() {
   await prisma.meal.deleteMany();
   await prisma.cook.deleteMany();
   await prisma.user.deleteMany();
+  await prisma.userProfile.deleteMany();
+  await prisma.cookProfile.deleteMany();
+  await prisma.address.deleteMany();
 
   const userPassword = await bcrypt.hash("1234567890", 10);
   const cookPassword = await bcrypt.hash("1234567890", 10);
@@ -144,7 +147,28 @@ async function seed() {
     },
   });
 
-  // pick 3 random tags
+  const addresses = await prisma.address.createMany({
+    data: [
+      {
+        title: "Home",
+        body: faker.address.streetAddress() + " " + faker.address.city(),
+        userProfileId: userProfile.id,
+        type: "HOME",
+      },
+      {
+        title: "Work",
+        body: faker.address.streetAddress() + " " + faker.address.city(),
+        userProfileId: userProfile.id,
+        type: "WORK",
+      },
+      {
+        title: "Other",
+        body: faker.address.streetAddress() + " " + faker.address.city(),
+        userProfileId: userProfile.id,
+        type: "OTHER",
+      },
+    ],
+  });
 
   await prisma.meal.createMany({
     // create 10 fake meals
@@ -206,19 +230,19 @@ async function seed() {
       {
         subscriptionId: subscriptions[0].id,
         quantity: 1,
-        userId: userProfile.id,
+        userId: user.id,
         // deliveryTime is DateTime
         deliveryTime: faker.date.future(),
       },
       {
         subscriptionId: subscriptions[1].id,
         quantity: 1,
-        userId: userProfile.id,
+        userId: user.id,
         deliveryTime: faker.date.future(),
       },
       {
         subscriptionId: subscriptions[2].id,
-        userId: userProfile.id,
+        userId: user.id,
         quantity: 1,
         deliveryTime: faker.date.future(),
       },

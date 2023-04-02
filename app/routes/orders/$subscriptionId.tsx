@@ -1,18 +1,28 @@
 import { useLoaderData } from "@remix-run/react";
 import { json, LoaderArgs } from "@remix-run/server-runtime";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import invariant from "tiny-invariant";
+import Address from "~/components/Address/Address";
+import CreateAddressModal from "~/components/Address/CreateAddressModal";
 import { getSubscriptionOrderById } from "~/models/subscription.server";
+import { getUserAddresses } from "~/models/user.server";
+import { getUserProfile } from "~/session.server";
 
 export async function loader({ request, params }: LoaderArgs) {
   invariant(params.subscriptionId, "subscriptionId not found");
+
+  const userProfile = await getUserProfile(request);
+
+  invariant(userProfile, "userProfile not found");
 
   const subscriptionOrder = await getSubscriptionOrderById(
     params.subscriptionId
   );
 
+  const addresses = await getUserAddresses(userProfile.id);
+
   invariant(subscriptionOrder, "subscriptionOrder not found");
-  return json({ subscriptionOrder });
+  return json({ subscriptionOrder, addresses });
 }
 
 export default function SubscriptionOrder() {
@@ -26,6 +36,11 @@ export default function SubscriptionOrder() {
   const diffHours = Math.ceil(diffTime / (1000 * 60 * 60));
   const diffMinutes = Math.ceil((diffTime / (1000 * 60)) % 60);
 
+  const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
+  const [showCreateAddress, setShowCreateAddress] = useState(false);
+
+  const { addresses } = data;
+
   const price = useMemo(() => {
     // convert to string
     const totalPrice =
@@ -37,8 +52,15 @@ export default function SubscriptionOrder() {
     return totalPrice.toFixed(2).replace(".", ",");
   }, [subscriptionOrder]);
 
+  function handleAddressClick(address: Address) {
+    setSelectedAddress(address);
+  }
+
   return (
     <div className="flex gap-16 px-48">
+      {showCreateAddress && (
+        <CreateAddressModal setOpen={setShowCreateAddress} />
+      )}
       {/* delivery hour minus dateNow for how much time left */}
       <div className="w-2/3">
         <h1 className="py-6 text-4xl font-bold">My Cart</h1>
@@ -72,6 +94,28 @@ export default function SubscriptionOrder() {
         </div>
 
         <h1 className="py-6 text-4xl font-bold">My Address</h1>
+        {addresses != null && (
+          <div className="grid grid-cols-3 gap-4">
+            {addresses.map((address) => (
+              <div
+                onClick={() => handleAddressClick(address)}
+                className="cursor-pointer"
+                key={address.id}
+              >
+                <Address
+                  address={address}
+                  isSelected={selectedAddress?.id === address.id}
+                />
+              </div>
+            ))}
+            <button
+              className="flex flex-col items-center justify-center rounded-3xl bg-[#FDBA7424] py-8"
+              onClick={() => setShowCreateAddress(true)}
+            >
+              Add new address
+            </button>
+          </div>
+        )}
       </div>
       <div className="mt-[88px] w-1/3 rounded-3xl bg-[#FDBA7424] p-6">
         <h1 className="text-center text-2xl font-semibold">Total cost</h1>
@@ -95,9 +139,9 @@ export default function SubscriptionOrder() {
             <path
               d="M19.5 5V3C19.5 1.89543 18.6046 1 17.5 1H3.5C2.39543 1 1.5 1.89543 1.5 3V5M19.5 5V11C19.5 12.1046 18.6046 13 17.5 13H3.5C2.39543 13 1.5 12.1046 1.5 11V5M19.5 5H1.5M4.5 10H8.5"
               stroke="#fff"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
           </svg>
           Pay
