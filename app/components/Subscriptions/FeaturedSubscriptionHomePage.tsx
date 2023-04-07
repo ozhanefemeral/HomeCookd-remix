@@ -66,7 +66,7 @@ const FeaturedSubscriptionHomePage = ({
           <h1 className="text-2xl font-bold">{subscription.title}</h1>
           <h3 className="text-sm">{cook.name}</h3>
         </div>
-        {/* green 700, full width, rounded lg button "Sipariş Ver" */}
+        {/* green 700, full width, rounded lg button "Order" */}
         <CardTags meal={meal} />
         <button
           className={`w-full rounded-lg bg-amber-600 py-2 text-white ${
@@ -75,7 +75,7 @@ const FeaturedSubscriptionHomePage = ({
           onClick={() => handleSubscribeClick(subscription!)}
           disabled={!canOrder}
         >
-          Sipariş Ver
+          Order
         </button>
       </div>
     </div>

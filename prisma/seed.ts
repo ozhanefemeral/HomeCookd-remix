@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+  import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import { faker } from "@faker-js/faker";
 
@@ -176,7 +176,7 @@ async function seed() {
       title: fakeMealNames[i * 4],
       price: Number(faker.commerce.price(5, 40, 0)),
       cookedBy: cook.username,
-      image: faker.image.food(),
+      image: faker.image.food(640, 480, true),
       // create random 3 tags for each meal
       tags: [...generateRandomTags()],
     })),

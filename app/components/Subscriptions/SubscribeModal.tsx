@@ -119,7 +119,7 @@ function SubscribeModal({ subscription, open, setOpen }: Props) {
           </div>
 
           <button className="w-full rounded-lg bg-amber-600 py-2 text-white">
-            Sipariş Ver ({totalPrice}₺)
+            Order ({totalPrice}₺)
           </button>
         </div>
       </ModalBase>

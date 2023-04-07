@@ -89,7 +89,7 @@ export default function SubscriptionOrder() {
             <h1 className="text-xl">{subscriptionOrder.quantity}x</h1>
           </div>
           <div className="flex flex-col items-end justify-center pr-8">
-            <h1 className="text-3xl font-bold text-primary">{price}</h1>
+            <h1 className="text-3xl font-bold text-primary">{price} ₺</h1>
           </div>
         </div>
 
@@ -109,7 +109,7 @@ export default function SubscriptionOrder() {
               </div>
             ))}
             <button
-              className="flex flex-col items-center justify-center rounded-3xl bg-[#FDBA7424] py-8"
+              className="rounded-3xl bg-[#FDBA7424] py-8"
               onClick={() => setShowCreateAddress(true)}
             >
               Add new address
@@ -117,16 +117,16 @@ export default function SubscriptionOrder() {
           </div>
         )}
       </div>
-      <div className="mt-[88px] w-1/3 rounded-3xl bg-[#FDBA7424] p-6">
+      <div className="mt-[88px] w-1/3 rounded-3xl bg-[#FDBA7424] p-6 flex flex-col">
         <h1 className="text-center text-2xl font-semibold">Total cost</h1>
         <div className="mt-4 grid grid-cols-2">
           {/* 16px, 600fw */}
           <div className="text-lg font-semibold">Subtotal</div>
-          <div className="text-right text-lg font-semibold">{price}</div>
+          <div className="text-right text-lg font-semibold">{price}₺</div>
           <div className="text-lg font-semibold">Delivery</div>
           <div className="text-right text-lg font-semibold">Free</div>
           <div className="text-lg font-semibold">Total</div>
-          <div className="text-right text-lg font-semibold">{price}</div>
+          <div className="text-right text-lg font-semibold">{price}₺</div>
         </div>
         <button className="mt-8 flex w-full items-center justify-center gap-2 rounded-3xl bg-primary py-4 font-semibold text-white">
           <svg
