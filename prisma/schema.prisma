@@ -42,8 +42,12 @@ model User {
 
   password String
 
-  subscriptions SubscriptionOrder[]
+  subscriptionOrders SubscriptionOrder[]
+  subscriptions      Subscription[]
   profile       UserProfile?
+  cookProfile   CookProfile?
+  meals         Meal[]
+  recipes       Recipe[]
 }
 
 model UserProfile {
@@ -54,23 +58,6 @@ model UserProfile {
   User      User       @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId    String     @unique
   addresses Address[]
-}
-
-model Cook {
-  id       String @id @default(cuid())
-  name     String
-  email    String @unique
-  password String
-  username String @unique
-
-  recipes Recipe[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  meals Meal[]
-
-  profile CookProfile?
 }
 
 model CookProfile {
@@ -87,10 +74,8 @@ model CookProfile {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  cook     Cook   @relation(fields: [username], references: [username], onDelete: Cascade, onUpdate: Cascade)
-  username String @unique
-
-  subscriptions Subscription[]
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String @unique
 }
 
 model Meal {
@@ -102,7 +87,7 @@ model Meal {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  cook          Cook           @relation(fields: [cookedBy], references: [username], onDelete: Cascade, onUpdate: Cascade)
+  cook          User           @relation(fields: [cookedBy], references: [id], onDelete: Cascade, onUpdate: Cascade)
   cookedBy      String
   subscriptions Subscription[]
 
@@ -123,7 +108,7 @@ model Subscription {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  cook     CookProfile @relation(fields: [cookedBy], references: [username], onDelete: Cascade, onUpdate: Cascade)
+  cook     User @relation(fields: [cookedBy], references: [id], onDelete: Cascade, onUpdate: Cascade)
   cookedBy String
   meal     Meal        @relation(fields: [mealId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   mealId   String
@@ -155,8 +140,8 @@ model Recipe {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  cook     Cook   @relation(fields: [username], references: [username], onDelete: Cascade, onUpdate: Cascade)
-  username String
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId   String
 }
 
 model Address {
