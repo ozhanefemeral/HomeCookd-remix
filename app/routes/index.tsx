@@ -1,6 +1,7 @@
 import { Link, useLoaderData, useNavigate } from "@remix-run/react";
 import { json, LoaderArgs } from "@remix-run/server-runtime";
 import React, { useEffect, useState } from "react";
+import { Button } from "~/components/Button";
 import { DialogBase } from "~/components/Modals/DialogBase";
 import FeaturedSubscriptionHomePage from "~/components/Subscriptions/FeaturedSubscriptionHomePage";
 import SubscribeModal from "~/components/Subscriptions/SubscribeModal";
@@ -54,7 +55,12 @@ export default function Index() {
             <h1 className="mb-4 text-center text-4xl font-extrabold tracking-tight sm:text-6xl lg:text-6xl">
               Today's Specials!
             </h1>
-            {/* 3 cards in a row  */}
+
+            <div className="mb-4 flex justify-center">
+              <Button variant="primary" text="Subscribe"></Button>
+              <Button variant="secondary" text="Subscribe"></Button>
+              <Button variant="tertiary" text="Subscribe"></Button>
+            </div>
 
             <div className="relative grid grid-cols-1 gap-y-12 gap-x-6 p-4 sm:grid-cols-2 lg:grid-cols-3">
               {subscriptions.map((subscription) => (

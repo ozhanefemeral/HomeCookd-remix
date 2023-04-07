@@ -16,7 +16,7 @@ module.exports = {
           '800': '#9a4a12',
           '900': '#7c3d12',
           '950': '#432007',
-          "DEFAULT": "#f97316",
+          DEFAULT: "#f97316",
         },
         light: "#F5F5F5",
         dark: "#1A1A1A",

@@ -4,6 +4,7 @@ import { SubscriptionWithCookAndMeal } from "~/models/subscriptionOrder.server";
 import { mapMealTagToEmoji, formatMealTag } from "~/utils";
 import CardTags from "./CardTags";
 import ReserveCount from "./ReserveCount";
+import { Button } from "../Button";
 
 type Props = {
   subscription: HomepageSubscription;
@@ -53,7 +54,6 @@ const FeaturedSubscriptionHomePage = ({
             {subscription.orderHours[0]}
           </div>
         </div>
-
       </div>
 
       <ReserveCount
@@ -68,15 +68,19 @@ const FeaturedSubscriptionHomePage = ({
         </div>
         {/* green 700, full width, rounded lg button "Sipariş Ver" */}
         <CardTags meal={meal} />
-        <button
+        {/* <button
           className={`w-full rounded-lg bg-amber-600 py-2 text-white ${
             !canOrder && "cursor-not-allowed opacity-50"
           }`}
-          onClick={() => handleSubscribeClick(subscription!)}
-          disabled={!canOrder}
+         
         >
           Sipariş Ver
-        </button>
+        </button> */}
+        <Button
+          onClick={() => handleSubscribeClick(subscription!)}
+          disabled={!canOrder}
+          text="Sipariş Ver"
+        />
       </div>
     </div>
   );
