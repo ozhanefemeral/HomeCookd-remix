@@ -8,7 +8,11 @@ import { prisma } from "~/db.server";
 
 const selectHomepageSubscription = Prisma.validator<Prisma.SubscriptionArgs>()({
   include: {
-    cook: true,
+    cook: {
+      include: {
+        cookProfile: true,
+      },
+    },
     meal: true,
   },
 });
@@ -39,33 +43,15 @@ export async function deleteSubscription(id: Subscription["id"]) {
 }
 
 export async function createSubscription(body: any) {
-  // first subscription,
-  // then subscriptionMeals
-  // then connect subscriptionMeals to subscription
-  const price = body.meals.reduce(
-    (acc: number, meal: SubscriptionMeal) => acc + meal.price,
-    0
-  );
-
-  // change meals field with meal.id and cook with meal.cookId
-  body.meals = body.meals.map((meal: any) => {
-    const _meal = meal;
-    _meal.mealId = meal.meal.id;
-    delete _meal.meal;
-
-    return _meal;
-  });
-
   return prisma.subscription.create({
     data: {
-      userId: body.user,
-      subscriptionMeals: {
-        create: body.meals,
-      },
       title: body.title,
-      end: body.end,
-      start: body.startDate,
-      price,
+      orderHours: body.orderHours,
+      limit: body.limit,
+      mealId: body.cookId,
+      cookedBy: body.cookId,
+      meal: body.meal,
+      price: body.price,
     },
   });
 }
@@ -76,7 +62,11 @@ export async function getFeaturedSubscriptions() {
     // random 3 subscriptions
     take: 3,
     include: {
-      cook: true,
+      cook: {
+        include: {
+          cookProfile: true,
+        },
+      },
       meal: true,
     },
   })) as HomepageSubscription[];
@@ -146,6 +136,22 @@ export async function getSubscriptionOrderById(id: SubscriptionOrder["id"]) {
   return prisma.subscriptionOrder.findUnique({
     where: {
       id,
+    },
+    include: {
+      subscription: {
+        include: {
+          meal: true,
+          cook: true,
+        },
+      },
+    },
+  });
+}
+
+export async function getSubscriptionOrdersByUserId(id: User["id"]) {
+  return prisma.subscriptionOrder.findMany({
+    where: {
+      userId: id,
     },
     include: {
       subscription: {

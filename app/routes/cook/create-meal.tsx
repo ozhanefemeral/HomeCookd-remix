@@ -7,7 +7,7 @@ import * as AWS from "@aws-sdk/client-s3";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { composeUploadHandlers, parseMultipartFormData, UploadHandler } from "@remix-run/server-runtime/dist/formData";
 import { createMemoryUploadHandler } from "@remix-run/server-runtime/dist/upload/memoryUploadHandler";
-import { s3UploadHandler, uploadStreamToS3 } from "~/utils/s3.server";
+// import { s3UploadHandler, uploadStreamToS3 } from "~/utils/s3.server";
 import { mealTags, sortMealTags } from "~/utils";
 import { MealTags } from "@prisma/client";
 

@@ -72,9 +72,9 @@ export default function Index() {
               ))}
             </div>
 
-            {mealModalEnabled && !dialogEnabled && (
+            {clickedSubscription && (
               <SubscribeModal
-                open={mealModalEnabled}
+                open={mealModalEnabled && !dialogEnabled}
                 subscription={clickedSubscription}
                 setOpen={setMealModalEnabled}
               />

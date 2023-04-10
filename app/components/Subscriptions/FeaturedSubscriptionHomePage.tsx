@@ -1,6 +1,5 @@
 import { Subscription } from "@prisma/client";
 import { HomepageSubscription } from "~/models/subscription.server";
-import { SubscriptionWithCookAndMeal } from "~/models/subscriptionOrder.server";
 import { mapMealTagToEmoji, formatMealTag } from "~/utils";
 import CardTags from "./CardTags";
 import ReserveCount from "./ReserveCount";
@@ -32,7 +31,7 @@ const FeaturedSubscriptionHomePage = ({
         <div className="absolute -bottom-10 right-6 mt-10 h-20 w-20">
           <img
             className="h-full w-full rounded-full ring-4 ring-white"
-            src={cook.avatar || "https://dummyimage.com/256x256"}
+            src={cook.cookProfile?.avatar || "https://dummyimage.com/256x256"}
             alt="avatar"
           />
           <div className="slate-900 mt-2 flex items-center justify-center gap-2 text-lg font-bold">
@@ -64,9 +63,9 @@ const FeaturedSubscriptionHomePage = ({
       <div className="flex w-full flex-col gap-4 p-6">
         <div>
           <h1 className="text-2xl font-bold">{subscription.title}</h1>
-          <h3 className="text-sm">{cook.name}</h3>
+          <h3 className="text-sm">{cook.cookProfile?.name}</h3>
         </div>
-        {/* green 700, full width, rounded lg button "Sipariş Ver" */}
+        {/* green 700, full width, rounded lg button "Order" */}
         <CardTags meal={meal} />
         {/* <button
           className={`w-full rounded-lg bg-amber-600 py-2 text-white ${

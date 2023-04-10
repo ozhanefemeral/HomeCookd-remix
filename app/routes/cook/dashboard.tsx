@@ -7,7 +7,15 @@ import { useCook } from "~/utils";
 import { getCookSubscriptions } from "~/models/subscription.server";
 
 // days of week in small letters
-const days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
+const days = [
+  "monday",
+  "tuesday",
+  "wednesday",
+  "thursday",
+  "friday",
+  "saturday",
+  "sunday",
+];
 
 // TODO
 // AUTOMATICALLY NAVIGATE TO THAT DAY OF THE WEEK
@@ -33,34 +41,6 @@ export default function SubscriptionsPage() {
       </header>
 
       <main className="flex h-full bg-white">
-        <div className="h-full w-80 border-r bg-gray-50">
-          <ol>
-            {days.map((day) => (
-              <li key={day}>
-                <NavLink
-                  className={({ isActive }) =>
-                    `capitalize block border-b p-4 text-xl ${isActive ? "bg-white text-primary font-bold" : ""}`
-                  }
-                  to={day}
-                >
-                  {day}
-                </NavLink>
-              </li>
-            ))}
-            {/* all subscriptions  */}
-            <li>
-              <NavLink
-                className={({ isActive }) =>
-                  `capitalize block border-b p-4 text-xl text-center ${isActive ? "bg-white text-primary font-bold" : ""}`
-                }
-                to="all"
-              >
-                All Subscriptions 🍕
-              </NavLink>
-            </li>
-          </ol>
-        </div>
-
         <div className="flex-1 p-4">
           <Outlet />
         </div>
