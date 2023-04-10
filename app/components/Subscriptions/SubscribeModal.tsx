@@ -8,6 +8,7 @@ import { SubscriptionWithCookAndMeal } from "~/models/subscriptionMeal.server";
 import { ModalBase, ModalBaseProps } from "../Modals/ModalBase";
 import CardTags from "./CardTags";
 import ReserveCount from "./ReserveCount";
+import { Button } from "../Button";
 
 type Props = {
   subscription: HomepageSubscription;
@@ -19,8 +20,6 @@ function SubscribeModal({ subscription, open, setOpen, ...otherProps }: Props) {
   const [quantity, setQuantity] = useState(1);
   const fetcher = useFetcher();
   const { setOpen: setDialogEnabled } = useDialogContext();
-
-  console.log("subscription", subscription);
 
   const { meal, cook } = subscription;
 
@@ -45,23 +44,23 @@ function SubscribeModal({ subscription, open, setOpen, ...otherProps }: Props) {
   }, [fetcher?.data?.status]);
 
   return (
-    <fetcher.Form action="/order-subscription" method="post">
-      <input
-        type="hidden"
-        name="deliveryTime"
-        value={subscription?.orderHours[0]}
-      />
-      <input type="hidden" name="quantity" value={quantity} />
-      <input type="hidden" name="subscriptionId" value={subscription?.id} />
-      <ModalBase
-        open={open}
-        setOpen={setOpen}
-        trigger={
-          <button className="w-full rounded-lg bg-amber-600 py-2 text-white">
-            Sipariş Ver ({totalPrice}₺)
-          </button>
-        }
-      >
+    <ModalBase
+      open={open}
+      setOpen={setOpen}
+      trigger={
+        <button className="w-full rounded-lg bg-amber-600 py-2 text-white">
+          Sipariş Ver ({totalPrice}₺)
+        </button>
+      }
+    >
+      <fetcher.Form action="/order-subscription" method="post">
+        <input
+          type="hidden"
+          name="deliveryTime"
+          value={subscription?.orderHours[0]}
+        />
+        <input type="hidden" name="quantity" value={quantity} />
+        <input type="hidden" name="subscriptionId" value={subscription?.id} />
         <div className="relative flex h-52 w-full flex-col items-center justify-center">
           <img
             src={meal!.image || "https://dummyimage.com/256x256"}
@@ -131,12 +130,10 @@ function SubscribeModal({ subscription, open, setOpen, ...otherProps }: Props) {
             </button>
           </div>
 
-          <button className="w-full rounded-lg bg-amber-600 py-2 text-white">
-            Sipariş Ver ({totalPrice}₺)
-          </button>
+          <Button type="submit" text={`Sipariş Ver (${totalPrice}₺)`} />
         </div>
-      </ModalBase>
-    </fetcher.Form>
+      </fetcher.Form>
+    </ModalBase>
   );
 }
 
