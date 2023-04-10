@@ -7,9 +7,10 @@ import { AddressType } from "@prisma/client";
 
 type Props = {
   setOpen: (open: boolean) => void;
+  open: boolean;
 };
 
-function CreateAddressModal({ setOpen }: Props) {
+function CreateAddressModal({ setOpen, open }: Props) {
   const fetcher = useFetcher();
   const userProfile = useUserProfile();
 
@@ -26,13 +27,13 @@ function CreateAddressModal({ setOpen }: Props) {
   // }, [fetcher?.data?.status]);
 
   return (
-    <ModalBase setOpen={setOpen} title="Create Address">
+    <ModalBase setOpen={setOpen} title="Create Address" open={open}>
       <fetcher.Form action="/create-address" method="post">
         <input type="hidden" name="userProfileId" value={userProfile.id} />
         {/* <h1 className="mb-8 text-center text-xl font-bold text-primary">
           Create Address
         </h1> */}
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 p-6">
           <div className="flex justify-between">
             <label htmlFor="addressType">Address Type</label>
             <select

@@ -58,9 +58,11 @@ export default function SubscriptionOrder() {
 
   return (
     <div className="flex gap-16 px-48">
-      {showCreateAddress && (
-        <CreateAddressModal setOpen={setShowCreateAddress} />
-      )}
+      <CreateAddressModal
+        setOpen={setShowCreateAddress}
+        open={showCreateAddress}
+      />
+
       {/* delivery hour minus dateNow for how much time left */}
       <div className="w-2/3">
         <h1 className="py-6 text-4xl font-bold">My Cart</h1>
@@ -117,7 +119,7 @@ export default function SubscriptionOrder() {
           </div>
         )}
       </div>
-      <div className="mt-[88px] w-1/3 rounded-3xl bg-[#FDBA7424] p-6 flex flex-col">
+      <div className="mt-[88px] flex w-1/3 flex-col rounded-3xl bg-[#FDBA7424] p-6">
         <h1 className="text-center text-2xl font-semibold">Total cost</h1>
         <div className="mt-4 grid grid-cols-2">
           {/* 16px, 600fw */}
