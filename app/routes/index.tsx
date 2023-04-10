@@ -2,10 +2,8 @@ import { Link, useLoaderData, useNavigate } from "@remix-run/react";
 import { json, LoaderArgs } from "@remix-run/server-runtime";
 import React, { useEffect, useState } from "react";
 import { Button } from "~/components/Button";
-import { DialogBase } from "~/components/Modals/DialogBase";
 import FeaturedSubscriptionHomePage from "~/components/Subscriptions/FeaturedSubscriptionHomePage";
 import SubscribeModal from "~/components/Subscriptions/SubscribeModal";
-import { useDialogContext } from "~/contexts/dialog";
 import {
   getFeaturedSubscriptions,
   HomepageSubscription,
@@ -24,9 +22,7 @@ export default function Index() {
   const cook = useOptionalCook();
   const navigate = useNavigate();
 
-  const { open: dialogEnabled, setOpen: setDialogEnabled } = useDialogContext();
-
-  const { subscriptions } = useLoaderData<typeof loader>();
+    const { subscriptions } = useLoaderData<typeof loader>();
   const [clickedSubscription, setClickedSubscription] =
     useState<HomepageSubscription>();
   const [mealModalEnabled, setMealModalEnabled] = useState(false);
@@ -74,20 +70,11 @@ export default function Index() {
 
             {clickedSubscription && (
               <SubscribeModal
-                open={mealModalEnabled && !dialogEnabled}
+                open={mealModalEnabled}
                 subscription={clickedSubscription}
                 setOpen={setMealModalEnabled}
               />
             )}
-
-            {dialogEnabled && (
-              <DialogBase
-                setOpen={setDialogEnabled}
-                dialogText="deneme"
-                dialogTitle="DENEME"
-              />
-            )}
-          </div>
         </div>
       </div>
     </main>
