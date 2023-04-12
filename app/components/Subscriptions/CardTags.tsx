@@ -3,7 +3,7 @@ import MealTag from "./MealTag";
 
 type Props = {
   meal: Meal;
-  justify: "justify-between" | "justify-center" | "justify-start";
+  justify?: "justify-between" | "justify-center" | "justify-start";
 };
 
 function CardTags({ meal, justify = "justify-between" }: Props) {
