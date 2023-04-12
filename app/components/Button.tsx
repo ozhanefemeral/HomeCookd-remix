@@ -19,14 +19,16 @@ export function Button({
         "rounded-md px-4 py-2 font-medium text-white",
         {
           "bg-primary": variant === "primary",
-          "bg-primary-300": variant === "secondary",
-          "bg-transparent": variant === "tertiary",
+          "bg-transparent": variant === "tertiary" || variant === "secondary",
         },
         {
           underline: variant === "tertiary",
         },
         {
-          "!text-primary": variant === "tertiary",
+          "!text-primary": variant === "tertiary" || variant === "secondary",
+        },
+        {
+          "border-2 border-primary": variant === "secondary",
         }
       )}
       {...otherProps}
