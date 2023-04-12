@@ -35,12 +35,6 @@ function SubscribeModal({ subscription, open, setOpen, ...otherProps }: Props) {
     }
   }, [subscription, open]);
 
-  useEffect(() => {
-    if (fetcher?.data?.status === 201) {
-      setDialogEnabled(true);
-    }
-  }, [fetcher?.data?.status]);
-
   return (
     <ModalBase
       open={open}
