@@ -1,3 +1,4 @@
+import { Icon } from "@iconify/react";
 import * as Dialog from "@radix-ui/react-dialog";
 
 export type ModalBaseProps = {
@@ -37,7 +38,7 @@ export function ModalBase({
                   aria-label="Close"
                   onClick={() => setOpen(false)}
                 >
-                  x
+                  <Icon icon="carbon:close" width={20} color="white" />
                 </button>
               </Dialog.Close>
             )}

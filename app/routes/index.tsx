@@ -22,7 +22,7 @@ export default function Index() {
   const cook = useOptionalCook();
   const navigate = useNavigate();
 
-    const { subscriptions } = useLoaderData<typeof loader>();
+  const { subscriptions } = useLoaderData<typeof loader>();
   const [clickedSubscription, setClickedSubscription] =
     useState<HomepageSubscription>();
   const [mealModalEnabled, setMealModalEnabled] = useState(false);
@@ -75,6 +75,7 @@ export default function Index() {
                 setOpen={setMealModalEnabled}
               />
             )}
+          </div>
         </div>
       </div>
     </main>

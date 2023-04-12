@@ -7,6 +7,7 @@ import CreateAddressModal from "~/components/Address/CreateAddressModal";
 import { getSubscriptionOrderById } from "~/models/subscription.server";
 import { getUserAddresses } from "~/models/user.server";
 import { getUserProfile } from "~/session.server";
+import { Icon } from '@iconify/react';
 
 export async function loader({ request, params }: LoaderArgs) {
   invariant(params.subscriptionId, "subscriptionId not found");
@@ -131,21 +132,7 @@ export default function SubscriptionOrder() {
           <div className="text-right text-lg font-semibold">{price}₺</div>
         </div>
         <button className="mt-8 flex w-full items-center justify-center gap-2 rounded-3xl bg-primary py-4 font-semibold text-white">
-          <svg
-            width="21"
-            height="14"
-            viewBox="0 0 21 14"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M19.5 5V3C19.5 1.89543 18.6046 1 17.5 1H3.5C2.39543 1 1.5 1.89543 1.5 3V5M19.5 5V11C19.5 12.1046 18.6046 13 17.5 13H3.5C2.39543 13 1.5 12.1046 1.5 11V5M19.5 5H1.5M4.5 10H8.5"
-              stroke="#fff"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+          <Icon icon="material-symbols:credit-card" />
           Pay
         </button>
       </div>

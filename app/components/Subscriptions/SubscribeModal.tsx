@@ -2,7 +2,6 @@ import { Meal, Subscription } from "@prisma/client";
 import { useFetcher } from "@remix-run/react";
 import { ActionArgs, json } from "@remix-run/server-runtime";
 import React, { useEffect, useState } from "react";
-import { useDialogContext } from "~/contexts/dialog";
 import { HomepageSubscription } from "~/models/subscription.server";
 import { SubscriptionWithCookAndMeal } from "~/models/subscriptionMeal.server";
 import { ModalBase, ModalBaseProps } from "../Modals/ModalBase";
@@ -19,7 +18,6 @@ type Props = {
 function SubscribeModal({ subscription, open, setOpen, ...otherProps }: Props) {
   const [quantity, setQuantity] = useState(1);
   const fetcher = useFetcher();
-  const { setOpen: setDialogEnabled } = useDialogContext();
 
   const { meal, cook } = subscription;
 
@@ -115,7 +113,7 @@ function SubscribeModal({ subscription, open, setOpen, ...otherProps }: Props) {
           <div className="flex items-center justify-center gap-3">
             <button
               type="button"
-              className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100"
+              className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-100"
               onClick={() => canDecrement && setQuantity((prev) => prev - 1)}
             >
               -
@@ -123,7 +121,7 @@ function SubscribeModal({ subscription, open, setOpen, ...otherProps }: Props) {
             <span className="text-xl font-bold">{quantity}</span>
             <button
               type="button"
-              className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100"
+              className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-100"
               onClick={() => canIncrement && setQuantity((prev) => prev + 1)}
             >
               +
