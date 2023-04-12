@@ -36,7 +36,7 @@ const FeaturedSubscriptionHomePage = ({
             alt="avatar"
           />
           <div className="slate-900 mt-2 flex items-center justify-center gap-1 text-lg font-bold">
-            <Icon icon="material-symbols:nest-clock-farsight-analog-outline" width={18}/>
+            <Icon icon="ic:round-access-time" width={18} />
             {subscription.orderHours[0]}
           </div>
         </div>
