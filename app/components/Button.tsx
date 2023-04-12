@@ -2,21 +2,24 @@
 
 import React, { ComponentProps } from "react";
 import clsx from "clsx";
+import { Icon } from "@iconify/react";
 
 export type ButtonProps = {
   variant?: "primary" | "secondary" | "tertiary";
   text: string;
+  icon?: string;
 } & ComponentProps<"button">;
 
 export function Button({
   variant = "primary",
   text,
+  icon,
   ...otherProps
 }: ButtonProps) {
   return (
     <button
       className={clsx(
-        "rounded-md font-medium text-white",
+        "flex items-center justify-center rounded-md font-medium text-white",
         {
           "bg-primary": variant === "primary",
           "bg-transparent": variant === "tertiary" || variant === "secondary",
@@ -37,6 +40,7 @@ export function Button({
       )}
       {...otherProps}
     >
+      {icon && <Icon icon={icon} className="mr-2" />}
       {text}
     </button>
   );
