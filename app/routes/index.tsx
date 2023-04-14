@@ -1,3 +1,4 @@
+import { Icon } from "@iconify/react";
 import { Link, useLoaderData, useNavigate } from "@remix-run/react";
 import { json, LoaderArgs } from "@remix-run/server-runtime";
 import React, { useEffect, useState } from "react";
@@ -9,6 +10,7 @@ import {
   HomepageSubscription,
 } from "~/models/subscription.server";
 
+import AppLogo from "../assets/svg/enfes_logo.svg";
 import { useOptionalCook, useOptionalUser } from "~/utils";
 
 export async function loader({ request }: LoaderArgs) {
@@ -19,7 +21,6 @@ export async function loader({ request }: LoaderArgs) {
 
 export default function Index() {
   const user = useOptionalUser();
-  const cook = useOptionalCook();
   const navigate = useNavigate();
 
   const { subscriptions } = useLoaderData<typeof loader>();
@@ -44,7 +45,29 @@ export default function Index() {
 
   return (
     <main className="relative min-h-screen bg-white sm:flex sm:items-center sm:justify-center">
-      <div className="relative sm:pb-16 sm:pt-8">
+      {/* 
+      button to navigate to /cook/me on top rightmost corner
+      */}
+      <Link
+        to="/"
+        style={{
+          position: "absolute",
+          top: "16px",
+          left: "16px",
+        }}
+      >
+        <img src={AppLogo} width={80} />
+      </Link>
+      {user && (
+        <Link to="/cook/me" className="absolute top-4 right-4">
+          <Button
+            text="My Meals"
+            variant="primary"
+            icon="fluent:food-pizza-20-filled"
+          />
+        </Link>
+      )}
+      <div className="relative mt-16 sm:pb-16">
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
           <div className="relative sm:overflow-hidden sm:rounded-2xl">
             {/* each element is FeaturedSubscriptionHomePage */}
