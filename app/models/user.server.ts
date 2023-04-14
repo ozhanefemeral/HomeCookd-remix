@@ -70,6 +70,10 @@ export async function getUserProfileByUserId(id: User["id"]) {
   return prisma.userProfile.findUnique({ where: { userId: id } });
 }
 
+export async function getCookProfileByUserId(id: User["id"]) {
+  return prisma.cookProfile.findUnique({ where: { userId: id } });
+}
+
 export async function getUserAddresses(id: UserProfile["id"]) {
   return prisma.address.findMany({ where: { userProfileId: id } });
 }

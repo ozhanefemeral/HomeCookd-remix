@@ -46,7 +46,3 @@ export async function verifyLogin(
   const { password: _password, ...cookWithoutPassword } = cookWithPassword;
   return cookWithoutPassword;
 }
-
-export async function getCookProfile(username: Cook["username"]) {
-  return prisma.cookProfile.findUnique({ where: { username } });
-}

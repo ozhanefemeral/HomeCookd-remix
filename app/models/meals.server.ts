@@ -1,4 +1,4 @@
-import type { Meal, Cook, Prisma } from "@prisma/client";
+import type { Meal, Prisma, User } from "@prisma/client";
 
 import { prisma } from "~/db.server";
 
@@ -44,6 +44,14 @@ export async function createMeal(
   return prisma.meal.create({
     data: {
       ...data,
+    },
+  });
+}
+
+export async function getMealsByUserId(cookedBy: User["id"]) {
+  return prisma.meal.findMany({
+    where: {
+      cookedBy
     },
   });
 }

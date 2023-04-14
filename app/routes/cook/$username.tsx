@@ -1,10 +1,16 @@
 // remix page where username is a param and is used in the loader function
 // Path: app\routes\cook\$username.tsx
 
-import { Form, NavLink, Outlet, useCatch, useLoaderData } from "@remix-run/react";
+import {
+  Form,
+  NavLink,
+  Outlet,
+  useCatch,
+  useLoaderData,
+} from "@remix-run/react";
 import { json, LoaderArgs } from "@remix-run/server-runtime";
-import { getCookByUsername, getCookMeals, getCookProfile } from "~/models/cook.server";
-
+import { getCookByUsername, getCookMeals } from "~/models/cook.server";
+import { getCookProfileByUserId } from "~/models/user.server";
 
 // get username from params and use it in the loader function
 export async function loader({ request, params }: LoaderArgs) {
@@ -12,7 +18,7 @@ export async function loader({ request, params }: LoaderArgs) {
   const cook = await getCookByUsername(username);
   // if (!cook) return json({ cook: null }, { status: 404 });
   const meals = await getCookMeals(cook!.id);
-  const profile = await getCookProfile(cook!.username);
+  const profile = await getCookProfileByUserId(cook!.username);
   return json({ meals, cook, profile });
 }
 
@@ -21,44 +27,55 @@ export default function CookPage() {
   return (
     <div className="p-4">
       {/* div background from profile.banner and top right cook avatar. at bottom left cook name and profile.description*/}
-      <div className="flex flex-col items-center justify-center h-96 bg-cover bg-center  bg-blend-darken bg-no-repeat" style={{ backgroundImage: `url(${data.profile!.banner})` }} >
-        <div className="flex flex-col items-center justify-center w-32 h-32 overflow-hidden rounded-full bg-gray-100">
-          <img src={data.profile!.avatar} alt="avatar" className="w-full h-full object-cover" />
+      <div
+        className="flex h-96 flex-col items-center justify-center bg-cover bg-center  bg-no-repeat bg-blend-darken"
+        style={{ backgroundImage: `url(${data.profile!.banner})` }}
+      >
+        <div className="flex h-32 w-32 flex-col items-center justify-center overflow-hidden rounded-full bg-gray-100">
+          <img
+            src={data.profile!.avatar}
+            alt="avatar"
+            className="h-full w-full object-cover"
+          />
         </div>
-        <h1 className="mt-4 text-2xl font-bold text-center text-white">{data.cook!.name}</h1>
-        <p className="mt-2 text-sm text-center text-white">{data.profile!.description}</p>
-        <div className="flex mt-4 space-x-4">
+        <h1 className="mt-4 text-center text-2xl font-bold text-white">
+          {data.cook!.name}
+        </h1>
+        <p className="mt-2 text-center text-sm text-white">
+          {data.profile!.description}
+        </p>
+        <div className="mt-4 flex space-x-4">
           <a
             href={data.profile!.instagram}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-white underline font-bold"
+            className="font-bold text-white underline"
           >
             Instagram
           </a>
-          <span className="w-px h-6 bg-white rounded-full"></span>
+          <span className="h-6 w-px rounded-full bg-white"></span>
           <a
             href={data.profile!.youtube}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-white underline font-bold"
+            className="font-bold text-white underline"
           >
             Youtube
           </a>
-          <span className="w-px h-6 bg-white rounded-full"></span>
+          <span className="h-6 w-px rounded-full bg-white"></span>
           <a
             href={data.profile!.facebook}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-white underline font-bold"
+            className="font-bold text-white underline"
           >
             Facebook
           </a>
         </div>
       </div>
 
-      <div className="flex flex-col items-center justify-center my-4 space-y-4">
-        <div className="flex space-x-4 text-primary font-bold">
+      <div className="my-4 flex flex-col items-center justify-center space-y-4">
+        <div className="flex space-x-4 font-bold text-primary">
           <NavLink to="meals">
             <h3 className="text-2xl">Meals</h3>
           </NavLink>

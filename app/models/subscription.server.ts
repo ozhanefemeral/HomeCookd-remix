@@ -148,18 +148,15 @@ export async function getSubscriptionOrderById(id: SubscriptionOrder["id"]) {
   });
 }
 
-export async function getSubscriptionOrdersByUserId(id: User["id"]) {
-  return prisma.subscriptionOrder.findMany({
+
+export async function getSubscriptionsByUserId(id: User["id"]) {
+  return prisma.subscription.findMany({
     where: {
-      userId: id,
+      cookedBy: id,
     },
     include: {
-      subscription: {
-        include: {
-          meal: true,
-          cook: true,
-        },
-      },
+      orders: true,
+      meal: true,
     },
   });
 }

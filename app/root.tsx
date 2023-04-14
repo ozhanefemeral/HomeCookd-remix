@@ -10,15 +10,13 @@ import {
   useLoaderData,
   useSearchParams,
 } from "@remix-run/react";
-import SubscribeToMealModal from "./routes/subscribe";
 import { useMemo } from "react";
 
 import { getCook, getUser, getUserProfile } from "./session.server";
 import tailwindStylesheetUrl from "./styles/tailwind.css";
-import reactTooltipStylesheetUrl from "react-tooltip/dist/react-tooltip.css"
+import reactTooltipStylesheetUrl from "react-tooltip/dist/react-tooltip.css";
 import { getUserProfileByUserId } from "./models/user.server";
 // import 'react-tooltip/dist/react-tooltip.css'
-
 
 export const links: LinksFunction = () => {
   return [
@@ -34,13 +32,11 @@ export const meta: MetaFunction = () => ({
 });
 
 export async function loader({ request }: LoaderArgs) {
-  const user = await getUser(request)
-  const cook = await getCook(request)
-  const userProfile = await getUserProfile(request)
+  const user = await getUser(request);
+  const userProfile = await getUserProfile(request);
 
   return json({
     user,
-    cook,
     userProfile,
   });
 }

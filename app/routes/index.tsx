@@ -61,7 +61,7 @@ export default function Index() {
       {user && (
         <Link to="/cook/me" className="absolute top-4 right-4">
           <Button
-            text="My Meals"
+            text="Dashboard"
             variant="primary"
             icon="fluent:food-pizza-20-filled"
           />

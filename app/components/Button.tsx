@@ -8,12 +8,14 @@ export type ButtonProps = {
   variant?: "primary" | "secondary" | "tertiary";
   text: string;
   icon?: string;
+  small?: boolean;
 } & ComponentProps<"button">;
 
 export function Button({
   variant = "primary",
   text,
   icon,
+  small,
   ...otherProps
 }: ButtonProps) {
   return (
@@ -35,7 +37,7 @@ export function Button({
         },
         {
           "p-0": variant === "tertiary",
-          "px-4 py-2": variant === "primary" || variant === "secondary",
+          "px-2 py-1": variant === "primary" || variant === "secondary",
         }
       )}
       {...otherProps}
