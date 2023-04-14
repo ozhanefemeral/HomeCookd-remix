@@ -19,6 +19,7 @@ function subscriptions() {
 
   const navigate = useNavigate();
   const goBack = () => navigate("/cook/me");
+
   return (
     <div>
       <Button text="Go Back" onClick={goBack} variant="tertiary" />
@@ -28,6 +29,7 @@ function subscriptions() {
             <th className="text-left">Image</th>
             <th className="text-left">Title</th>
             <th className="text-left">Price</th>
+            <th className="text-left">Reservations</th>
             <th className="text-left">Actions</th>
           </tr>
         </thead>
@@ -43,6 +45,9 @@ function subscriptions() {
               </td>
               <td>{subscription.title}</td>
               <td>{subscription.price}</td>
+              <td>
+                {subscription.reservationCount}/{subscription.limit}
+              </td>
               <td className="flex gap-2">
                 <Button
                   text="Repeat"

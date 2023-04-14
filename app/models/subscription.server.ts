@@ -150,13 +150,36 @@ export async function getSubscriptionOrderById(id: SubscriptionOrder["id"]) {
 
 
 export async function getSubscriptionsByUserId(id: User["id"]) {
-  return prisma.subscription.findMany({
+  const subscriptions = await prisma.subscription.findMany({
     where: {
       cookedBy: id,
     },
     include: {
-      orders: true,
       meal: true,
+    }
+  }) as HomepageSubscription[];
+
+  const reservations = await prisma.subscriptionOrder.findMany({
+    where: {
+      subscriptionId: {
+        in: subscriptions.map((s) => s.id),
+      },
+    },
+
+    select: {
+      subscriptionId: true,
+      quantity: true,
     },
   });
+
+  return subscriptions.map((s) => {
+    const _s = s;
+
+    _s.reservationCount = reservations
+      .filter((r) => r.subscriptionId === s.id)
+      .reduce((acc, r) => acc + r.quantity, 0);
+
+    return _s;
+  });
+  
 }
