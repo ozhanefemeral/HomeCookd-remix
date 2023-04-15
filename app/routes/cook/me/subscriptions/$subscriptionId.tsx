@@ -31,8 +31,35 @@ function $subscriptionId() {
     <div>
       {/* <Button text="Go Back" onClick={goBack} variant="tertiary" /> */}
 
-      <section>
+      <section className="border">
         <h1 className="text-2xl font-bold">{subscription.title} Details</h1>
+
+        <table className="w-full border-separate border-spacing-2">
+          <thead>
+            <tr>
+              <th className="text-left">Image</th>
+              <th className="text-left">Name</th>
+              <th className="text-left">Quantity</th>
+              <th className="text-left">Total Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            {orders.map((order) => (
+              <tr key={order.id}>
+                <td>
+                  <img
+                    src={order.user.avatar}
+                    alt={order.user.profile?.name}
+                    width={64}
+                  />
+                </td>
+                <td>{order.user.profile?.name}</td>
+                <td>{order.quantity}</td>
+                <td>{order.quantity * subscription?.price}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </section>
     </div>
   );
