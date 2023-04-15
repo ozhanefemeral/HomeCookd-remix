@@ -4,8 +4,9 @@ import { LoaderArgs, json } from "@remix-run/node";
 import { getUser } from "~/session.server";
 import invariant from "tiny-invariant";
 import { getSubscriptionsByUserId } from "~/models/subscription.server";
-import { useLoaderData, useNavigate } from "@remix-run/react";
+import { Outlet, useLoaderData, useNavigate } from "@remix-run/react";
 import { Button } from "~/components/Button";
+import { HomepageSubscription } from "~/models/subscription.server";
 export async function loader({ request }: LoaderArgs) {
   const user = await getUser(request);
   invariant(user, "You must be logged in to view this page");
@@ -20,9 +21,22 @@ function subscriptions() {
   const navigate = useNavigate();
   const goBack = () => navigate("/cook/me");
 
+  function viewOrders(subscription: HomepageSubscription) {
+    navigate(`/cook/me/subscriptions/${subscription.id}`);
+  }
+
+  function viewMeal(subscription: HomepageSubscription) {
+    navigate(`/cook/me/meals/${subscription.meal.id}`);
+  }
+
   return (
     <div>
       <Button text="Go Back" onClick={goBack} variant="tertiary" />
+
+      <div className="my-8">
+        <Outlet />
+      </div>
+
       <table className="w-full">
         <thead>
           <tr>
@@ -58,11 +72,13 @@ function subscriptions() {
                   text="View Orders"
                   variant="secondary"
                   icon="mdi:people"
+                  onClick={() => viewOrders(subscription)}
                 />
                 <Button
                   text="View Meal"
                   icon="ph:magnifying-glass-bold"
                   variant="secondary"
+                  onClick={() => viewMeal(subscription)}
                 />
               </td>
             </tr>

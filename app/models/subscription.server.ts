@@ -183,3 +183,14 @@ export async function getSubscriptionsByUserId(id: User["id"]) {
   });
   
 }
+
+export async function getOrdersBySubscriptionId(id: Subscription["id"]) {
+  return prisma.subscriptionOrder.findMany({
+    where: {
+      subscriptionId: id,
+    },
+    include: {
+      user: true,
+    },
+  });
+}
