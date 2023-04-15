@@ -107,15 +107,17 @@ async function seed() {
 
   const userPassword = await bcrypt.hash("1234567890", 10);
   const cookPassword = await bcrypt.hash("1234567890", 10);
+  const name = faker.name.fullName();
 
   const user = await prisma.user.create({
     data: {
       email,
+      name,
       password: userPassword,
+      avatar: faker.image.avatar(),
     },
   });
 
-  const name = faker.name.fullName();
 
   const userProfile = await prisma.userProfile.create({
     data: {
@@ -128,10 +130,8 @@ async function seed() {
 
   const cookProfile = await prisma.cookProfile.create({
     data: {
-      name,
       userId: user.id,
       banner: faker.image.imageUrl(),
-      avatar: faker.image.avatar(),
       description: faker.lorem.paragraph(),
       instagram: faker.internet.url(),
       facebook: faker.internet.url(),

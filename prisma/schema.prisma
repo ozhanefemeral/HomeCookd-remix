@@ -41,6 +41,8 @@ model User {
   updatedAt DateTime @updatedAt
 
   password String
+  avatar   String
+  name    String
 
   subscriptionOrders SubscriptionOrder[]
   subscriptions      Subscription[]
@@ -67,9 +69,7 @@ model CookProfile {
   facebook    String
   youtube     String
   banner      String
-  avatar      String
   description String
-  name        String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

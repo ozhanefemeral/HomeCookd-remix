@@ -32,7 +32,7 @@ const FeaturedSubscriptionHomePage = ({
         <div className="absolute -bottom-10 right-6 mt-10 h-20 w-20">
           <img
             className="h-full w-full rounded-full ring-4 ring-white"
-            src={cook.cookProfile?.avatar || "https://dummyimage.com/256x256"}
+            src={cook.avatar || "https://dummyimage.com/256x256"}
             alt="avatar"
           />
           <div className="slate-900 mt-2 flex items-center justify-center gap-1 text-lg font-bold">
@@ -50,7 +50,7 @@ const FeaturedSubscriptionHomePage = ({
       <div className="flex w-full flex-col gap-4 p-6">
         <div>
           <h1 className="text-2xl font-bold">{subscription.title}</h1>
-          <h3 className="text-sm">{cook.cookProfile?.name}</h3>
+          <h3 className="text-sm">{cook.name}</h3>
         </div>
         {/* green 700, full width, rounded lg button "Order" */}
         <CardTags meal={meal} />

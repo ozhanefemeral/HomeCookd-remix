@@ -8,11 +8,7 @@ import { prisma } from "~/db.server";
 
 const selectHomepageSubscription = Prisma.validator<Prisma.SubscriptionArgs>()({
   include: {
-    cook: {
-      include: {
-        cookProfile: true,
-      },
-    },
+    cook: true,
     meal: true,
   },
 });
@@ -190,7 +186,11 @@ export async function getOrdersBySubscriptionId(id: Subscription["id"]) {
       subscriptionId: id,
     },
     include: {
-      user: true,
+      user: {
+        include: {
+          profile: true,
+        },
+      }
     },
   });
 }
