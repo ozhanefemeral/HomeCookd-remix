@@ -63,7 +63,7 @@ function SubscribeModal({ subscription, open, setOpen, ...otherProps }: Props) {
             <img
               className="h-full w-full rounded-full ring-4 ring-white"
               src={
-                cook!.cookProfile!.avatar || "https://dummyimage.com/256x256"
+                cook!!.avatar || "https://dummyimage.com/256x256"
               }
               alt="avatar"
             />
@@ -80,7 +80,7 @@ function SubscribeModal({ subscription, open, setOpen, ...otherProps }: Props) {
         <div className="flex w-full flex-col gap-4 p-6">
           <div>
             <h1 className="text-2xl font-bold">{subscription!.title}</h1>
-            <h3 className="mb-2 text-sm">{cook!.cookProfile!.name}</h3>
+            <h3 className="mb-2 text-sm">{cook!.name}</h3>
             <CardTags meal={meal} justify="justify-start" />
           </div>
           {/* - button on left to decrement, quantity in middle and + button on right to increment */}

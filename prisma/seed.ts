@@ -1,4 +1,4 @@
-  import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import { faker } from "@faker-js/faker";
 
@@ -118,6 +118,14 @@ async function seed() {
     },
   });
 
+  const user2 = await prisma.user.create({
+    data: {
+      email: "ozzy@example.com",
+      name: "Ozzy Osbourne",
+      password: userPassword,
+      avatar: faker.image.avatar(),
+    },
+  });
 
   const userProfile = await prisma.userProfile.create({
     data: {
@@ -128,9 +136,29 @@ async function seed() {
     },
   });
 
+  const userProfile2 = await prisma.userProfile.create({
+    data: {
+      name: faker.name.fullName(),
+      interests: [...generateRandomTags()],
+      dislikes: [...generateRandomTags()],
+      userId: user2.id,
+    },
+  });
+
   const cookProfile = await prisma.cookProfile.create({
     data: {
       userId: user.id,
+      banner: faker.image.imageUrl(),
+      description: faker.lorem.paragraph(),
+      instagram: faker.internet.url(),
+      facebook: faker.internet.url(),
+      youtube: faker.internet.url(),
+    },
+  });
+
+  const cookProfile2 = await prisma.cookProfile.create({
+    data: {
+      userId: user2.id,
       banner: faker.image.imageUrl(),
       description: faker.lorem.paragraph(),
       instagram: faker.internet.url(),
@@ -221,21 +249,21 @@ async function seed() {
     data: [
       {
         subscriptionId: subscriptions[0].id,
-        quantity: 1,
-        userId: user.id,
+        quantity: faker.datatype.number(5),
+        userId: user2.id,
         // deliveryTime is DateTime
         deliveryTime: faker.date.future(),
       },
       {
         subscriptionId: subscriptions[1].id,
-        quantity: 1,
-        userId: user.id,
+        quantity: faker.datatype.number(5),
+        userId: user2.id,
         deliveryTime: faker.date.future(),
       },
       {
         subscriptionId: subscriptions[2].id,
-        userId: user.id,
-        quantity: 1,
+        userId: user2.id,
+        quantity: faker.datatype.number(5),
         deliveryTime: faker.date.future(),
       },
     ],

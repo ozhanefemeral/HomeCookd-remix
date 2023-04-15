@@ -58,11 +58,7 @@ export async function getFeaturedSubscriptions() {
     // random 3 subscriptions
     take: 3,
     include: {
-      cook: {
-        include: {
-          cookProfile: true,
-        },
-      },
+      cook: true,
       meal: true,
     },
   })) as HomepageSubscription[];
