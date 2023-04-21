@@ -2,7 +2,7 @@ import { Link, useLoaderData, useNavigate } from "@remix-run/react";
 import { json, LoaderArgs } from "@remix-run/server-runtime";
 import { useEffect, useState } from "react";
 import { Button } from "~/components/Button";
-import SubscriptionCard from "~/components/Subscriptions/Cards/HomePageFeatured";
+import SubscriptionCard from "~/components/Subscriptions/Cards/HomeCard";
 import SubscribeModal from "~/components/Subscriptions/SubscribeModal";
 import {
   getFeaturedSubscriptions,
@@ -12,6 +12,7 @@ import {
 
 import AppLogo from "../assets/svg/enfes_logo.svg";
 import { useOptionalCook, useOptionalUser } from "~/utils";
+import FeaturedMealsCarousel from "~/components/Subscriptions/Featured/Carousel";
 
 export async function loader({ request }: LoaderArgs) {
   // const userId = await requireUserId(request);
@@ -81,30 +82,7 @@ export default function Index() {
       )}
       <div className="relative mt-16 sm:pb-16">
         <div className="mx-auto sm:px-6 lg:px-8">
-          <div className="relative sm:overflow-hidden sm:rounded-2xl">
-            {/* each element is FeaturedSubscriptionHomePage */}
-            <h1 className="mb-4 text-center text-4xl font-extrabold tracking-tight sm:text-6xl lg:text-6xl">
-              Today's Specials!
-            </h1>
-
-            <div className="relative grid grid-cols-1 gap-y-12 gap-x-6 p-4 sm:grid-cols-2 lg:grid-cols-3">
-              {featuredSubscriptions.map((subscription) => (
-                <SubscriptionCard
-                  subscription={subscription}
-                  handleSubscribeClick={handleSubscribeClick}
-                  key={subscription.id}
-                />
-              ))}
-            </div>
-
-            {clickedSubscription && (
-              <SubscribeModal
-                open={mealModalEnabled}
-                subscription={clickedSubscription}
-                setOpen={setMealModalEnabled}
-              />
-            )}
-          </div>
+          <FeaturedMealsCarousel subscriptions={featuredSubscriptions} />
         </div>
 
         <div className="relative mt-16 sm:pb-16 md:mx-4">
