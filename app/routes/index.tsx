@@ -12,7 +12,8 @@ import {
 
 import AppLogo from "../assets/svg/enfes_logo.svg";
 import { useOptionalCook, useOptionalUser } from "~/utils";
-import FeaturedMealsCarousel from "~/components/Subscriptions/Featured/Carousel";
+import { FeaturedSubscriptions } from "~/components/Subscriptions/Featured/FeaturedSubscriptions";
+
 
 export async function loader({ request }: LoaderArgs) {
   // const userId = await requireUserId(request);
@@ -80,16 +81,17 @@ export default function Index() {
           />
         </Link>
       )}
-      <div className="relative mt-16 sm:pb-16">
-        <div className="mx-auto sm:px-6 lg:px-8">
-          <FeaturedMealsCarousel subscriptions={featuredSubscriptions} />
+
+      <div className="mt-16 sm:pb-16 w-full">
+        <div className="sm:px-6 lg:px-8">
+          <FeaturedSubscriptions subscriptions={featuredSubscriptions} />
         </div>
 
-        <div className="relative mt-16 sm:pb-16 md:mx-4">
+        <div className="mt-16 sm:pb-16 md:mx-4">
           <h3 className="mb-2 ml-4 text-4xl font-bold tracking-tight">
             Around you 📍
           </h3>
-          <div className="relative grid grid-cols-1 gap-y-12 gap-x-6 p-4  sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ">
+          <div className="grid grid-cols-1 gap-y-12 gap-x-6 p-4  sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ">
             {todaysSubscriptions.map((subscription) => (
               <SubscriptionCard
                 subscription={subscription}
