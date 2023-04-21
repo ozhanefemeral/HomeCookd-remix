@@ -1,12 +1,12 @@
-import { Icon } from "@iconify/react";
 import { Link, useLoaderData, useNavigate } from "@remix-run/react";
 import { json, LoaderArgs } from "@remix-run/server-runtime";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "~/components/Button";
-import FeaturedSubscriptionHomePage from "~/components/Subscriptions/FeaturedSubscriptionHomePage";
+import SubscriptionCard from "~/components/Subscriptions/Cards/HomePageFeatured";
 import SubscribeModal from "~/components/Subscriptions/SubscribeModal";
 import {
   getFeaturedSubscriptions,
+  getTodaysSubscriptions,
   HomepageSubscription,
 } from "~/models/subscription.server";
 
@@ -15,22 +15,25 @@ import { useOptionalCook, useOptionalUser } from "~/utils";
 
 export async function loader({ request }: LoaderArgs) {
   // const userId = await requireUserId(request);
-  const subscriptions = await getFeaturedSubscriptions();
-  return json({ subscriptions });
+  const featuredSubscriptions = await getFeaturedSubscriptions();
+  const todaysSubscriptions = await getTodaysSubscriptions();
+  return json({ featuredSubscriptions, todaysSubscriptions });
 }
 
 export default function Index() {
   const user = useOptionalUser();
   const navigate = useNavigate();
 
-  const { subscriptions } = useLoaderData<typeof loader>();
+  const { featuredSubscriptions, todaysSubscriptions } =
+    useLoaderData<typeof loader>();
   const [clickedSubscription, setClickedSubscription] =
     useState<HomepageSubscription>();
   const [mealModalEnabled, setMealModalEnabled] = useState(false);
 
   useEffect(() => {
     // console.log("subscriptions", subscriptions);
-  }, [subscriptions]);
+    console.log("featuredSubscriptions", featuredSubscriptions);
+  }, [featuredSubscriptions]);
 
   function handleSubscribeClick(subscription: HomepageSubscription) {
     // if we have user show meal modal
@@ -77,7 +80,7 @@ export default function Index() {
         </Link>
       )}
       <div className="relative mt-16 sm:pb-16">
-        <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+        <div className="mx-auto sm:px-6 lg:px-8">
           <div className="relative sm:overflow-hidden sm:rounded-2xl">
             {/* each element is FeaturedSubscriptionHomePage */}
             <h1 className="mb-4 text-center text-4xl font-extrabold tracking-tight sm:text-6xl lg:text-6xl">
@@ -85,8 +88,8 @@ export default function Index() {
             </h1>
 
             <div className="relative grid grid-cols-1 gap-y-12 gap-x-6 p-4 sm:grid-cols-2 lg:grid-cols-3">
-              {subscriptions.map((subscription) => (
-                <FeaturedSubscriptionHomePage
+              {featuredSubscriptions.map((subscription) => (
+                <SubscriptionCard
                   subscription={subscription}
                   handleSubscribeClick={handleSubscribeClick}
                   key={subscription.id}
@@ -101,6 +104,21 @@ export default function Index() {
                 setOpen={setMealModalEnabled}
               />
             )}
+          </div>
+        </div>
+
+        <div className="relative mt-16 sm:pb-16 md:mx-4">
+          <h3 className="mb-2 ml-4 text-4xl font-bold tracking-tight">
+            Around you 📍
+          </h3>
+          <div className="relative grid grid-cols-1 gap-y-12 gap-x-6 p-4  sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ">
+            {todaysSubscriptions.map((subscription) => (
+              <SubscriptionCard
+                subscription={subscription}
+                handleSubscribeClick={handleSubscribeClick}
+                key={subscription.id}
+              />
+            ))}
           </div>
         </div>
       </div>

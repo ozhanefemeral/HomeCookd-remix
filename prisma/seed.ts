@@ -207,7 +207,7 @@ async function seed() {
   await prisma.subscription.createMany({
     data: [
       {
-        title: "Tavuk Sote",
+        title: fakeMealNames[0],
         price: Number(faker.commerce.price(5, 40, 0)),
         orderHours: ["12:00", "18:00"],
         limit: 10,
@@ -215,7 +215,7 @@ async function seed() {
         mealId: meals[0].id,
       },
       {
-        title: "Domates Çorbası",
+        title: fakeMealNames[4],
         price: Number(faker.commerce.price(5, 40, 0)),
         orderHours: ["12:00", "18:00"],
         limit: 10,
@@ -223,7 +223,7 @@ async function seed() {
         mealId: meals[1].id,
       },
       {
-        title: "Kuru Fasulye",
+        title: fakeMealNames[8],
         price: Number(faker.commerce.price(5, 40, 0)),
         orderHours: ["12:00", "18:00"],
         limit: 10,
@@ -249,21 +249,27 @@ async function seed() {
     data: [
       {
         subscriptionId: subscriptions[0].id,
-        quantity: faker.datatype.number(5),
+        quantity: faker.datatype.number({
+          min: 1, max: 5,
+        }),
         userId: user2.id,
         // deliveryTime is DateTime
         deliveryTime: faker.date.future(),
       },
       {
         subscriptionId: subscriptions[1].id,
-        quantity: faker.datatype.number(5),
+        quantity: faker.datatype.number({
+          min: 1, max: 5,
+        }),
         userId: user2.id,
         deliveryTime: faker.date.future(),
       },
       {
         subscriptionId: subscriptions[2].id,
         userId: user2.id,
-        quantity: faker.datatype.number(5),
+        quantity: faker.datatype.number({
+          min: 1, max: 5,
+        }),
         deliveryTime: faker.date.future(),
       },
     ],
