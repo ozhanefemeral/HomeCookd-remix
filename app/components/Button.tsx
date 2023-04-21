@@ -16,6 +16,7 @@ export function Button({
   text,
   icon,
   small,
+  className,
   ...otherProps
 }: ButtonProps) {
   return (
@@ -38,7 +39,8 @@ export function Button({
         {
           "p-0": variant === "tertiary",
           "px-2 py-1": variant === "primary" || variant === "secondary",
-        }
+        },
+        className
       )}
       {...otherProps}
     >
