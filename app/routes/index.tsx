@@ -88,13 +88,8 @@ export default function Index() {
         </Link>
       )}
 
-      <div className="pt-24 w-full sm:pb-16">
-        <div className="sm:px-6 lg:px-8 pb-2">
-          <FeaturedSubscriptions
-            subscriptions={featuredSubscriptions}
-            handleSubscribeClick={handleSubscribeClick}
-          />
-        </div>
+      <div className="mt-16 w-full sm:pb-16">
+        <FeaturedSubscriptions subscriptions={featuredSubscriptions} />
 
         <div className="sm:py-8 md:px-4">
           <h3 className="mb-2 ml-4 text-4xl font-bold tracking-tight">

@@ -79,7 +79,7 @@ export const FeaturedSubscriptions = ({
   handleSubscribeClick,
 }: Props) => {
   return (
-    <div className="flex flex-nowrap gap-4 overflow-x-auto pb-4">
+    <div className="flex flex-nowrap gap-8 overflow-x-auto pb-4 w-screen px-2 md:px-4">
       {subscriptions.map((subscription, index) => (
         <FeaturedCard
           subscription={subscription}
