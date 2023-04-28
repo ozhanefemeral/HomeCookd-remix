@@ -140,16 +140,15 @@ export async function getSubscriptionOrderById(id: SubscriptionOrder["id"]) {
   });
 }
 
-
 export async function getSubscriptionsByUserId(id: User["id"]) {
-  const subscriptions = await prisma.subscription.findMany({
+  const subscriptions = (await prisma.subscription.findMany({
     where: {
       cookedBy: id,
     },
     include: {
       meal: true,
-    }
-  }) as HomepageSubscription[];
+    },
+  })) as HomepageSubscription[];
 
   const reservations = await prisma.subscriptionOrder.findMany({
     where: {
@@ -173,7 +172,6 @@ export async function getSubscriptionsByUserId(id: User["id"]) {
 
     return _s;
   });
-  
 }
 
 export async function getOrdersBySubscriptionId(id: Subscription["id"]) {
@@ -186,17 +184,12 @@ export async function getOrdersBySubscriptionId(id: Subscription["id"]) {
         include: {
           profile: true,
         },
-      }
+      },
     },
   });
 }
 
-
-  // get 3 subscriptions from today, and optional pagination
-export async function getTodaysSubscriptions(
-  page = 0,
-  limit = 3
-) {
+export async function getTodaysSubscriptions(page = 0, limit = 8) {
   const subscriptions = (await prisma.subscription.findMany({
     where: {
       dateStart: {

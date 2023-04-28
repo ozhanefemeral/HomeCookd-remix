@@ -164,6 +164,8 @@ export const formatMealTag = (tag: MealTags): string => {
       return "Trending";
     case MealTags.HIGH_PROTEIN:
       return "High Protein";
+      case MealTags.LOW_FAT:
+      return "Low Fat";
     default:
       return "";
   }
@@ -210,6 +212,11 @@ export const mealTags = [
     emoji: "🏋️‍♂️",
     label: "High Protein",
   },
+  {
+    tag: MealTags.LOW_FAT,
+    emoji: "🥗",
+    label: "Low Fat",
+  }
 ];
 
 export const daysAbbrCapitalized = {

@@ -25,6 +25,7 @@ enum MealTags {
   NEW
   BIG_PORTION
   HIGH_PROTEIN
+  LOW_FAT
 }
 
 enum AddressType {

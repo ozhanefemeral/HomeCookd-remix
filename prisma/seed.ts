@@ -4,15 +4,15 @@ import { faker } from "@faker-js/faker";
 
 // generate 50 fake meal names
 const fakeMealNames = [
+  "Chicken Fajitas",
   "Chicken and Broccoli",
   "Chicken and Rice",
   "Chicken Curry",
-  "Chicken Fajitas",
-  "Stir Fry",
+  "Pierogi Ukrainskie",
   "Tacos",
   "Chicken Tikka Masala",
   "Tortilla Soup",
-  "Vegetable Soup",
+  "Chicken Noodle Soup",
   "Dumplings",
   "oodles",
   "Pasta",
@@ -68,6 +68,7 @@ enum MealTags {
   NEW = "NEW",
   BIG_PORTION = "BIG_PORTION",
   HIGH_PROTEIN = "HIGH_PROTEIN",
+  LOW_FAT = "LOW_FAT",
 }
 
 const mealTags: MealTags[] = [
@@ -78,6 +79,7 @@ const mealTags: MealTags[] = [
   MealTags.NEW,
   MealTags.BIG_PORTION,
   MealTags.HIGH_PROTEIN,
+  MealTags.LOW_FAT,
 ];
 
 const generateRandomTags = () => {
@@ -109,45 +111,86 @@ async function seed() {
   const cookPassword = await bcrypt.hash("1234567890", 10);
   const name = faker.name.fullName();
 
-  const user = await prisma.user.create({
+  // const user = await prisma.user.create({
+  //   data: {
+  //     email,
+  //     name,
+  //     password: userPassword,
+  //     avatar: faker.image.avatar(),
+  //   },
+  // });
+
+  // const user2 = await prisma.user.create({
+  //   data: {
+  //     email: "ozzy@example.com",
+  //     name: "Ozzy Osbourne",
+  //     password: userPassword,
+  //     avatar: faker.image.avatar(),
+  //   },
+  // });
+
+  // const userProfile = await prisma.userProfile.create({
+  //   data: {
+  //     name,
+  //     interests: [...generateRandomTags()],
+  //     dislikes: [...generateRandomTags()],
+  //     userId: user.id,
+  //   },
+  // });
+
+  // const userProfile2 = await prisma.userProfile.create({
+  //   data: {
+  //     name: faker.name.fullName(),
+  //     interests: [...generateRandomTags()],
+  //     dislikes: [...generateRandomTags()],
+  //     userId: user2.id,
+  //   },
+  // });
+
+  // const cookProfile = await prisma.cookProfile.create({
+  //   data: {
+  //     userId: user.id,
+  //     banner: faker.image.imageUrl(),
+  //     description: faker.lorem.paragraph(),
+  //     instagram: faker.internet.url(),
+  //     facebook: faker.internet.url(),
+  //     youtube: faker.internet.url(),
+  //   },
+  // });
+
+  // const cookProfile2 = await prisma.cookProfile.create({
+  //   data: {
+  //     userId: user2.id,
+  //     banner: faker.image.imageUrl(),
+  //     description: faker.lorem.paragraph(),
+  //     instagram: faker.internet.url(),
+  //     facebook: faker.internet.url(),
+  //     youtube: faker.internet.url(),
+  //   },
+  // });
+
+  // a generic user, userProfile, and cookProfile based on a spanish chef
+  const spanishUser = await prisma.user.create({
     data: {
-      email,
-      name,
+      email: "spanish@example.com",
+      name: "Jose Andres",
       password: userPassword,
       avatar: faker.image.avatar(),
     },
   });
 
-  const user2 = await prisma.user.create({
+  const spanishUserProfile = await prisma.userProfile.create({
     data: {
-      email: "ozzy@example.com",
-      name: "Ozzy Osbourne",
-      password: userPassword,
-      avatar: faker.image.avatar(),
-    },
-  });
-
-  const userProfile = await prisma.userProfile.create({
-    data: {
-      name,
+      name: "Jose Andres",
       interests: [...generateRandomTags()],
       dislikes: [...generateRandomTags()],
-      userId: user.id,
+      userId: spanishUser.id,
     },
   });
 
-  const userProfile2 = await prisma.userProfile.create({
+  const spanishCookProfile = await prisma.cookProfile.create({
     data: {
-      name: faker.name.fullName(),
-      interests: [...generateRandomTags()],
-      dislikes: [...generateRandomTags()],
-      userId: user2.id,
-    },
-  });
-
-  const cookProfile = await prisma.cookProfile.create({
-    data: {
-      userId: user.id,
+      userId: spanishUser.id,
       banner: faker.image.imageUrl(),
       description: faker.lorem.paragraph(),
       instagram: faker.internet.url(),
@@ -156,14 +199,81 @@ async function seed() {
     },
   });
 
-  const cookProfile2 = await prisma.cookProfile.create({
+  // a generic user, userProfile, and cookProfile based on a Polish chef
+  const polishUser = await prisma.user.create({
     data: {
-      userId: user2.id,
+      email: "polish@example.com",
+      name: "Dominika",
+      password: userPassword,
+      avatar: faker.image.avatar(),
+    },
+  });
+
+  const polishUserProfile = await prisma.userProfile.create({
+    data: {
+      name: "Dominika",
+      interests: [...generateRandomTags()],
+      dislikes: [...generateRandomTags()],
+      userId: polishUser.id,
+    },
+  });
+
+  const polishCookProfile = await prisma.cookProfile.create({
+    data: {
+      userId: polishUser.id,
       banner: faker.image.imageUrl(),
       description: faker.lorem.paragraph(),
       instagram: faker.internet.url(),
       facebook: faker.internet.url(),
       youtube: faker.internet.url(),
+    },
+  });
+
+  // a generic user, userProfile, and cookProfile based on a Lebanese chef
+  const lebaneseUser = await prisma.user.create({
+    data: {
+      email: "lebanese@example.com",
+      name: "Kamal Mouzawak",
+      password: userPassword,
+      avatar: faker.image.avatar(),
+    },
+  });
+
+  const lebaneseUserProfile = await prisma.userProfile.create({
+    data: {
+      name: "Kamal Mouzawak",
+      interests: [...generateRandomTags()],
+      dislikes: [...generateRandomTags()],
+      userId: lebaneseUser.id,
+    },
+  });
+
+  const lebaneseCookProfile = await prisma.cookProfile.create({
+    data: {
+      userId: lebaneseUser.id,
+      banner: faker.image.imageUrl(),
+      description: faker.lorem.paragraph(),
+      instagram: faker.internet.url(),
+      facebook: faker.internet.url(),
+      youtube: faker.internet.url(),
+    },
+  });
+
+  const consumerUser = await prisma.user.create({
+    data: {
+      email: "consumer@example.com",
+      name: "Consumer",
+      password: userPassword,
+      avatar: faker.image.avatar(),
+    },
+  });
+
+  const consumerUserProfile = await prisma.userProfile.create({
+    data: {
+      name: "Consumer",
+      interests: [...generateRandomTags()],
+      dislikes: [...generateRandomTags()],
+      userId: consumerUser.id,
     },
   });
 
@@ -172,34 +282,51 @@ async function seed() {
       {
         title: "Home",
         body: faker.address.streetAddress() + " " + faker.address.city(),
-        userProfileId: userProfile.id,
+        userProfileId: consumerUserProfile.id,
         type: "HOME",
       },
       {
         title: "Work",
         body: faker.address.streetAddress() + " " + faker.address.city(),
-        userProfileId: userProfile.id,
+        userProfileId: consumerUserProfile.id,
         type: "WORK",
       },
       {
         title: "Other",
         body: faker.address.streetAddress() + " " + faker.address.city(),
-        userProfileId: userProfile.id,
+        userProfileId: consumerUserProfile.id,
         type: "OTHER",
       },
     ],
   });
 
   await prisma.meal.createMany({
-    // create 10 fake meals
-    data: Array.from({ length: 10 }).map((_, i) => ({
-      title: fakeMealNames[i * 4],
-      price: Number(faker.commerce.price(5, 40, 0)),
-      cookedBy: user.id,
-      image: faker.image.food(640, 480, true),
-      // create random 3 tags for each meal
-      tags: [...generateRandomTags()],
-    })),
+    data: [
+      {
+        title: "Classic Tacos",
+        price: 28,
+        cookedBy: spanishUser.id,
+        image:
+          "https://images.unsplash.com/photo-1615870216519-2f9fa575fa5c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1632&q=80",
+        tags: [MealTags.NEW, MealTags.TRENDING, MealTags.HIGH_PROTEIN],
+      },
+      {
+        title: "Pierogi Ukraińskie",
+        price: 42,
+        cookedBy: polishUser.id,
+        image:
+          "https://images.unsplash.com/photo-1662116663511-9d79d49da183?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1632&q=80",
+        tags: [MealTags.VEGETARIAN, MealTags.TRENDING, MealTags.LOW_FAT],
+      },
+      {
+        title: "Falafel",
+        price: 32,
+        cookedBy: lebaneseUser.id,
+        image:
+          "https://images.unsplash.com/photo-1547058881-aa0edd92aab3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
+        tags: [MealTags.VEGETARIAN, MealTags.LOW_FAT, MealTags.HIGH_PROTEIN],
+      },
+    ],
   });
 
   const meals = await prisma.meal.findMany();
@@ -207,27 +334,27 @@ async function seed() {
   await prisma.subscription.createMany({
     data: [
       {
-        title: fakeMealNames[0],
-        price: Number(faker.commerce.price(5, 40, 0)),
+        title: "Taco Tuesday",
+        price: 28,
         orderHours: ["12:00", "18:00"],
-        limit: 10,
-        cookedBy: user.id,
+        limit: 40,
+        cookedBy: spanishUser.id,
         mealId: meals[0].id,
       },
       {
-        title: fakeMealNames[4],
-        price: Number(faker.commerce.price(5, 40, 0)),
+        title: "Pierogi Ukraińskie",
+        price: 42,
         orderHours: ["12:00", "18:00"],
         limit: 10,
-        cookedBy: user.id,
+        cookedBy: polishUser.id,
         mealId: meals[1].id,
       },
       {
-        title: fakeMealNames[8],
-        price: Number(faker.commerce.price(5, 40, 0)),
-        orderHours: ["12:00", "18:00"],
+        title: "Late Night Falafel",
+        price: 32,
+        orderHours: ["21:00", "23:00"],
         limit: 10,
-        cookedBy: user.id,
+        cookedBy: lebaneseUser.id,
         mealId: meals[2].id,
       },
     ],
@@ -250,25 +377,28 @@ async function seed() {
       {
         subscriptionId: subscriptions[0].id,
         quantity: faker.datatype.number({
-          min: 1, max: 5,
+          min: 1,
+          max: 5,
         }),
-        userId: user2.id,
+        userId: consumerUser.id,
         // deliveryTime is DateTime
         deliveryTime: faker.date.future(),
       },
       {
         subscriptionId: subscriptions[1].id,
         quantity: faker.datatype.number({
-          min: 1, max: 5,
+          min: 1,
+          max: 5,
         }),
-        userId: user2.id,
+        userId: consumerUser.id,
         deliveryTime: faker.date.future(),
       },
       {
         subscriptionId: subscriptions[2].id,
-        userId: user2.id,
+        userId: consumerUser.id,
         quantity: faker.datatype.number({
-          min: 1, max: 5,
+          min: 1,
+          max: 5,
         }),
         deliveryTime: faker.date.future(),
       },
