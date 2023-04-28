@@ -5,6 +5,7 @@ import { Button } from "~/components/Button";
 import SubscriptionCard from "~/components/Subscriptions/Cards/HomeCard";
 import SubscribeModal from "~/components/Subscriptions/SubscribeModal";
 import {
+  getExpiringSubscriptions,
   getFeaturedSubscriptions,
   getTodaysSubscriptions,
   HomepageSubscription,
@@ -19,7 +20,12 @@ export async function loader({ request }: LoaderArgs) {
   // const userId = await requireUserId(request);
   const featuredSubscriptions = await getFeaturedSubscriptions();
   const todaysSubscriptions = await getTodaysSubscriptions();
-  return json({ featuredSubscriptions, todaysSubscriptions });
+  const expiringSubscriptions = await getExpiringSubscriptions();
+  return json({
+    featuredSubscriptions,
+    todaysSubscriptions,
+    expiringSubscriptions,
+  });
 }
 
 export default function Index() {
@@ -32,7 +38,7 @@ export default function Index() {
     setSubscription: setClickedSubscription,
   } = useSubscribeModalContext();
 
-  const { featuredSubscriptions, todaysSubscriptions } =
+  const { featuredSubscriptions, todaysSubscriptions, expiringSubscriptions } =
     useLoaderData<typeof loader>();
 
   function handleSubscribeClick(subscription: HomepageSubscription) {
@@ -82,15 +88,15 @@ export default function Index() {
         </Link>
       )}
 
-      <div className="mt-16 w-full sm:pb-16">
-        <div className="sm:px-6 lg:px-8">
+      <div className="pt-24 w-full sm:pb-16">
+        <div className="sm:px-6 lg:px-8 pb-2">
           <FeaturedSubscriptions
             subscriptions={featuredSubscriptions}
             handleSubscribeClick={handleSubscribeClick}
           />
         </div>
 
-        <div className="mt-16 sm:pb-16 md:mx-4">
+        <div className="sm:py-8 md:px-4">
           <h3 className="mb-2 ml-4 text-4xl font-bold tracking-tight">
             Around you 📍
           </h3>
@@ -104,6 +110,23 @@ export default function Index() {
             ))}
           </div>
         </div>
+
+        {expiringSubscriptions.length > 0 && (
+          <div className="md:px-4">
+            <h3 className="mb-2 ml-4 text-4xl font-bold tracking-tight">
+              Don't miss out 🤩
+            </h3>
+            <div className="grid grid-cols-1 gap-y-12 gap-x-6 p-4  sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ">
+              {expiringSubscriptions.map((subscription) => (
+                <SubscriptionCard
+                  subscription={subscription}
+                  handleSubscribeClick={handleSubscribeClick}
+                  key={subscription.id}
+                />
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </main>
   );

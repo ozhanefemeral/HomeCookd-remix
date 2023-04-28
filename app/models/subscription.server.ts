@@ -226,3 +226,48 @@ export async function getTodaysSubscriptions(page = 0, limit = 8) {
     return _s;
   });
 }
+
+// a function for getting subscriptions that orderHours is less than 2 hours
+// orderHours are type string[] such as ["12:00", "13:00", "14:00"]
+// so we need to get the current hour and check if it is less than 2 hours
+export async function getExpiringSubscriptions(page = 0, limit = 8) {
+  const hourNow = new Date().getHours();
+  const hourRange = [`${hourNow}:00`, `${hourNow + 1}:00`, `${hourNow + 2}:00`];
+  console.log(hourRange);
+
+  const subscriptions = (await prisma.subscription.findMany({
+    where: {
+      orderHours: {
+        hasSome: hourRange.map((h) => h.toString()),
+      },
+    },
+    include: {
+      cook: true,
+      meal: true,
+    },
+    skip: page * limit,
+    take: limit,
+  })) as HomepageSubscription[];
+
+  const reservations = await prisma.subscriptionOrder.findMany({
+    where: {
+      subscriptionId: {
+        in: subscriptions.map((s) => s.id),
+      },
+    },
+    select: {
+      subscriptionId: true,
+      quantity: true,
+    },
+  });
+
+  return subscriptions.map((s) => {
+    const _s = s;
+
+    _s.reservationCount = reservations
+      .filter((r) => r.subscriptionId === s.id)
+      .reduce((acc, r) => acc + r.quantity, 0);
+
+    return _s;
+  });
+}
