@@ -13,6 +13,7 @@ import {
 import AppLogo from "../assets/svg/enfes_logo.svg";
 import { useOptionalCook, useOptionalUser } from "~/utils";
 import { FeaturedSubscriptions } from "~/components/Subscriptions/Featured/FeaturedSubscriptions";
+import { useSubscribeModalContext } from "~/contexts/SubscribeModalContext";
 
 export async function loader({ request }: LoaderArgs) {
   // const userId = await requireUserId(request);
@@ -24,17 +25,15 @@ export async function loader({ request }: LoaderArgs) {
 export default function Index() {
   const user = useOptionalUser();
   const navigate = useNavigate();
+  const {
+    isEnabled: mealModalEnabled,
+    subscription: clickedSubscription,
+    setIsEnabled: setMealModalEnabled,
+    setSubscription: setClickedSubscription,
+  } = useSubscribeModalContext();
 
   const { featuredSubscriptions, todaysSubscriptions } =
     useLoaderData<typeof loader>();
-  const [clickedSubscription, setClickedSubscription] =
-    useState<HomepageSubscription>();
-  const [mealModalEnabled, setMealModalEnabled] = useState(false);
-
-  useEffect(() => {
-    // console.log("subscriptions", subscriptions);
-    console.log("featuredSubscriptions", featuredSubscriptions);
-  }, [featuredSubscriptions]);
 
   function handleSubscribeClick(subscription: HomepageSubscription) {
     if (user) {

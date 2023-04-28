@@ -16,6 +16,10 @@ import { getCook, getUser, getUserProfile } from "./session.server";
 import tailwindStylesheetUrl from "./styles/tailwind.css";
 import reactTooltipStylesheetUrl from "react-tooltip/dist/react-tooltip.css";
 import { getUserProfileByUserId } from "./models/user.server";
+import {
+  SubscribeModalContext,
+  useSubscribeModalContext,
+} from "./contexts/SubscribeModalContext";
 // import 'react-tooltip/dist/react-tooltip.css'
 
 export const links: LinksFunction = () => {
@@ -41,19 +45,43 @@ export async function loader({ request }: LoaderArgs) {
   });
 }
 
-export default function App() {
+function Modals() {
+  const {
+    isEnabled: mealModalEnabled,
+    subscription: clickedSubscription,
+    setIsEnabled: setMealModalEnabled,
+  } = useSubscribeModalContext();
+
   return (
-    <html lang="en" className="h-full">
-      <head>
-        <Meta />
-        <Links />
-      </head>
-      <body className="h-full">
-        <Outlet />
-        <ScrollRestoration />
-        <Scripts />
-        <LiveReload />
-      </body>
-    </html>
+    <>
+      {mealModalEnabled && (
+        <SubscribeModal
+          subscription={clickedSubscription}
+          isEnabled={mealModalEnabled}
+          setIsEnabled={setMealModalEnabled}
+        />
+      )}
+    </>
+  );
+}
+
+export default function App() {
+  const subscribeModalContext = useSubscribeModalContext();
+  return (
+    <SubscribeModalContext.Provider value={subscribeModalContext}>
+      <html lang="en" className="h-full">
+        <head>
+          <Meta />
+          <Links />
+        </head>
+        <body className="h-full">
+          <Modals />
+          <Outlet />
+          <ScrollRestoration />
+          <Scripts />
+          <LiveReload />
+        </body>
+      </html>
+    </SubscribeModalContext.Provider>
   );
 }
