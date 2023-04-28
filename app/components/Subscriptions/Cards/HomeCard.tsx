@@ -5,6 +5,7 @@ import CardTags from "../CardTags";
 import ReserveCount from "../ReserveCount";
 import { Button } from "../../Button";
 import { Icon } from "@iconify/react";
+import { Tooltip } from "react-tooltip";
 
 type Props = {
   subscription: HomepageSubscription;
@@ -35,10 +36,20 @@ const FeaturedSubscriptionHomePage = ({
             src={cook.avatar || "https://dummyimage.com/256x256"}
             alt="avatar"
           />
-          <div className="slate-900 mt-2 flex items-center justify-center gap-1 text-lg font-bold">
+          <div
+            className="slate-900 mt-2 flex items-center justify-center gap-1 text-lg font-bold"
+            id={subscription.id}
+          >
             <Icon icon="ic:round-access-time" width={18} />
             {subscription.orderHours[0]}
           </div>
+          <Tooltip place="left" anchorId={subscription.id} className="tooltip">
+            {subscription.orderHours.map((hour) => (
+              <div className="text-md flex items-center justify-center gap-1 font-bold">
+                {hour}
+              </div>
+            ))}
+          </Tooltip>
         </div>
       </div>
 

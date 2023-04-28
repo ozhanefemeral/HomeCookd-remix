@@ -15,6 +15,7 @@ import { useMemo } from "react";
 import { getCook, getUser, getUserProfile } from "./session.server";
 import tailwindStylesheetUrl from "./styles/tailwind.css";
 import reactTooltipStylesheetUrl from "react-tooltip/dist/react-tooltip.css";
+import siteStylesheetUrl from "./assets/css/styles.css";
 import { getUserProfileByUserId } from "./models/user.server";
 import {
   SubscribeModalContext,
@@ -26,6 +27,7 @@ export const links: LinksFunction = () => {
   return [
     { rel: "stylesheet", href: tailwindStylesheetUrl },
     { rel: "stylesheet", href: reactTooltipStylesheetUrl },
+    { rel: "stylesheet", href: siteStylesheetUrl },
   ];
 };
 
