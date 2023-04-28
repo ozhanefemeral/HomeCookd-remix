@@ -14,7 +14,6 @@ import AppLogo from "../assets/svg/enfes_logo.svg";
 import { useOptionalCook, useOptionalUser } from "~/utils";
 import { FeaturedSubscriptions } from "~/components/Subscriptions/Featured/FeaturedSubscriptions";
 
-
 export async function loader({ request }: LoaderArgs) {
   // const userId = await requireUserId(request);
   const featuredSubscriptions = await getFeaturedSubscriptions();
@@ -38,8 +37,6 @@ export default function Index() {
   }, [featuredSubscriptions]);
 
   function handleSubscribeClick(subscription: HomepageSubscription) {
-    // if we have user show meal modal
-    // else, redirect to login
     if (user) {
       setClickedSubscription(subscription);
       setMealModalEnabled(true);
@@ -50,9 +47,13 @@ export default function Index() {
 
   return (
     <main className="relative min-h-screen bg-white sm:flex sm:items-center sm:justify-center">
-      {/* 
-      button to navigate to /cook/me on top rightmost corner
-      */}
+      {mealModalEnabled && (
+        <SubscribeModal
+          subscription={clickedSubscription}
+          isEnabled={mealModalEnabled}
+          setIsEnabled={setMealModalEnabled}
+        />
+      )}
       <Link
         to="/"
         style={{
@@ -82,9 +83,12 @@ export default function Index() {
         </Link>
       )}
 
-      <div className="mt-16 sm:pb-16 w-full">
+      <div className="mt-16 w-full sm:pb-16">
         <div className="sm:px-6 lg:px-8">
-          <FeaturedSubscriptions subscriptions={featuredSubscriptions} />
+          <FeaturedSubscriptions
+            subscriptions={featuredSubscriptions}
+            handleSubscribeClick={handleSubscribeClick}
+          />
         </div>
 
         <div className="mt-16 sm:pb-16 md:mx-4">

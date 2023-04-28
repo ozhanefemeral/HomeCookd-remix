@@ -11,11 +11,11 @@ import { Button } from "../Button";
 
 type Props = {
   subscription: HomepageSubscription;
-  open: boolean;
-  setOpen: (open: boolean) => void;
+  isEnabled: boolean;
+  setIsEnabled: (open: boolean) => void;
 } & ModalBaseProps;
 
-function SubscribeModal({ subscription, open, setOpen, ...otherProps }: Props) {
+function SubscribeModal({ subscription, isEnabled, setIsEnabled, ...otherProps }: Props) {
   const [quantity, setQuantity] = useState(1);
   const fetcher = useFetcher();
 
@@ -28,17 +28,17 @@ function SubscribeModal({ subscription, open, setOpen, ...otherProps }: Props) {
 
   useEffect(() => {
     setQuantity(1);
-    if (open && subscription) {
-      setOpen(true);
+    if (isEnabled && subscription) {
+      setIsEnabled(true);
     } else {
-      setOpen(false);
+      setIsEnabled(false);
     }
-  }, [subscription, open]);
+  }, [subscription, isEnabled]);
 
   return (
     <ModalBase
-      open={open}
-      setOpen={setOpen}
+      open={isEnabled}
+      setOpen={setIsEnabled}
       trigger={
         <button className="w-full rounded-lg bg-amber-600 py-2 text-white">
           Sipariş Ver ({totalPrice}₺)

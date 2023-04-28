@@ -5,13 +5,15 @@ import { Button } from "~/components/Button";
 
 type Props = {
   subscriptions: HomepageSubscription[];
+  handleSubscribeClick: (subscription: HomepageSubscription) => void;
 };
 
 type CardProps = {
   subscription: HomepageSubscription;
+  handleSubscribeClick: (subscription: HomepageSubscription) => void;
 };
 
-const FeaturedCard = ({ subscription }: CardProps) => {
+const FeaturedCard = ({ subscription, handleSubscribeClick }: CardProps) => {
   return (
     <div className="flex flex-col rounded-lg border md:flex-row">
       <div className="h-auto w-96 md:mb-0">
@@ -34,20 +36,30 @@ const FeaturedCard = ({ subscription }: CardProps) => {
 
         <div className="mt-auto">
           <CardTags meal={subscription.meal} justify="justify-start" />
-          <Button text="Subscribe" variant="primary" className="mt-4 w-full" />
+          <Button
+            text="Subscribe"
+            variant="primary"
+            className="mt-4 w-full"
+            onClick={() => handleSubscribeClick(subscription)}
+          />
         </div>
       </div>
     </div>
   );
 };
 
-export const FeaturedSubscriptions = ({ subscriptions }: Props) => {
+export const FeaturedSubscriptions = ({
+  subscriptions,
+  handleSubscribeClick,
+}: Props) => {
   return (
     <div className="flex flex-nowrap gap-4 overflow-x-auto pb-4">
       {subscriptions.map((subscription, index) => (
-        // <div className="">
-        <FeaturedCard subscription={subscription} key={subscription.id} />
-        // </div>
+        <FeaturedCard
+          subscription={subscription}
+          key={subscription.id}
+          handleSubscribeClick={handleSubscribeClick}
+        />
       ))}
     </div>
   );
