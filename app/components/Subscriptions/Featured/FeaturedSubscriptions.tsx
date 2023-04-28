@@ -20,7 +20,7 @@ const FeaturedCard = ({ subscription, handleSubscribeClick }: CardProps) => {
         <img
           src={subscription.meal.image}
           alt={subscription.title}
-          className="rounded-tl-lg rounded-bl-lg"
+          className="rounded-tl-lg rounded-bl-lg h-full object-cover"
         />
       </div>
       <div className="flex w-full flex-[3] flex-col gap-4 p-4">
