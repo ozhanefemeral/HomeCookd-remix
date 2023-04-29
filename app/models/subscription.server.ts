@@ -233,7 +233,6 @@ export async function getTodaysSubscriptions(page = 0, limit = 8) {
 export async function getExpiringSubscriptions(page = 0, limit = 8) {
   const hourNow = new Date().getHours();
   const hourRange = [`${hourNow}:00`, `${hourNow + 1}:00`, `${hourNow + 2}:00`];
-  console.log(hourRange);
 
   const subscriptions = (await prisma.subscription.findMany({
     where: {
