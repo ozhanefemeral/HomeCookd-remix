@@ -45,7 +45,7 @@ const FeaturedSubscriptionHomePage = ({
           </div>
           <Tooltip place="left" anchorId={subscription.id} className="tooltip">
             {subscription.orderHours.map((hour) => (
-              <div className="text-md flex items-center justify-center gap-1 font-bold">
+              <div className="text-md flex items-center justify-center gap-1 font-bold" key={hour}>
                 {hour}
               </div>
             ))}

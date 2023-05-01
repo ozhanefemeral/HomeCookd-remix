@@ -56,7 +56,7 @@ const FeaturedCard = ({
             className="tooltip"
           >
             {subscription.orderHours.map((hour) => (
-              <div className="text-lg flex items-center justify-center gap-1 font-bold">
+              <div className="text-lg flex items-center justify-center gap-1 font-bold" key={hour}>
                 {hour}
               </div>
             ))}
