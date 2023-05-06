@@ -33,10 +33,10 @@ function subscriptions() {
     <div>
       <Button text="Go Back" onClick={goBack} variant="tertiary" />
 
-      <h1 className="text-2xl font-bold my-4">Subscriptions</h1>
+      <h1 className="my-4 text-2xl font-bold">Subscriptions</h1>
 
-      <div className="flex flex-wrap">
-        <table className="md:w-1/2 w-full">
+      <div className="flex flex-col-reverse md:flex-row gap-2">
+        {/* <table className="w-full md:w-1/2">
           <thead>
             <tr>
               <th className="text-left">Image</th>
@@ -46,46 +46,51 @@ function subscriptions() {
               <th className="text-left">Actions</th>
             </tr>
           </thead>
-          <tbody>
-            {subscriptions.map((subscription) => (
-              <tr key={subscription.id}>
-                <td>
-                  <img
-                    src={subscription.meal.image}
-                    alt={subscription.title}
-                    width={64}
-                  />
-                </td>
-                <td>{subscription.title}</td>
-                <td>{subscription.price}</td>
-                <td>
-                  {subscription.reservationCount}/{subscription.limit}
-                </td>
-                <td className="flex gap-2">
-                  <Button
-                    text="Repeat"
-                    icon="fluent:food-pizza-20-filled"
-                    variant="primary"
-                  />
-                  <Button
-                    text="View Orders"
-                    variant="secondary"
-                    icon="mdi:people"
-                    onClick={() => viewOrders(subscription)}
-                  />
-                  <Button
-                    text="View Meal"
-                    icon="ph:magnifying-glass-bold"
-                    variant="secondary"
-                    onClick={() => viewMeal(subscription)}
-                  />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+          <tbody></tbody>
+        </table> */}
 
-        <div className="">
+        <div className="flex w-full flex-col md:w-1/2">
+          {subscriptions.map((subscription) => (
+            <div
+              className="flex flex-row gap-4 align-middle"
+              key={subscription.id}
+            >
+              <div>
+                <img
+                  src={subscription.meal.image}
+                  alt={subscription.title}
+                  width={64}
+                />
+              </div>
+              <div>{subscription.title}</div>
+              <div>{subscription.price}</div>
+              <div>
+                {subscription.reservationCount}/{subscription.limit}
+              </div>
+              <div className="flex gap-2">
+                <Button
+                  text="Repeat"
+                  icon="fluent:food-pizza-20-filled"
+                  variant="primary"
+                />
+                <Button
+                  text="View Orders"
+                  variant="secondary"
+                  icon="mdi:people"
+                  onClick={() => viewOrders(subscription)}
+                />
+                <Button
+                  text="View Meal"
+                  icon="ph:magnifying-glass-bold"
+                  variant="secondary"
+                  onClick={() => viewMeal(subscription)}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="flex w-full md:w-1/2">
           <Outlet />
         </div>
       </div>

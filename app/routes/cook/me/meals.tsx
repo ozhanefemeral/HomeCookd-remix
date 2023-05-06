@@ -44,42 +44,37 @@ function meals() {
 
       <h1 className="my-4 text-2xl font-bold">Meals</h1>
 
-      <div className="flex">
-        <table className="w-full md:w-1/2 border-spacing-2 border-separate">
-          <thead>
-            <tr>
-              <th className="text-left">Image</th>
-              <th className="text-left">Title</th>
-              <th className="text-left">Price</th>
-              <th className="text-left">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {meals.map((meal) => (
-              <tr key={meal.id} className={`${isViewingMeal(meal) ? "border-2 border-primary" : ""} p-2`}>
-                <td>
-                  <img src={meal.image} alt={meal.title} width={64} />
-                </td>
-                <td>{meal.title}</td>
-                <td>{meal.price}</td>
-                <td className="flex h-full items-center gap-2">
-                  <Button
-                    text="Publish"
-                    icon="fluent:food-pizza-20-filled"
-                    variant="primary"
-                  />
-                  <Button
-                    text="View"
-                    icon="ph:magnifying-glass-bold"
-                    variant="secondary"
-                    onClick={() => viewMeal(meal)}
-                  />
-                  <Button text="Delete" variant="tertiary" />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className="flex flex-col-reverse gap-2 md:flex-row">
+        <div className="flex w-full flex-col md:w-1/2">
+          {meals.map((meal) => (
+            <div
+              key={meal.id}
+              className={`${
+                isViewingMeal(meal) ? "border-2 border-primary" : ""
+              } p-2 flex flex-row gap-4 align-middle`}
+            >
+              <div>
+                <img src={meal.image} alt={meal.title} width={64} />
+              </div>
+              <div>{meal.title}</div>
+              <div>{meal.price}</div>
+              <div className="flex h-full items-center gap-2 ml-auto">
+                <Button
+                  text="Publish"
+                  icon="fluent:food-pizza-20-filled"
+                  variant="primary"
+                />
+                <Button
+                  text="View"
+                  icon="ph:magnifying-glass-bold"
+                  variant="secondary"
+                  onClick={() => viewMeal(meal)}
+                />
+                <Button text="Delete" variant="tertiary" />
+              </div>
+            </div>
+          ))}
+        </div>
 
         <div className="w-full md:w-1/2">
           <Outlet />
