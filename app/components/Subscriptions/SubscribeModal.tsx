@@ -3,7 +3,6 @@ import { useFetcher } from "@remix-run/react";
 import { ActionArgs, json } from "@remix-run/server-runtime";
 import React, { useEffect, useState } from "react";
 import { HomepageSubscription } from "~/models/subscription.server";
-import { SubscriptionWithCookAndMeal } from "~/models/subscriptionMeal.server";
 import { ModalBase, ModalBaseProps } from "../Modals/ModalBase";
 import CardTags from "./CardTags";
 import ReserveCount from "./ReserveCount";

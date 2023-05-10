@@ -3,10 +3,6 @@ import { json, redirect } from "@remix-run/node";
 import { useNavigate } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import { orderSubscription } from "~/models/subscription.server";
-import {
-  createSubscriptionMeal,
-  DeliveryDay,
-} from "~/models/subscriptionMeal.server";
 import { getUserId, getUserProfile } from "~/session.server";
 import { getUser } from "../session.server";
 

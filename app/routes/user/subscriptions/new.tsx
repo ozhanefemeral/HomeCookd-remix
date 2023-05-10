@@ -1,4 +1,4 @@
-import { Meal, SubscriptionMeal } from "@prisma/client";
+import { Meal } from "@prisma/client";
 import { Link, useFetcher, useLoaderData } from "@remix-run/react";
 import { ActionArgs, json } from "@remix-run/server-runtime";
 import { useEffect, useState } from "react";

@@ -372,7 +372,7 @@ async function seed() {
 
   const mealsData = await prisma.meal.findMany();
 
-  const subscriptionMeals = await prisma.subscriptionOrder.createMany({
+  const subscriptionOrders = await prisma.subscriptionOrder.createMany({
     data: [
       {
         subscriptionId: subscriptions[0].id,

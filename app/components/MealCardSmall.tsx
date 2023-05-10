@@ -1,4 +1,3 @@
-import { SubscriptionMeal } from "@prisma/client";
 import { Link, NavLink, useFetcher } from "@remix-run/react";
 import { MealWithCook } from "~/models/meals.server";
 import { mapMealTagToEmoji, sortMealTags } from "~/utils";

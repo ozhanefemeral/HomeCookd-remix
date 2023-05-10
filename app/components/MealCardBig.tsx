@@ -1,5 +1,3 @@
-import { SubscriptionMeal } from "@prisma/client";
-import { NavLink } from "@remix-run/react";
 import { MealWithCook } from "~/models/meals.server";
 
 export default function MealCardBig({ meal }: { meal: MealWithCook }) {
