@@ -6,6 +6,25 @@ import { prisma } from "~/db.server";
 //   reservationCount?: number;
 // };
 
+export type createSubscriptionInput = {
+  title: Subscription["title"];
+  orderHours: Subscription["orderHours"];
+  limit: Subscription["limit"];
+  meal: Subscription["mealId"];
+  price: Subscription["price"];
+  cook: Subscription["cookedBy"];
+};
+
+const selectSubscriptionWithMeal = Prisma.validator<Prisma.SubscriptionArgs>()({
+  include: {
+    meal: true,
+  },
+});
+
+export type SubscriptionWithMeal = Prisma.SubscriptionGetPayload<
+  typeof selectSubscriptionWithMeal
+>;
+
 const selectHomepageSubscription = Prisma.validator<Prisma.SubscriptionArgs>()({
   include: {
     cook: true,
@@ -38,17 +57,16 @@ export async function deleteSubscription(id: Subscription["id"]) {
   });
 }
 
-export async function createSubscription(body: any) {
+export async function createSubscription(subscription: createSubscriptionInput) {
   return prisma.subscription.create({
     data: {
-      title: body.title,
-      orderHours: body.orderHours,
-      limit: body.limit,
-      mealId: body.cookId,
-      cookedBy: body.cookId,
-      meal: body.meal,
-      price: body.price,
-    },
+      title: subscription.title,
+      orderHours: subscription.orderHours,
+      limit: subscription.limit,
+      mealId: subscription.meal,
+      price: subscription.price,
+      cookedBy: subscription.cook,
+    }
   });
 }
 
@@ -268,5 +286,16 @@ export async function getExpiringSubscriptions(page = 0, limit = 8) {
       .reduce((acc, r) => acc + r.quantity, 0);
 
     return _s;
+  });
+}
+
+export async function getSubscriptionWithMeal(id: Subscription["id"]) {
+  return prisma.subscription.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      meal: true,
+    },
   });
 }

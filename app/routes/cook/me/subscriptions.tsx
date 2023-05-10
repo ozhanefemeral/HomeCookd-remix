@@ -29,13 +29,18 @@ function subscriptions() {
     navigate(`/cook/me/meals/${subscription.meal.id}`);
   }
 
+  function repeat(subscription: HomepageSubscription) {
+    navigate(`repeat/${subscription.id}`);
+  }
+
   return (
     <div>
+      <h1 className="my-4 text-2xl font-bold">Subscriptions</h1>
       <Button text="Go Back" onClick={goBack} variant="tertiary" />
 
-      <h1 className="my-4 text-2xl font-bold">Subscriptions</h1>
+      <hr className="my-4" />
 
-      <div className="flex flex-col-reverse md:flex-row gap-2">
+      <div className="flex flex-col md:flex-row">
         {/* <table className="w-full md:w-1/2">
           <thead>
             <tr>
@@ -72,6 +77,7 @@ function subscriptions() {
                   text="Repeat"
                   icon="fluent:food-pizza-20-filled"
                   variant="primary"
+                  onClick={() => repeat(subscription)}
                 />
                 <Button
                   text="View Orders"
