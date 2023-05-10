@@ -27,13 +27,14 @@ function $subscriptionId() {
     navigate("/cook/me/subscriptions");
   }
 
+  const isEmpty = orders.length === 0;
+
   return (
-    <div>
-      {/* <Button text="Go Back" onClick={goBack} variant="tertiary" /> */}
-
-      <section className="border">
-        <h1 className="text-2xl font-bold">{subscription.title} Details</h1>
-
+    <section className="w-full border p-4">
+      <h1 className="text-2xl font-bold">{subscription.title} Details</h1>
+      <hr className="my-4" />
+      {isEmpty && <p className="text-center">No orders yet 👀</p>}
+      {!isEmpty && (
         <table className="w-full border-separate border-spacing-2">
           <thead>
             <tr>
@@ -60,8 +61,8 @@ function $subscriptionId() {
             ))}
           </tbody>
         </table>
-      </section>
-    </div>
+      )}
+    </section>
   );
 }
 

@@ -1,10 +1,8 @@
 import { useLoaderData } from "@remix-run/react";
 import { LoaderArgs } from "@remix-run/server-runtime";
-import React from "react";
 import invariant from "tiny-invariant";
 import CreateSubscriptionForm from "~/components/Subscriptions/CreateSubscriptionForm";
 import {
-  getSubscriptionById,
   getSubscriptionWithMeal,
 } from "~/models/subscription.server";
 import { requireUser } from "~/session.server";
@@ -21,7 +19,7 @@ export async function loader({ request, params }: LoaderArgs) {
   return { user, subscription };
 }
 
-function repeat() {
+function createSubscription() {
   const data = useLoaderData<typeof loader>();
   const { user, subscription } = data;
 
@@ -34,4 +32,4 @@ function repeat() {
   );
 }
 
-export default repeat;
+export default createSubscription;

@@ -29,8 +29,8 @@ function subscriptions() {
     navigate(`/cook/me/meals/${subscription.meal.id}`);
   }
 
-  function repeat(subscription: HomepageSubscription) {
-    navigate(`repeat/${subscription.id}`);
+  function createSubscription(subscription: HomepageSubscription) {
+    navigate(`createSubscription/${subscription.id}`);
   }
 
   return (
@@ -54,7 +54,7 @@ function subscriptions() {
           <tbody></tbody>
         </table> */}
 
-        <div className="flex w-full flex-col md:w-1/2">
+        <div className="flex w-full flex-col md:w-1/2 gap-4">
           {subscriptions.map((subscription) => (
             <div
               className="flex flex-row gap-4 align-middle"
@@ -67,7 +67,7 @@ function subscriptions() {
                   width={64}
                 />
               </div>
-              <div>{subscription.title}</div>
+              <div className="font-bold">{subscription.title}</div>
               <div>{subscription.price}</div>
               <div>
                 {subscription.reservationCount}/{subscription.limit}
@@ -77,7 +77,7 @@ function subscriptions() {
                   text="Repeat"
                   icon="fluent:food-pizza-20-filled"
                   variant="primary"
-                  onClick={() => repeat(subscription)}
+                  onClick={() => createSubscription(subscription)}
                 />
                 <Button
                   text="View Orders"
