@@ -42,6 +42,7 @@ function $subscriptionId() {
               <th className="text-left">Name</th>
               <th className="text-left">Quantity</th>
               <th className="text-left">Total Price</th>
+              <th className="text-left">Address</th>
             </tr>
           </thead>
           <tbody>
@@ -57,6 +58,7 @@ function $subscriptionId() {
                 <td>{order.user.profile?.name}</td>
                 <td>{order.quantity}</td>
                 <td>{order.quantity * subscription?.price}</td>
+                <td>{order.address.body}</td>
               </tr>
             ))}
           </tbody>

@@ -277,7 +277,7 @@ async function seed() {
     },
   });
 
-  const addresses = await prisma.address.createMany({
+  await prisma.address.createMany({
     data: [
       {
         title: "Home",
@@ -298,6 +298,12 @@ async function seed() {
         type: "OTHER",
       },
     ],
+  });
+
+  const addresses = await prisma.address.findMany({
+    where: {
+      userProfileId: consumerUserProfile.id,
+    },
   });
 
   await prisma.meal.createMany({
@@ -383,6 +389,7 @@ async function seed() {
         userId: consumerUser.id,
         // deliveryTime is DateTime
         deliveryTime: faker.date.future(),
+        addressId: addresses[0].id,
       },
       {
         subscriptionId: subscriptions[1].id,
@@ -392,6 +399,7 @@ async function seed() {
         }),
         userId: consumerUser.id,
         deliveryTime: faker.date.future(),
+        addressId: addresses[1].id,
       },
       {
         subscriptionId: subscriptions[2].id,
@@ -401,6 +409,7 @@ async function seed() {
           max: 5,
         }),
         deliveryTime: faker.date.future(),
+        addressId: addresses[2].id,
       },
     ],
   });

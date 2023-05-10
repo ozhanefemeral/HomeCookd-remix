@@ -203,6 +203,7 @@ export async function getOrdersBySubscriptionId(id: Subscription["id"]) {
           profile: true,
         },
       },
+      address: true,
     },
   });
 }
