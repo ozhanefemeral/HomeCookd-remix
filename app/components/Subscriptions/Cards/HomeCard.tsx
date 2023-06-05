@@ -71,7 +71,7 @@ const FeaturedSubscriptionHomePage = ({
           <Button
             onClick={() => handleSubscribeClick(subscription!)}
             disabled={!canOrder}
-            text="Sipariş Ver"
+            text="Subscribe"
             className="mt-4 w-full"
           />
         </div>

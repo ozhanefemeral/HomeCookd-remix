@@ -45,7 +45,7 @@ function SubscribeModal({
       setOpen={setIsEnabled}
       trigger={
         <button className="w-full rounded-lg bg-amber-600 py-2 text-white">
-          Sipariş Ver ({totalPrice}₺)
+          Subscribe ({totalPrice}₺)
         </button>
       }
     >
@@ -121,7 +121,7 @@ function SubscribeModal({
             </div>
           </div>
 
-          <Button type="submit" text={`Sipariş Ver (${totalPrice}₺)`} />
+          <Button type="submit" text={`Subscribe (${totalPrice}₺)`} />
         </div>
       </fetcher.Form>
     </ModalBase>
