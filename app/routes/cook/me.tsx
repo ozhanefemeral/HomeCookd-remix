@@ -1,6 +1,7 @@
 import { LoaderArgs, redirect } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { Form, Link, NavLink, Outlet, useLoaderData } from "@remix-run/react";
+import { Form, Link, NavLink, Outlet, useLoaderData, useNavigate } from "@remix-run/react";
+import { Button } from "~/components/Button";
 import { useUser } from "~/utils";
 
 // TODO
@@ -8,6 +9,15 @@ import { useUser } from "~/utils";
 
 export default function SubscriptionsPage() {
   const user = useUser();
+  const navigate = useNavigate();
+
+  function goToSubscriptions(){
+    navigate("/cook/me/subscriptions")
+  }
+
+  function goToMeals(){
+    navigate("/cook/me/meals")
+  }
 
   return (
     <div className="flex h-full min-h-screen flex-col">
@@ -24,22 +34,13 @@ export default function SubscriptionsPage() {
       </header>
 
       <main className="p-4">
-        <ul>
+        <ul className="flex flex-col gap-2">
           <li>
-            <Link
-              to="/cook/me/subscriptions"
-              className="text-3xl font-bold text-primary"
-            >
-              Your subscriptions
-            </Link>
+              {/* replace Link with Button */}
+              <Button text="Your subscriptions" onClick={goToSubscriptions} variant="primary" />
           </li>
           <li>
-            <Link
-              to="/cook/me/meals"
-              className="text-3xl font-bold text-primary"
-            >
-              Your meals
-            </Link>
+            <Button text="Your meals" onClick={goToMeals} variant="primary" />
           </li>
         </ul>
 
