@@ -25,20 +25,20 @@ export function Button({
         "flex items-center justify-center rounded-md font-medium text-white",
         {
           "bg-primary": variant === "primary",
-          "bg-transparent": variant === "tertiary" || variant === "secondary",
+          "bg-transparent": variant !== "primary",
         },
         {
           underline: variant === "tertiary",
         },
         {
-          "!text-primary": variant === "tertiary" || variant === "secondary",
+          "!text-primary": variant !== "primary",
         },
         {
-          "border-2 border-primary": variant === "secondary",
+          "border-2 border-primary": variant !== "tertiary",
         },
         {
           "p-0": variant === "tertiary",
-          "px-2 py-1": variant === "primary" || variant === "secondary",
+          "px-2 py-1 box-border": variant !== "tertiary",
         },
         className
       )}
