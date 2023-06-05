@@ -18,23 +18,24 @@ export async function loader({ request, params }: LoaderArgs) {
 function $mealId() {
   const data = useLoaderData<typeof loader>();
   const { meal } = data;
-  
+
   return (
-    <section>
-      <h1 className="text-2xl font-bold">
+    <section className="border p-4">
+      <div className="flex gap-4">
         <img src={meal.image} className="w-2/4" alt="" />
-        {meal.title} Details</h1>
-      <hr className="my-4" />
+        <div>
+          <h1 className="w-full text-center text-2xl font-bold">
+            {meal.title} Details
+          </h1>
+          <p className="mb-2">
+            Tags: <CardTags meal={meal} justify="justify-start" wrap="wrap" />
+          </p>
 
-      <p className="mb-2">
-        Tags: <CardTags meal={meal} justify="justify-start" />
-      </p>
-
-      <p className="mb-2">Published: {meal.totalPublished}</p>
-      <p className="mb-2">Ordered: {meal.totalOrdered}</p>
-      <p className="mb-2">Earned: {meal.totalEarned}</p>
-
-
+          <p className="mb-2">Published: {meal.totalPublished}</p>
+          <p className="mb-2">Ordered: {meal.totalOrdered}</p>
+          <p className="mb-2">Earned: {meal.totalEarned}</p>
+        </div>
+      </div>
     </section>
   );
 }

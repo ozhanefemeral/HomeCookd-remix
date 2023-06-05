@@ -40,24 +40,26 @@ function meals() {
 
   return (
     <div>
-      <Button text="Go Back" onClick={goBack} variant="tertiary" />
 
       <h1 className="my-4 text-2xl font-bold">Meals</h1>
+      <Button text="Go Back" onClick={goBack} variant="tertiary" />
 
-      <div className="flex flex-col-reverse gap-2 md:flex-row">
+      <hr className="my-4" />
+
+      <div className="flex flex-col-reverse gap-4 md:flex-row">
         <div className="flex w-full flex-col md:w-1/2">
           {meals.map((meal) => (
             <div
               key={meal.id}
-              className={`${
-                isViewingMeal(meal) ? "border-2 border-primary" : ""
-              } p-2 flex flex-row gap-4 align-middle`}
+              className={`p-2 flex flex-row gap-4 items-center rounded-md ${
+                isViewingMeal(meal) ? "bg-orange-100" : ""
+              }`}
             >
               <div>
                 <img src={meal.image} alt={meal.title} width={64} />
               </div>
               <div>{meal.title}</div>
-              <div>{meal.price}</div>
+              <div>{meal.price}$</div>
               <div className="flex h-full items-center gap-2 ml-auto">
                 <Button
                   text="Publish"

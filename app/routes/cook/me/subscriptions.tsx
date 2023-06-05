@@ -4,7 +4,7 @@ import { LoaderArgs, json } from "@remix-run/node";
 import { getUser } from "~/session.server";
 import invariant from "tiny-invariant";
 import { getSubscriptionsByUserId } from "~/models/subscription.server";
-import { Outlet, useLoaderData, useNavigate } from "@remix-run/react";
+import { Outlet, useLoaderData, useMatches, useNavigate } from "@remix-run/react";
 import { Button } from "~/components/Button";
 import { HomepageSubscription } from "~/models/subscription.server";
 export async function loader({ request }: LoaderArgs) {
@@ -18,8 +18,11 @@ function subscriptions() {
   const data = useLoaderData<typeof loader>();
   const { subscriptions } = data;
 
+  const matches = useMatches();
   const navigate = useNavigate();
   const goBack = () => navigate("/cook/me");
+
+  const { subscriptionId } = matches[matches.length - 1].params;
 
   function viewOrders(subscription: HomepageSubscription) {
     navigate(`/cook/me/subscriptions/${subscription.id}`);
@@ -33,6 +36,11 @@ function subscriptions() {
     navigate(`createSubscription/${subscription.id}`);
   }
 
+  function isSelectedSubscription(subscription: HomepageSubscription) {
+    return subscriptionId === subscription.id;
+  }
+
+
   return (
     <div>
       <h1 className="my-4 text-2xl font-bold">Subscriptions</h1>
@@ -40,7 +48,7 @@ function subscriptions() {
 
       <hr className="my-4" />
 
-      <div className="flex flex-col md:flex-row">
+      <div className="flex flex-col md:flex-row gap-4">
         {/* <table className="w-full md:w-1/2">
           <thead>
             <tr>
@@ -53,11 +61,15 @@ function subscriptions() {
           </thead>
           <tbody></tbody>
         </table> */}
+        
 
-        <div className="flex w-full flex-col md:w-1/2 gap-4">
+        <div className="flex w-full flex-col gap-4 md:w-1/2">
+          {/* headers for each field */}
           {subscriptions.map((subscription) => (
             <div
-              className="flex flex-row gap-4 align-middle"
+              className={`p-2 flex flex-row gap-4 items-center rounded-md ${
+                isSelectedSubscription(subscription) ? "bg-orange-100" : ""
+              }`}
               key={subscription.id}
             >
               <div>
@@ -68,11 +80,11 @@ function subscriptions() {
                 />
               </div>
               <div className="font-bold">{subscription.title}</div>
-              <div>{subscription.price}</div>
-              <div>
-                {subscription.reservationCount}/{subscription.limit}
+              <div>{subscription.price}$</div>
+              <div>Reserved:
+                {subscription.reservationCount}/{subscription.limit} 
               </div>
-              <div className="flex gap-2">
+              <div className="flex h-full items-center gap-2 ml-auto">
                 <Button
                   text="Repeat"
                   icon="fluent:food-pizza-20-filled"
@@ -80,13 +92,13 @@ function subscriptions() {
                   onClick={() => createSubscription(subscription)}
                 />
                 <Button
-                  text="View Orders"
+                  text="Orders"
                   variant="secondary"
                   icon="mdi:people"
                   onClick={() => viewOrders(subscription)}
                 />
                 <Button
-                  text="View Meal"
+                  text="Meal"
                   icon="ph:magnifying-glass-bold"
                   variant="secondary"
                   onClick={() => viewMeal(subscription)}
