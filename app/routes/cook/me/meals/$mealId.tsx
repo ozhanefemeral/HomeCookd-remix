@@ -60,7 +60,7 @@ function $mealId() {
       )}
 
       <div className="flex justify-end gap-4">
-        <Button text="Edit" />
+        <Button text="Edit" icon="clarity:edit-solid" variant="primary" />
         <Button text="Delete" variant="tertiary" />
       </div>
     </section>
