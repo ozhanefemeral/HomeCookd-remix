@@ -66,7 +66,7 @@ const FeaturedCard = ({
             text="Subscribe"
             variant="primary"
             className="mt-4 w-full"
-            onClick={() => handleSubscribeClick(subscription)}
+            onClick={() => handleSubscribeClick(subscription!)}
           />
         </div>
       </div>
