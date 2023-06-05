@@ -5,6 +5,7 @@ import { prisma } from "~/db.server";
 const selectMealDetail = Prisma.validator<Prisma.MealArgs>()({
   include: {
     cook: true,
+    nutrition: true,
   },
 });
 
@@ -73,6 +74,9 @@ export async function getMealDetails(id: Meal["id"]) {
     where: {
       id,
     },
+    include: {
+      nutrition: true,
+    }
   }) as MealDetail;
 
   const totalPublished = await prisma.subscription.findMany({

@@ -84,6 +84,7 @@ model Meal {
   title String
   price Int
   image String
+  description String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -93,12 +94,30 @@ model Meal {
   subscriptions Subscription[]
 
   tags MealTags[]
+  nutrition MealNutrition?
+}
+
+model MealNutrition {
+  id    String @id @default(cuid())
+  title String
+  ingredients String[]
+  calories Int
+  protein Int
+  fat Int
+  carbs Int
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  meal   Meal   @relation(fields: [mealId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  mealId String @unique
 }
 
 model Subscription {
   id    String @id @default(cuid())
   title String
   price Int
+  catchphrase String?
 
   limit Int
 

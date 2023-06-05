@@ -40,7 +40,6 @@ function meals() {
 
   return (
     <div>
-
       <h1 className="my-4 text-2xl font-bold">Meals</h1>
       <Button text="Go Back" onClick={goBack} variant="tertiary" />
 
@@ -51,7 +50,7 @@ function meals() {
           {meals.map((meal) => (
             <div
               key={meal.id}
-              className={`p-2 flex flex-row gap-4 items-center rounded-md ${
+              className={`flex flex-row items-center gap-4 rounded-md p-2 ${
                 isViewingMeal(meal) ? "bg-orange-100" : ""
               }`}
             >
@@ -60,7 +59,7 @@ function meals() {
               </div>
               <div>{meal.title}</div>
               <div>{meal.price}$</div>
-              <div className="flex h-full items-center gap-2 ml-auto">
+              <div className="ml-auto flex h-full items-center gap-4">
                 <Button
                   text="Publish"
                   icon="fluent:food-pizza-20-filled"
@@ -72,13 +71,15 @@ function meals() {
                   variant="secondary"
                   onClick={() => viewMeal(meal)}
                 />
-                <Button text="Delete" variant="tertiary" />
               </div>
             </div>
           ))}
         </div>
 
-        <div className="w-full md:w-1/2">
+        <div className="flex w-full flex-col gap-4 md:w-1/2">
+          <div className="flex justify-end">
+            <Button text="Create Meal" icon="ph:plus-bold" variant="primary" />
+          </div>
           <Outlet />
         </div>
       </div>

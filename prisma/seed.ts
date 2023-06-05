@@ -306,16 +306,44 @@ async function seed() {
     },
   });
 
+  await prisma.meal.create({
+    data: {
+      title: "Classic Tacos",
+      price: 28,
+      cookedBy: spanishUser.id,
+      image:
+        "https://images.unsplash.com/photo-1615870216519-2f9fa575fa5c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1632&q=80",
+      tags: [MealTags.NEW, MealTags.TRENDING, MealTags.HIGH_PROTEIN],
+      description:
+        "Indulge in the essence of Mexico with our delicious homemade Tacos. Each Taco is a pocket of joy, handcrafted with love and filled to the brim with an exquisite blend of flavors. The crunch of the freshly toasted tortilla meets the succulence of seasoned ground beef, perfectly complemented by the zestiness of fresh tomatoes and lettuce. Topped off with creamy shredded cheese, a dollop of homemade guacamole, and a splash of tangy salsa, this Mexican delight will transport you to the vibrant streets of Mexico. Make your mealtime a fiesta with our scrumptious, soul-satisfying Tacos!",
+      nutrition: {
+        create: {
+          title: "Homemade Taco",
+          ingredients: [
+            "Soft Corn Tortillas",
+            "Ground Beef",
+            "Taco Seasoning",
+            "Romaine Lettuce",
+            "Fresh Tomatoes",
+            "Red Onion",
+            "Jalapenos",
+            "Shredded Cheddar Cheese",
+            "Guacamole",
+            "Salsa",
+            "Sour Cream",
+            "Cilantro",
+          ],
+          calories: 260,
+          protein: 12,
+          fat: 14,
+          carbs: 20,
+        },
+      },
+    },
+  });
+
   await prisma.meal.createMany({
     data: [
-      {
-        title: "Classic Tacos",
-        price: 28,
-        cookedBy: spanishUser.id,
-        image:
-          "https://images.unsplash.com/photo-1615870216519-2f9fa575fa5c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1632&q=80",
-        tags: [MealTags.NEW, MealTags.TRENDING, MealTags.HIGH_PROTEIN],
-      },
       {
         title: "Pierogi Ukraińskie",
         price: 42,
@@ -323,6 +351,8 @@ async function seed() {
         image:
           "https://images.unsplash.com/photo-1662116663511-9d79d49da183?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1632&q=80",
         tags: [MealTags.VEGETARIAN, MealTags.TRENDING, MealTags.LOW_FAT],
+        description:
+          "Zanurz się w smaku prawdziwej polskiej tradycji z naszymi domowymi pierogami. Te starannie przygotowane kieszonki szczęścia są wypełnione najwyższej jakości składnikami, takimi jak kremowy ser, świeże ziemniaki i delikatna cebula, a potem perfekcyjnie ugotowane do osiągnięcia idealnego balansu między chrupiącym brzegiem a miękkim wnętrzem. Każdy gryz jest świadectwem rzemiosła i przynosi komfort, który tylko domowe gotowanie może zapewnić. Odkryj prawdziwy smak Polski z naszymi pysznymi pierogami!",
       },
       {
         title: "Falafel",
@@ -331,6 +361,8 @@ async function seed() {
         image:
           "https://images.unsplash.com/photo-1547058881-aa0edd92aab3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
         tags: [MealTags.VEGETARIAN, MealTags.LOW_FAT, MealTags.HIGH_PROTEIN],
+        description:
+          "Delve into an aromatic journey to the Middle East with our savory Falafel. These golden, crunchy gems are expertly crafted from a blend of chickpeas, aromatic herbs, and a symphony of spices, fried to a crispy perfection while retaining a tender, flavorful interior. Tucked in a warm pita bread with a generous splash of tangy tahini sauce, crisp lettuce, fresh tomatoes, and pickled cucumbers, each bite is an explosion of rich, earthy flavors and textures. This vegan delight is not just a meal; it's a taste adventure that brings the vibrant spirit of Middle Eastern street food right to your doorstep. Try our Falafel – it's more than food, it's an experience!",
       },
     ],
   });
@@ -346,6 +378,7 @@ async function seed() {
         limit: 40,
         cookedBy: spanishUser.id,
         mealId: meals[0].id,
+        catchphrase: "Taste the homemade fiesta with our Tacos!",
       },
       {
         title: "Pierogi Ukraińskie",
@@ -354,6 +387,7 @@ async function seed() {
         limit: 10,
         cookedBy: polishUser.id,
         mealId: meals[1].id,
+        catchphrase: "Odkryj smak Ukrainy w naszych Pierogach",
       },
       {
         title: "Late Night Falafel",
@@ -362,6 +396,7 @@ async function seed() {
         limit: 10,
         cookedBy: lebaneseUser.id,
         mealId: meals[2].id,
+        catchphrase: "Spice up your nights!",
       },
     ],
   });
