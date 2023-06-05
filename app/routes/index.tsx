@@ -88,7 +88,7 @@ export default function Index() {
         </Link>
       )}
 
-      <div className="mt-16 w-full sm:pb-16">
+      <div className="pt-20 w-full sm:pb-16">
         <FeaturedSubscriptions subscriptions={featuredSubscriptions} />
 
         <div className="sm:py-8 md:px-4">
