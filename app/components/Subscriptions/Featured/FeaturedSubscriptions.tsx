@@ -40,7 +40,10 @@ const FeaturedCard = ({
           />
           <span className="text-lg font-medium">{subscription.cook.name}</span>
         </div>
-        <h2 className="text-3xl font-bold">{subscription.title}</h2>
+        <div>
+          <h2 className="text-2xl font-bold">{subscription.title}</h2>
+          <p className="text-md">{subscription.catchphrase}</p>
+        </div>
 
         <div className="mt-auto">
           <div

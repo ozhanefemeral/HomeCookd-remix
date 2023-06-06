@@ -67,6 +67,7 @@ const FeaturedSubscriptionHomePage = ({
 
         {/* align button to bottom */}
         <div className="mt-auto">
+          <p className="text-sm my-2 text-center">{subscription.catchphrase}</p>
           <CardTags meal={meal} />
           <Button
             onClick={() => handleSubscribeClick(subscription!)}
