@@ -32,8 +32,6 @@ export default function Index() {
   const user = useOptionalUser();
   const navigate = useNavigate();
   const {
-    isEnabled: mealModalEnabled,
-    subscription: clickedSubscription,
     setIsEnabled: setMealModalEnabled,
     setSubscription: setClickedSubscription,
   } = useSubscribeModalContext();
@@ -52,13 +50,6 @@ export default function Index() {
 
   return (
     <main className="relative min-h-screen bg-white sm:flex sm:items-center sm:justify-center">
-      {mealModalEnabled && (
-        <SubscribeModal
-          subscription={clickedSubscription}
-          isEnabled={mealModalEnabled}
-          setIsEnabled={setMealModalEnabled}
-        />
-      )}
       <Link
         to="/"
         style={{

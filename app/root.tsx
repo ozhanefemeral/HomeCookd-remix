@@ -18,9 +18,10 @@ import reactTooltipStylesheetUrl from "react-tooltip/dist/react-tooltip.css";
 import siteStylesheetUrl from "./assets/css/styles.css";
 import { getUserProfileByUserId } from "./models/user.server";
 import {
-  SubscribeModalContext,
+  SubscribeModalProvider,
   useSubscribeModalContext,
 } from "./contexts/SubscribeModalContext";
+import SubscribeModal from "./components/Subscriptions/SubscribeModal";
 // import 'react-tooltip/dist/react-tooltip.css'
 
 export const links: LinksFunction = () => {
@@ -49,18 +50,18 @@ export async function loader({ request }: LoaderArgs) {
 
 function Modals() {
   const {
-    isEnabled: mealModalEnabled,
-    subscription: clickedSubscription,
-    setIsEnabled: setMealModalEnabled,
+    subscription,
+    isEnabled: subscribeModalEnabled,
+    setIsEnabled: setSubscribeModalEnabled,
   } = useSubscribeModalContext();
 
   return (
     <>
-      {mealModalEnabled && (
+      {subscribeModalEnabled && (
         <SubscribeModal
-          subscription={clickedSubscription}
-          isEnabled={mealModalEnabled}
-          setIsEnabled={setMealModalEnabled}
+          subscription={subscription}
+          isEnabled={subscribeModalEnabled}
+          setIsEnabled={setSubscribeModalEnabled}
         />
       )}
     </>
@@ -68,9 +69,8 @@ function Modals() {
 }
 
 export default function App() {
-  const subscribeModalContext = useSubscribeModalContext();
   return (
-    <SubscribeModalContext.Provider value={subscribeModalContext}>
+    <SubscribeModalProvider>
       <html lang="en" className="h-full">
         <head>
           <Meta />
@@ -84,6 +84,6 @@ export default function App() {
           <LiveReload />
         </body>
       </html>
-    </SubscribeModalContext.Provider>
+    </SubscribeModalProvider>
   );
 }

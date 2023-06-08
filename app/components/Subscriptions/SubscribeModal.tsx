@@ -7,27 +7,21 @@ import { ModalBase, ModalBaseProps } from "../Modals/ModalBase";
 import CardTags from "./CardTags";
 import ReserveCount from "./ReserveCount";
 import { Button } from "../Button";
+import { useSubscribeModalContext } from "~/contexts/SubscribeModalContext";
 
 type Props = {
-  subscription: HomepageSubscription;
-  isEnabled: boolean;
-  setIsEnabled: (open: boolean) => void;
 } & ModalBaseProps;
 
-function SubscribeModal({
-  subscription,
-  isEnabled,
-  setIsEnabled,
-  ...otherProps
-}: Props) {
+function SubscribeModal({ ...otherProps }: Props) {
   const [quantity, setQuantity] = useState(1);
   const fetcher = useFetcher();
+  const { subscription, isEnabled, setIsEnabled } = useSubscribeModalContext();
 
   const { meal, cook } = subscription;
 
   const totalPrice = meal?.price! * quantity;
   const canIncrement =
-    quantity + subscription?.reservationCount! < subscription?.limit!;
+    quantity + subscription.reservationCount! < subscription.limit!;
   const canDecrement = quantity > 1;
 
   useEffect(() => {
