@@ -43,7 +43,7 @@ function subscriptions() {
 
   return (
     <div>
-      <h1 className="my-4 text-2xl font-bold">Subscriptions</h1>
+      <h1 className="mb-4 text-2xl font-bold">Subscriptions</h1>
       <Button text="Go Back" onClick={goBack} variant="tertiary" />
 
       <hr className="my-4" />
