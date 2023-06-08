@@ -10,6 +10,8 @@ import {
 } from "@remix-run/react";
 import { Button } from "~/components/Button";
 import { Meal } from "@prisma/client";
+import { useModalContext } from "~/contexts/ModalContext";
+import CreateMealForm from "~/components/Meals/CreateMealForm";
 
 export async function loader({ request }: LoaderArgs) {
   const user = await getUser(request);
@@ -29,6 +31,7 @@ function meals() {
 
   const navigate = useNavigate();
   const goBack = () => navigate("/cook/me");
+  const { isEnabled, setIsEnabled, setModalChildren } = useModalContext();
 
   function viewMeal(meal: Meal) {
     navigate(`/cook/me/meals/${meal.id}`);
@@ -38,10 +41,23 @@ function meals() {
     return mealId === meal.id;
   }
 
+  function handleCreateMeal() {
+    setIsEnabled(true);
+    setModalChildren(<CreateMealForm />);
+  }
+
   return (
     <div>
-      <h1 className="my-4 text-2xl font-bold">Meals</h1>
-      <Button text="Go Back" onClick={goBack} variant="tertiary" />
+      <h1 className="mb-4 text-2xl font-bold">Meals</h1>
+      <div className="flex flex-row gap-4">
+        <Button
+          text="Create Meal"
+          icon="ph:plus-bold"
+          variant="primary"
+          onClick={handleCreateMeal}
+        />
+        <Button text="Go Back" onClick={goBack} variant="tertiary" />
+      </div>
 
       <hr className="my-4" />
 
@@ -77,9 +93,6 @@ function meals() {
         </div>
 
         <div className="flex w-full flex-col gap-4 md:w-1/2">
-          <div className="flex justify-end">
-            <Button text="Create Meal" icon="ph:plus-bold" variant="primary" />
-          </div>
           <Outlet />
         </div>
       </div>
