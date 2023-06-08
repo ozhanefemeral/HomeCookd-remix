@@ -1,46 +1,41 @@
-// a custom context to handle the subscribe modal
-// as simple as keeping isEnabled, setIsEnabled. and subscription is type HomeSubscription to be rendered.
-
-import react, { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { HomepageSubscription } from "~/models/subscription.server";
+import { useModalContext } from "./ModalContext";
 
-interface SubscribeModalContextProps {
-  isEnabled: boolean;
-  setIsEnabled: (isEnabled: boolean) => void;
+interface SubscribeContextProps {
   subscription?: HomepageSubscription;
   setSubscription: (subscription: HomepageSubscription) => void;
 }
 
-const SubscribeModalContext = createContext<SubscribeModalContextProps>({
-  isEnabled: false,
-  setIsEnabled: () => {},
+const SubscribeFormContext = createContext<SubscribeContextProps>({
   setSubscription: () => {},
   subscription: undefined,
 });
 
-export const useSubscribeModalContext = () => {
-  return useContext(SubscribeModalContext);
-}
+export const useSubscribeFormContext = () => {
+  return useContext(SubscribeFormContext);
+};
 
-export const SubscribeModalProvider = ({
+export const SubscribeFormProvider = ({
   children,
 }: {
   children: React.ReactNode;
 }) => {
-  const [isEnabled, setIsEnabled] = useState(false);
   const [subscription, setSubscription] = useState<
     HomepageSubscription | undefined
   >(undefined);
 
+  const { isEnabled, setIsEnabled } = useModalContext();
+
   useEffect(() => {
-    console.log("subscription", subscription);
+    if (subscription) {
+      setIsEnabled(true);
+    }
   }, [subscription]);
 
   return (
-    <SubscribeModalContext.Provider
-      value={{ isEnabled, setIsEnabled, subscription, setSubscription }}
-    >
+    <SubscribeFormContext.Provider value={{ subscription, setSubscription }}>
       {children}
-    </SubscribeModalContext.Provider>
+    </SubscribeFormContext.Provider>
   );
 };

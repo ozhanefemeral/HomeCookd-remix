@@ -18,10 +18,12 @@ import reactTooltipStylesheetUrl from "react-tooltip/dist/react-tooltip.css";
 import siteStylesheetUrl from "./assets/css/styles.css";
 import { getUserProfileByUserId } from "./models/user.server";
 import {
-  SubscribeModalProvider,
-  useSubscribeModalContext,
+  SubscribeFormProvider,
+  useSubscribeFormContext,
 } from "./contexts/SubscribeModalContext";
-import SubscribeModal from "./components/Subscriptions/SubscribeModal";
+import SubscribeForm from "./components/Subscriptions/SubscribeForm";
+import { ModalProvider, useModalContext } from "./contexts/ModalContext";
+import { ModalBase } from "./components/Modals/ModalBase";
 // import 'react-tooltip/dist/react-tooltip.css'
 
 export const links: LinksFunction = () => {
@@ -49,41 +51,33 @@ export async function loader({ request }: LoaderArgs) {
 }
 
 function Modals() {
-  const {
-    subscription,
-    isEnabled: subscribeModalEnabled,
-    setIsEnabled: setSubscribeModalEnabled,
-  } = useSubscribeModalContext();
+  const { isEnabled, setIsEnabled, modalChildren } = useModalContext();
 
   return (
-    <>
-      {subscribeModalEnabled && (
-        <SubscribeModal
-          subscription={subscription}
-          isEnabled={subscribeModalEnabled}
-          setIsEnabled={setSubscribeModalEnabled}
-        />
-      )}
-    </>
+    <ModalBase isEnabled={isEnabled} setIsEnabled={setIsEnabled}>
+      {modalChildren}
+    </ModalBase>
   );
 }
 
 export default function App() {
   return (
-    <SubscribeModalProvider>
-      <html lang="en" className="h-full">
-        <head>
-          <Meta />
-          <Links />
-        </head>
-        <body className="h-full">
-          <Modals />
-          <Outlet />
-          <ScrollRestoration />
-          <Scripts />
-          <LiveReload />
-        </body>
-      </html>
-    </SubscribeModalProvider>
+    <ModalProvider>
+      <SubscribeFormProvider>
+        <html lang="en" className="h-full">
+          <head>
+            <Meta />
+            <Links />
+          </head>
+          <body className="h-full">
+            <Modals />
+            <Outlet />
+            <ScrollRestoration />
+            <Scripts />
+            <LiveReload />
+          </body>
+        </html>
+      </SubscribeFormProvider>
+    </ModalProvider>
   );
 }

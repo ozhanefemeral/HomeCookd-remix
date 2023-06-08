@@ -3,7 +3,7 @@ import { json, LoaderArgs } from "@remix-run/server-runtime";
 import { useEffect, useState } from "react";
 import { Button } from "~/components/Button";
 import SubscriptionCard from "~/components/Subscriptions/Cards/HomeCard";
-import SubscribeModal from "~/components/Subscriptions/SubscribeModal";
+import SubscribeForm from "~/components/Subscriptions/SubscribeForm";
 import {
   getExpiringSubscriptions,
   getFeaturedSubscriptions,
@@ -14,7 +14,8 @@ import {
 import AppLogo from "../assets/svg/enfes_logo.svg";
 import { useOptionalCook, useOptionalUser } from "~/utils";
 import { FeaturedSubscriptions } from "~/components/Subscriptions/Featured/FeaturedSubscriptions";
-import { useSubscribeModalContext } from "~/contexts/SubscribeModalContext";
+import { useSubscribeFormContext } from "~/contexts/SubscribeModalContext";
+import { useModalContext } from "~/contexts/ModalContext";
 
 export async function loader({ request }: LoaderArgs) {
   // const userId = await requireUserId(request);
@@ -31,10 +32,9 @@ export async function loader({ request }: LoaderArgs) {
 export default function Index() {
   const user = useOptionalUser();
   const navigate = useNavigate();
-  const {
-    setIsEnabled: setMealModalEnabled,
-    setSubscription: setClickedSubscription,
-  } = useSubscribeModalContext();
+  const { setSubscription: setClickedSubscription } =
+    useSubscribeFormContext();
+  const { isEnabled, setIsEnabled, setModalChildren } = useModalContext();
 
   const { featuredSubscriptions, todaysSubscriptions, expiringSubscriptions } =
     useLoaderData<typeof loader>();
@@ -42,7 +42,7 @@ export default function Index() {
   function handleSubscribeClick(subscription: HomepageSubscription) {
     if (user) {
       setClickedSubscription(subscription);
-      setMealModalEnabled(true);
+      setModalChildren(<SubscribeForm />);
     } else {
       navigate("/login");
     }

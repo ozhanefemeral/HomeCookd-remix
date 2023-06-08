@@ -27,7 +27,7 @@ function CreateAddressModal({ setOpen, open }: Props) {
   // }, [fetcher?.data?.status]);
 
   return (
-    <ModalBase setOpen={setOpen} title="Create Address" open={open}>
+    <ModalBase setIsEnabled={setOpen} title="Create Address" isEnabled={open}>
       <fetcher.Form action="/create-address" method="post">
         <input type="hidden" name="userProfileId" value={userProfile.id} />
         {/* <h1 className="mb-8 text-center text-xl font-bold text-primary">
