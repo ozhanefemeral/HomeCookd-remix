@@ -25,12 +25,7 @@ function SubscribeForm() {
 
   useEffect(() => {
     setQuantity(1);
-    if (isEnabled && subscription) {
-      setIsEnabled(true);
-    } else {
-      setIsEnabled(false);
-    }
-  }, [subscription, isEnabled]);
+  }, [isEnabled]);
 
   return (
     <fetcher.Form action="/order-subscription" method="post">

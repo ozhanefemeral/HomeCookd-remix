@@ -30,8 +30,16 @@ export const SubscribeFormProvider = ({
   useEffect(() => {
     if (subscription) {
       setIsEnabled(true);
+    } else {
+      setIsEnabled(false);
     }
   }, [subscription]);
+
+  useEffect(() => {
+    if (isEnabled === false) {
+      setSubscription(undefined);
+    }
+  }, [isEnabled]);
 
   return (
     <SubscribeFormContext.Provider value={{ subscription, setSubscription }}>
