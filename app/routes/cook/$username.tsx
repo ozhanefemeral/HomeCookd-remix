@@ -8,7 +8,8 @@ import {
   useCatch,
   useLoaderData,
 } from "@remix-run/react";
-import { json, LoaderArgs } from "@remix-run/server-runtime";
+import type { LoaderArgs } from "@remix-run/server-runtime";
+import { json } from "@remix-run/server-runtime";
 import { getCookByUsername, getCookMeals } from "~/models/cook.server";
 import { getCookProfileByUserId } from "~/models/user.server";
 

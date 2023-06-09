@@ -1,4 +1,5 @@
-import { LoaderArgs, json } from "@remix-run/server-runtime";
+import type { LoaderArgs} from "@remix-run/server-runtime";
+import { json } from "@remix-run/server-runtime";
 import { getMealsByUserId } from "~/models/meals.server";
 import { getUser } from "~/session.server";
 import invariant from "tiny-invariant";
@@ -9,7 +10,7 @@ import {
   useNavigate,
 } from "@remix-run/react";
 import { Button } from "~/components/Button";
-import { Meal } from "@prisma/client";
+import type { Meal } from "@prisma/client";
 import { useModalContext } from "~/contexts/ModalContext";
 import CreateMealForm from "~/components/Meals/CreateMealForm";
 
@@ -21,7 +22,7 @@ export async function loader({ request }: LoaderArgs) {
   return json({ meals });
 }
 
-function meals() {
+function Meals() {
   const data = useLoaderData<typeof loader>();
   const { meals } = data;
 
@@ -100,4 +101,4 @@ function meals() {
   );
 }
 
-export default meals;
+export default Meals;

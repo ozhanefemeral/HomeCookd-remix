@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { HomepageSubscription } from "~/models/subscription.server";
+import type { HomepageSubscription } from "~/models/subscription.server";
 import CardTags from "../CardTags";
 import { Button } from "~/components/Button";
 import { Tooltip } from "react-tooltip";

@@ -1,5 +1,6 @@
 import { useFetcher, useLoaderData, useTransition } from "@remix-run/react";
-import { LoaderArgs, json } from "@remix-run/server-runtime";
+import type { LoaderArgs} from "@remix-run/server-runtime";
+import { json } from "@remix-run/server-runtime";
 import { requireUser } from "~/session.server";
 import { Button } from "../Button";
 import { useState } from "react";

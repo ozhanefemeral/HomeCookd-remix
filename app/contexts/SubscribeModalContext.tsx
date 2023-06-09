@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { HomepageSubscription } from "~/models/subscription.server";
+import type { HomepageSubscription } from "~/models/subscription.server";
 import { useModalContext } from "./ModalContext";
 
 interface SubscribeContextProps {
@@ -33,7 +33,7 @@ export const SubscribeFormProvider = ({
     } else {
       setIsEnabled(false);
     }
-  }, [subscription]);
+  }, [subscription, setIsEnabled]);
 
   useEffect(() => {
     if (isEnabled === false) {

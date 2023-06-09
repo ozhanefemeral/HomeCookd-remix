@@ -1,12 +1,13 @@
 import React from "react";
 
-import { LoaderArgs, json } from "@remix-run/node";
+import type { LoaderArgs} from "@remix-run/node";
+import { json } from "@remix-run/node";
 import { getUser } from "~/session.server";
 import invariant from "tiny-invariant";
 import { getSubscriptionsByUserId } from "~/models/subscription.server";
 import { Outlet, useLoaderData, useMatches, useNavigate } from "@remix-run/react";
 import { Button } from "~/components/Button";
-import { HomepageSubscription } from "~/models/subscription.server";
+import type { HomepageSubscription } from "~/models/subscription.server";
 export async function loader({ request }: LoaderArgs) {
   const user = await getUser(request);
   invariant(user, "You must be logged in to view this page");
@@ -14,7 +15,7 @@ export async function loader({ request }: LoaderArgs) {
   return json({ subscriptions });
 }
 
-function subscriptions() {
+function Subscriptions() {
   const data = useLoaderData<typeof loader>();
   const { subscriptions } = data;
 
@@ -116,4 +117,4 @@ function subscriptions() {
   );
 }
 
-export default subscriptions;
+export default Subscriptions;

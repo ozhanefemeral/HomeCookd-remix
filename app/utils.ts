@@ -3,7 +3,8 @@ import { useMemo } from "react";
 
 import type { User } from "~/models/user.server";
 import type { Cook } from "~/models/cook.server";
-import { MealTags, UserProfile } from "@prisma/client";
+import type { UserProfile } from "@prisma/client";
+import { MealTags } from "@prisma/client";
 
 const DEFAULT_REDIRECT = "/";
 

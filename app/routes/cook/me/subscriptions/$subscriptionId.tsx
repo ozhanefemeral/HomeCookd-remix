@@ -1,6 +1,7 @@
 import React from "react";
 
-import { LoaderArgs, json } from "@remix-run/node";
+import type { LoaderArgs} from "@remix-run/node";
+import { json } from "@remix-run/node";
 import { useLoaderData, useNavigate } from "@remix-run/react";
 import {
   getOrdersBySubscriptionId,

@@ -1,14 +1,16 @@
 import { Link, useLoaderData, useNavigate } from "@remix-run/react";
-import { json, LoaderArgs } from "@remix-run/server-runtime";
+import type { LoaderArgs } from "@remix-run/server-runtime";
+import { json } from "@remix-run/server-runtime";
 import { useEffect, useState } from "react";
 import { Button } from "~/components/Button";
 import SubscriptionCard from "~/components/Subscriptions/Cards/HomeCard";
 import SubscribeForm from "~/components/Subscriptions/SubscribeForm";
+import type {
+  HomepageSubscription} from "~/models/subscription.server";
 import {
   getExpiringSubscriptions,
   getFeaturedSubscriptions,
-  getTodaysSubscriptions,
-  HomepageSubscription,
+  getTodaysSubscriptions
 } from "~/models/subscription.server";
 
 import AppLogo from "../assets/svg/enfes_logo.svg";
@@ -58,7 +60,7 @@ export default function Index() {
           left: "16px",
         }}
       >
-        <img src={AppLogo} width={80} />
+        <img src={AppLogo} width={80} alt="Enfes Logo" />
       </Link>
       {user && (
         <Link to="/cook/me" className="absolute top-4 right-4">

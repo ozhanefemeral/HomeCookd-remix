@@ -1,11 +1,13 @@
 import { unstable_createFileUploadHandler } from "@remix-run/node";
+import type {
+  ActionFunction} from "@remix-run/server-runtime";
 import {
-  ActionFunction,
   json,
   unstable_composeUploadHandlers,
 } from "@remix-run/server-runtime";
+import type {
+  UploadHandler} from "@remix-run/server-runtime/dist/formData";
 import {
-  UploadHandler,
   composeUploadHandlers,
   parseMultipartFormData,
 } from "@remix-run/server-runtime/dist/formData";

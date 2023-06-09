@@ -1,8 +1,9 @@
 // tailwind based button with primary, secondary, and tertiary variants
 
-import React, { ComponentProps } from "react";
 import clsx from "clsx";
 import { Icon } from "@iconify/react";
+
+type ComponentProps = React.ComponentProps<"button">;
 
 export type ButtonProps = {
   variant?: "primary" | "secondary" | "tertiary";
@@ -10,7 +11,7 @@ export type ButtonProps = {
   icon?: string;
   small?: boolean;
   disabled?: boolean;
-} & ComponentProps<"button">;
+} & ComponentProps;
 
 export function Button({
   variant = "primary",

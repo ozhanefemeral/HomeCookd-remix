@@ -1,13 +1,13 @@
 import { Icon } from "@iconify/react";
-import { Address, AddressType } from "@prisma/client";
-import React from "react";
+import type { Address} from "@prisma/client";
+import { AddressType } from "@prisma/client";
 
 type Props = {
   address: Address;
   isSelected?: boolean;
 };
 
-function Address({ address, isSelected }: Props) {
+function AddressCard({ address, isSelected }: Props) {
   const { type } = address;
 
   return (
@@ -32,4 +32,4 @@ function Address({ address, isSelected }: Props) {
   );
 }
 
-export default Address;
+export default AddressCard;

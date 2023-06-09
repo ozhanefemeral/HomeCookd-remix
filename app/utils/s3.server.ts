@@ -1,4 +1,4 @@
-import { UploadHandler } from "@remix-run/server-runtime";
+import type { UploadHandler } from "@remix-run/server-runtime";
 import { PassThrough } from "stream";
 
 import AWS from "aws-sdk";

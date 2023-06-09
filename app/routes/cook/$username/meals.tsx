@@ -1,5 +1,6 @@
 import { useLoaderData } from "@remix-run/react";
-import { json, LoaderArgs } from "@remix-run/server-runtime";
+import type { LoaderArgs } from "@remix-run/server-runtime";
+import { json } from "@remix-run/server-runtime";
 import MealCardBig from "~/components/MealCardBig";
 import { getCookByUsername, getCookMeals } from "~/models/cook.server";
 

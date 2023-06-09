@@ -1,5 +1,6 @@
 import { useLoaderData } from "@remix-run/react";
-import { json, LoaderArgs } from "@remix-run/server-runtime";
+import type { LoaderArgs } from "@remix-run/server-runtime";
+import { json } from "@remix-run/server-runtime";
 import { useMemo, useState } from "react";
 import invariant from "tiny-invariant";
 import Address from "~/components/Address/Address";

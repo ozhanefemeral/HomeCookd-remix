@@ -1,4 +1,5 @@
-import { Meal, Prisma, User } from "@prisma/client";
+import type { Meal, User } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 
 import { prisma } from "~/db.server";
 

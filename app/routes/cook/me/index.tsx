@@ -1,5 +1,6 @@
 import { Link, Outlet } from "@remix-run/react";
-import { LoaderArgs, json } from "@remix-run/server-runtime";
+import type { LoaderArgs} from "@remix-run/server-runtime";
+import { json } from "@remix-run/server-runtime";
 import React from "react";
 import { getCookProfile, getUserProfile } from "~/session.server";
 import { useUser } from "~/utils";
@@ -14,7 +15,7 @@ export async function loader({ request }: LoaderArgs) {
   });
 }
 
-function index() {
+function CookIndex() {
   const user = useUser();
 
   return (
@@ -24,4 +25,4 @@ function index() {
   );
 }
 
-export default index;
+export default CookIndex;

@@ -1,6 +1,8 @@
-import { ActionFunction, json } from "@remix-run/node";
+import type { ActionFunction} from "@remix-run/node";
+import { json } from "@remix-run/node";
 import invariant from "tiny-invariant";
-import { createSubscription, createSubscriptionInput } from "~/models/subscription.server";
+import type { createSubscriptionInput } from "~/models/subscription.server";
+import { createSubscription } from "~/models/subscription.server";
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
