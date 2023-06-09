@@ -1,15 +1,17 @@
 import { Form, useLoaderData } from "@remix-run/react";
-import { json, LoaderArgs } from "@remix-run/server-runtime";
+import type { LoaderArgs } from "@remix-run/server-runtime";
+import { json } from "@remix-run/server-runtime";
 import { getCookByUsername } from "~/models/cook.server";
 import { createMeal } from "~/models/meals.server";
 import { requireCook } from "~/session.server";
 import * as AWS from "@aws-sdk/client-s3";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
-import { composeUploadHandlers, parseMultipartFormData, UploadHandler } from "@remix-run/server-runtime/dist/formData";
+import type { UploadHandler } from "@remix-run/server-runtime/dist/formData";
+import { composeUploadHandlers, parseMultipartFormData } from "@remix-run/server-runtime/dist/formData";
 import { createMemoryUploadHandler } from "@remix-run/server-runtime/dist/upload/memoryUploadHandler";
 // import { s3UploadHandler, uploadStreamToS3 } from "~/utils/s3.server";
 import { mealTags, sortMealTags } from "~/utils";
-import { MealTags } from "@prisma/client";
+import type { MealTags } from "@prisma/client";
 
 export async function loader({ request, params }: LoaderArgs) {
   const { username } = await requireCook(request)

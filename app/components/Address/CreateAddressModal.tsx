@@ -1,8 +1,7 @@
 import { useFetcher } from "@remix-run/react";
-import React, { useEffect } from "react";
+import React from "react";
 import { useUserProfile, capitalizeFirstLetter } from "~/utils";
 import { ModalBase } from "../Modals/ModalBase";
-import { useDialogContext } from "~/contexts/dialog";
 import { AddressType } from "@prisma/client";
 
 type Props = {

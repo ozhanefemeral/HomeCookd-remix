@@ -1,9 +1,6 @@
-import { MealTags } from '@prisma/client'
+import type { MealTags } from '@prisma/client'
 import { Tooltip } from 'react-tooltip'
 import { formatMealTag, mapMealTagToEmoji } from '~/utils'
-// import react and react-dom
-import React from 'react'
-import ReactDOM from 'react-dom'
 import 'react-tooltip/dist/react-tooltip.css'
 
 export default function MealTagTooltip({ tag, id }: { tag: MealTags, id: string }) {

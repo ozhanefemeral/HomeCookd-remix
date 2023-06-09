@@ -1,4 +1,4 @@
-import { Meal } from "@prisma/client";
+import type { Meal } from "@prisma/client";
 import MealTag from "./MealTag";
 
 type Props = {

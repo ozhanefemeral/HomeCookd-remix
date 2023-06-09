@@ -1,6 +1,6 @@
-import { Link, NavLink, useFetcher } from "@remix-run/react";
-import { MealWithCook } from "~/models/meals.server";
-import { mapMealTagToEmoji, sortMealTags } from "~/utils";
+import { NavLink } from "@remix-run/react";
+import type { MealWithCook } from "~/models/meals.server";
+import { sortMealTags } from "~/utils";
 import MealTagTooltip from "./MealTagTooltip";
 
 type MealCardSmallProps = {
@@ -21,9 +21,9 @@ export default function MealCardSmall({ meal, handleSubscribe }: MealCardSmallPr
           <NavLink to={`/meals/${meal.id}`}>
             <h3 className="text-md font-semibold text-primary">{meal.title}</h3>
           </NavLink>
-          <NavLink to={`/cook/${meal.cook.username}`}>
+          {/* <NavLink to={`/cook/${meal.cook.username}`}>
             <h3 className="text-sm text-black">{meal.cook.name}</h3>
-          </NavLink>
+          </NavLink> */}
           {/* price */}
           <p className="text-sm text-black">${meal.price}</p>
         </div>

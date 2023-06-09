@@ -1,5 +1,5 @@
 import { Subscription } from "@prisma/client";
-import { HomepageSubscription } from "~/models/subscription.server";
+import type { HomepageSubscription } from "~/models/subscription.server";
 import { mapMealTagToEmoji, formatMealTag } from "~/utils";
 import CardTags from "../CardTags";
 import ReserveCount from "../ReserveCount";

@@ -1,4 +1,4 @@
-import { Meal, MealTags } from "@prisma/client";
+import type { Meal, MealTags } from "@prisma/client";
 import React from "react";
 import { formatMealTag, mapMealTagToEmoji } from "~/utils";
 

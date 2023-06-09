@@ -1,7 +1,10 @@
-import { AddressType, Prisma } from "@prisma/client";
-import { ActionFunction, json } from "@remix-run/node";
+import type { AddressType} from "@prisma/client";
+import { Prisma } from "@prisma/client";
+import type { ActionFunction} from "@remix-run/node";
+import { json } from "@remix-run/node";
 import invariant from "tiny-invariant";
-import { createAddress, createAddressInput } from "~/models/user.server";
+import type { createAddressInput } from "~/models/user.server";
+import { createAddress } from "~/models/user.server";
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();

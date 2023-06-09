@@ -1,4 +1,4 @@
-import { MealWithCook } from "~/models/meals.server";
+import type { MealWithCook } from "~/models/meals.server"; 
 
 export default function MealCardBig({ meal }: { meal: MealWithCook }) {
 

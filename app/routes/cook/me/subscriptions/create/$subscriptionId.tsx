@@ -1,5 +1,5 @@
 import { useLoaderData } from "@remix-run/react";
-import { LoaderArgs } from "@remix-run/server-runtime";
+import type { LoaderArgs } from "@remix-run/server-runtime";
 import invariant from "tiny-invariant";
 import CreateSubscriptionForm from "~/components/Subscriptions/CreateSubscriptionForm";
 import {
@@ -19,7 +19,7 @@ export async function loader({ request, params }: LoaderArgs) {
   return { user, subscription };
 }
 
-function createSubscription() {
+function CreateSubscription() {
   const data = useLoaderData<typeof loader>();
   const { user, subscription } = data;
 
@@ -27,9 +27,9 @@ function createSubscription() {
     <div>
       {/* tailwind h1 */}
       <h1 className="text-2xl font-bold">Repeat Subscription</h1>
-      <CreateSubscriptionForm user={user} />
+      <CreateSubscriptionForm />
     </div>
   );
 }
 
-export default createSubscription;
+export default CreateSubscription;

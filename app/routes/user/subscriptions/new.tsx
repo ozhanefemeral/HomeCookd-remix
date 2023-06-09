@@ -1,6 +1,7 @@
-import { Meal } from "@prisma/client";
+import type { Meal } from "@prisma/client";
 import { Link, useFetcher, useLoaderData } from "@remix-run/react";
-import { ActionArgs, json } from "@remix-run/server-runtime";
+import type { ActionArgs} from "@remix-run/server-runtime";
+import { json } from "@remix-run/server-runtime";
 import { useEffect, useState } from "react";
 import { getAllMeals } from "~/models/meals.server";
 import { createSubscription } from "~/models/subscription.server";
