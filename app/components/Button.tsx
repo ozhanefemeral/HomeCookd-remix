@@ -9,6 +9,7 @@ export type ButtonProps = {
   text: string;
   icon?: string;
   small?: boolean;
+  disabled?: boolean;
 } & ComponentProps<"button">;
 
 export function Button({
@@ -17,6 +18,7 @@ export function Button({
   icon,
   small,
   className,
+  disabled,
   ...otherProps
 }: ButtonProps) {
   return (
@@ -26,19 +28,25 @@ export function Button({
         {
           "bg-primary": variant === "primary",
           "bg-transparent": variant !== "primary",
+          "bg-gray-300": disabled && variant === "primary",
         },
         {
           underline: variant === "tertiary",
         },
         {
           "!text-primary": variant !== "primary",
+          "text-gray-300": disabled && variant !== "primary",
         },
         {
           "border-2 border-primary": variant !== "tertiary",
+          "border-2 border-gray-300": disabled && variant !== "tertiary",
         },
         {
           "p-0": variant === "tertiary",
           "px-2 py-1 box-border": variant !== "tertiary",
+        },
+        {
+          "cursor-not-allowed": disabled,
         },
         className
       )}
