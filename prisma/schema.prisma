@@ -7,6 +7,33 @@ generator client {
   provider = "prisma-client-js"
 }
 
+enum DeliveryDay {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
+enum MealTags {
+  VEGETARIAN
+  GLUTEN_FREE
+  DAIRY_FREE
+  TRENDING
+  NEW
+  BIG_PORTION
+  HIGH_PROTEIN
+  LOW_FAT
+}
+
+enum AddressType {
+  HOME
+  WORK
+  OTHER
+}
+
 model User {
   id    String @id @default(cuid())
   email String @unique
@@ -14,18 +41,121 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  password Password?
-  notes    Note[]
+  password String
+  avatar   String
+  name    String
+
+  subscriptionOrders SubscriptionOrder[]
+  subscriptions      Subscription[]
+  profile       UserProfile?
+  cookProfile   CookProfile?
+  meals         Meal[]
+  recipes       Recipe[]
 }
 
-model Password {
-  hash String
+model UserProfile {
+  id        String     @id @default(cuid())
+  name      String
+  interests MealTags[]
+  dislikes  MealTags[]
+  User      User       @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId    String     @unique
+  addresses Address[]
+}
 
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+model CookProfile {
+  id String @id @default(cuid())
+
+  instagram   String
+  facebook    String
+  youtube     String
+  banner      String
+  description String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String @unique
 }
 
-model Note {
+model Meal {
+  id    String @id @default(cuid())
+  title String
+  price Int
+  image String
+  description String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  cook          User           @relation(fields: [cookedBy], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  cookedBy      String
+  subscriptions Subscription[]
+
+  tags MealTags[]
+  nutrition MealNutrition?
+}
+
+model MealNutrition {
+  id    String @id @default(cuid())
+  title String
+  ingredients String[]
+  calories Int
+  protein Int
+  fat Int
+  carbs Int
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  meal   Meal   @relation(fields: [mealId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  mealId String @unique
+}
+
+model Subscription {
+  id    String @id @default(cuid())
+  title String
+  price Int
+  catchphrase String?
+
+  limit Int
+
+  orderHours String[]
+  // dateStart is next day of creation
+  dateStart  DateTime @default(dbgenerated("now() + interval '1 day'"))
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  cook     User @relation(fields: [cookedBy], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  cookedBy String
+  meal     Meal        @relation(fields: [mealId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  mealId   String
+
+  orders SubscriptionOrder[]
+}
+
+model SubscriptionOrder {
+  id       String @id @default(cuid())
+  quantity Int
+
+  deliveryTime DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  subscription   Subscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  subscriptionId String
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String
+
+  address   Address   @relation(fields: [addressId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  addressId String
+}
+
+model Recipe {
   id    String @id @default(cuid())
   title String
   body  String
@@ -33,6 +163,21 @@ model Note {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  userId String
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId   String
+}
+
+model Address {
+  id    String      @id @default(cuid())
+  title String
+  body  String
+  type  AddressType
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user          UserProfile @relation(fields: [userProfileId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userProfileId String
+
+  orders SubscriptionOrder[]
 }
