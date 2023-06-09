@@ -4,6 +4,7 @@ import { requireUser } from "~/session.server";
 import { Button } from "../Button";
 import { useState } from "react";
 import { Tooltip } from "react-tooltip";
+import { Icon } from "@iconify/react";
 
 export async function loader({ request, params }: LoaderArgs) {
   const user = await requireUser(request);
@@ -27,7 +28,7 @@ function BasicInfo({ currentPage }: FormPageProps) {
           <input
             type="text"
             name="title"
-            placeholder="Meal Name"
+            placeholder="e.g. Chicken Alfredo"
             className="w-full rounded-md border border-gray-300 p-2"
             id="title"
           />
@@ -36,8 +37,8 @@ function BasicInfo({ currentPage }: FormPageProps) {
           <label htmlFor="description">Meal Description</label>
           <textarea
             name="description"
-            placeholder="Meal Description"
-            className="w-full rounded-md border border-gray-300 p-2"
+            placeholder="e.g. A delicious meal with chicken, pasta, and alfredo sauce"
+            className="max-h-32 w-full rounded-md border border-gray-300 p-2"
             id="description"
           />
         </div>
@@ -47,7 +48,8 @@ function BasicInfo({ currentPage }: FormPageProps) {
             <input
               type="number"
               name="price"
-              placeholder="Meal Price"
+              placeholder="e.g. 30"
+              min={0}
               className="w-full rounded-md border border-gray-300 p-2"
               id="price"
             />
@@ -75,16 +77,23 @@ function NutritionDetails({ currentPage }: FormPageProps) {
       <h1 className="text-2xl font-bold">Create Meal: Nutrition Details</h1>
       <div className="flex flex-row flex-wrap gap-4">
         <div className="flex w-full flex-col gap-1">
-          <label htmlFor="ingredients">Ingredients</label>
+          <label htmlFor="ingredients">
+            <div className="flex gap-2 items-center">
+              Ingredients{" "}
+              <span id="ingredientsTooltip">
+                <Icon icon="pajamas:question" />
+              </span>
+            </div>
+          </label>
           <Tooltip
-            place="top"
-            anchorId="ingredients"
+            place="right"
+            anchorId="ingredientsTooltip"
             content="Separate ingredients with commas and use . for decimals"
           />
           <textarea
             name="ingredients"
             id="ingredients"
-            placeholder="Example: 1.5 cups of flour, 2 cups of milk, 1 cup of sugar"
+            placeholder="e.g. 1.5 cups of flour, 1 cup of sugar, 1/2 cup of milk"
             className="rounded-md border border-gray-300 p-2"
           />
         </div>
@@ -93,7 +102,7 @@ function NutritionDetails({ currentPage }: FormPageProps) {
           <input
             type="number"
             name="calories"
-            placeholder="Meal Calories"
+            placeholder="e.g. 500"
             min={0}
             id="calories"
             step={20}
@@ -105,7 +114,7 @@ function NutritionDetails({ currentPage }: FormPageProps) {
           <input
             type="number"
             name="protein"
-            placeholder="Meal Protein"
+            placeholder="e.g. 30"
             min={0}
             id="protein"
             className="rounded-md border border-gray-300 p-2"
@@ -116,7 +125,7 @@ function NutritionDetails({ currentPage }: FormPageProps) {
           <input
             type="number"
             name="fat"
-            placeholder="Meal Fat"
+            placeholder="e.g. 5"
             min={0}
             id="fat"
             className="rounded-md border border-gray-300 p-2"
@@ -127,7 +136,7 @@ function NutritionDetails({ currentPage }: FormPageProps) {
           <input
             type="number"
             name="carbs"
-            placeholder="Meal Carbs"
+            placeholder="e.g. 25"
             min={0}
             id="carbs"
             className="w-full rounded-md border border-gray-300 p-2"
@@ -146,6 +155,13 @@ function CreateMealForm() {
   const { user } = data;
   const [currentPage, setCurrentPage] = useState(1);
 
+  function handlePageChange(page: number) {
+    if (page < 1 || page > 2) {
+      return;
+    }
+    setCurrentPage(page);
+  }
+
   return (
     <fetcher.Form
       action="/create-meal"
@@ -160,15 +176,15 @@ function CreateMealForm() {
           </div>
         </div>
       )}
-      <div className="p-4">
+      <div className="flex flex-col gap-4 p-4">
         <BasicInfo currentPage={currentPage} />
         <NutritionDetails currentPage={currentPage} />
-        <div className="flex items-center justify-between">
-          <div className="flex flex-row items-center gap-1 pt-4">
+        <div className="flex items-end justify-between">
+          <div className="flex flex-row items-end gap-1">
             <Button
               text="Back"
               className="self-end justify-self-end"
-              onClick={() => setCurrentPage(currentPage - 1)}
+              onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
               variant="tertiary"
               type="button"
@@ -177,7 +193,7 @@ function CreateMealForm() {
             <Button
               text="Next"
               className="self-end justify-self-end"
-              onClick={() => setCurrentPage(currentPage + 1)}
+              onClick={() => handlePageChange(currentPage + 1)}
               disabled={currentPage === 2}
               variant="tertiary"
               type="button"
@@ -185,7 +201,7 @@ function CreateMealForm() {
           </div>
           {currentPage === 2 && (
             // todo: add validation & disable button if invalid/submission in progress
-            <Button type="submit" text="Create Meal" className="mt-4" />
+            <Button type="submit" text="Create Meal" />
           )}
         </div>
       </div>
