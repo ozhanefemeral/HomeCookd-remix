@@ -27,6 +27,8 @@ export async function createUser(email: User["email"], password: string) {
     data: {
       email,
       password: hashedPassword,
+      avatar: "https://i.pravatar.cc/300",
+      name: "New User",
     },
   });
 
