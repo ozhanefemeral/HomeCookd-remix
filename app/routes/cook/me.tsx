@@ -37,17 +37,17 @@ export default function SubscriptionsPage() {
         </Form>
       </header>
 
-      <main className="flex p-4 gap-4">
-        <ul className="flex flex-col gap-4 border-r border-gray-300 pr-4">
+      <main className="flex flex-col md:flex-row p-4 gap-4">
+        <ul className="flex flex-row md:flex-col gap-4 border-r border-gray-300 pr-4">
           <li>
             <Button
               text="Your subscriptions"
               onClick={goToSubscriptions}
-              variant="primary"
+              variant="tertiary"
             />
           </li>
           <li>
-            <Button text="Your meals" onClick={goToMeals} variant="primary" />
+            <Button text="Your meals" onClick={goToMeals} variant="tertiary" />
           </li>
         </ul>
         <div className="flex-1">
