@@ -9,12 +9,15 @@ import ReserveCount from "./ReserveCount";
 import { Button } from "../Button";
 import { useSubscribeFormContext } from "~/contexts/SubscribeModalContext";
 import { useModalContext } from "~/contexts/ModalContext";
+import invariant from "tiny-invariant";
 
 function SubscribeForm() {
   const [quantity, setQuantity] = useState(1);
   const fetcher = useFetcher();
   const { subscription } = useSubscribeFormContext();
   const { isEnabled, setIsEnabled } = useModalContext();
+
+  invariant(subscription, "Subscription is required");
 
   const { meal, cook } = subscription;
 

@@ -16,6 +16,9 @@ export async function loader({ request, params }: LoaderArgs) {
   const orders = await getOrdersBySubscriptionId(subscriptionId);
   const subscription = await getSubscriptionById(subscriptionId);
 
+  invariant(orders, "Orders not found");
+  invariant(subscription, "Subscription not found");
+
   return json({ orders, subscription });
 }
 

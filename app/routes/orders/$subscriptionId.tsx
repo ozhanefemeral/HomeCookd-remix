@@ -1,27 +1,33 @@
 import { useLoaderData } from "@remix-run/react";
 import type { LoaderArgs } from "@remix-run/server-runtime";
-import { json } from "@remix-run/server-runtime";
+import { json, redirect } from "@remix-run/server-runtime";
 import { useMemo, useState } from "react";
 import invariant from "tiny-invariant";
-import Address from "~/components/Address/Address";
+import AddressCard from "~/components/Address/Address";
 import CreateAddressModal from "~/components/Address/CreateAddressModal";
 import { getSubscriptionOrderById } from "~/models/subscription.server";
 import { getUserAddresses } from "~/models/user.server";
 import { getUserProfile } from "~/session.server";
 import { Icon } from '@iconify/react';
+import type { Address } from "@prisma/client";
 
 export async function loader({ request, params }: LoaderArgs) {
+  const { subscriptionId } = params;
   invariant(params.subscriptionId, "subscriptionId not found");
 
   const userProfile = await getUserProfile(request);
 
   invariant(userProfile, "userProfile not found");
 
+  if(!userProfile || !subscriptionId) {
+    return redirect("/login");
+  }
+
   const subscriptionOrder = await getSubscriptionOrderById(
     params.subscriptionId
   );
 
-  const addresses = await getUserAddresses(userProfile.id);
+  const addresses = await getUserAddresses(userProfile.id) || [];
 
   invariant(subscriptionOrder, "subscriptionOrder not found");
   return json({ subscriptionOrder, addresses });
@@ -106,7 +112,7 @@ export default function SubscriptionOrder() {
                 className="cursor-pointer"
                 key={address.id}
               >
-                <Address
+                <AddressCard
                   address={address}
                   isSelected={selectedAddress?.id === address.id}
                 />
