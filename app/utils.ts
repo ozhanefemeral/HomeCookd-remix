@@ -2,7 +2,6 @@ import { useMatches } from "@remix-run/react";
 import { useMemo } from "react";
 
 import type { User } from "~/models/user.server";
-import type { Cook } from "~/models/cook.server";
 import type { UserProfile } from "@prisma/client";
 import { MealTags } from "@prisma/client";
 
@@ -51,10 +50,6 @@ function isUser(user: any): user is User {
   return user && typeof user === "object" && typeof user.email === "string";
 }
 
-function isCook(cook: any): cook is Cook {
-  return cook && typeof cook === "object" && typeof cook.email === "string";
-}
-
 function isUserProfile(userProfile: any): userProfile is UserProfile {
   return (
     userProfile &&
@@ -80,15 +75,6 @@ export function useOptionalUser(): User | undefined {
   return data.user;
 }
 
-export function useOptionalCook(): Cook | undefined {
-  const data = useMatchesData("root");
-
-  if (!data || !isCook(data.cook)) {
-    return undefined;
-  }
-  return data.cook;
-}
-
 export function useUser(): User {
   const maybeUser = useOptionalUser();
   if (!maybeUser) {
@@ -97,16 +83,6 @@ export function useUser(): User {
     );
   }
   return maybeUser;
-}
-
-export function useCook(): Cook {
-  const maybeCook = useOptionalCook();
-  if (!maybeCook) {
-    throw new Error(
-      "No cook found in root loader, but cook is required by useCook. If cook is optional, try useOptionalCook instead."
-    );
-  }
-  return maybeCook;
 }
 
 export function useUserProfile() {
@@ -173,8 +149,6 @@ export const formatMealTag = (tag: MealTags): string => {
 };
 
 export const sortMealTags = (tags: MealTags[]) => {
-  const sorted = [...tags].sort((a, b) => a - b);
-  return sorted;
 };
 
 export const mealTags = [

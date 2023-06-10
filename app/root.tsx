@@ -12,7 +12,7 @@ import {
 } from "@remix-run/react";
 import { useMemo } from "react";
 
-import { getCook, getUser, getUserProfile } from "./session.server";
+import { getUser, getUserProfile } from "./session.server";
 import tailwindStylesheetUrl from "./styles/tailwind.css";
 import reactTooltipStylesheetUrl from "react-tooltip/dist/react-tooltip.css";
 import siteStylesheetUrl from "./assets/css/styles.css";
