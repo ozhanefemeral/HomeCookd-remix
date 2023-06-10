@@ -1,4 +1,4 @@
-import type { Subscription, SubscriptionOrder, User } from "@prisma/client";
+import type { Address, Subscription, SubscriptionOrder, User } from "@prisma/client";
 import { Prisma } from "@prisma/client";
 
 import { prisma } from "~/db.server";
@@ -111,7 +111,8 @@ export async function orderSubscription(
   id: Subscription["id"],
   quantity: number,
   deliveryTime: Date,
-  userId: User["id"]
+  userId: User["id"],
+  addressId: Address["id"]
 ) {
   const subscription = await prisma.subscription.findUnique({
     where: {
@@ -138,6 +139,7 @@ export async function orderSubscription(
       quantity,
       deliveryTime,
       userId,
+      addressId
     },
   });
 }
