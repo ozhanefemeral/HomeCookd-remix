@@ -1,21 +1,21 @@
-import { Subscription } from "@prisma/client";
 import type { HomepageSubscription } from "~/models/subscription.server";
-import { mapMealTagToEmoji, formatMealTag } from "~/utils";
 import CardTags from "../CardTags";
 import ReserveCount from "../ReserveCount";
 import { Button } from "../../Button";
 import { Icon } from "@iconify/react";
 import { Tooltip } from "react-tooltip";
+import { SerializeFrom } from "@remix-run/server-runtime";
 
 type Props = {
-  subscription: HomepageSubscription;
-  handleSubscribeClick: (subscription: HomepageSubscription) => void;
+  subscription: SerializeFrom<HomepageSubscription>;
+  handleSubscribeClick: (subscription: SerializeFrom<HomepageSubscription>) => void;
 };
 
 const FeaturedSubscriptionHomePage = ({
   subscription,
   handleSubscribeClick,
 }: Props) => {
+  if(!subscription) return null;
   const { meal, cook } = subscription;
 
   const canOrder = subscription.reservationCount < subscription.limit;
@@ -68,7 +68,7 @@ const FeaturedSubscriptionHomePage = ({
         {/* align button to bottom */}
         <div className="mt-auto">
           <p className="text-sm my-2 text-center">{subscription.catchphrase}</p>
-          <CardTags meal={meal} />
+          <CardTags tags={meal.tags} />
           <Button
             onClick={() => handleSubscribeClick(subscription!)}
             disabled={!canOrder}

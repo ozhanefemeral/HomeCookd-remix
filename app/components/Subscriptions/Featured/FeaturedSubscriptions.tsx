@@ -4,15 +4,16 @@ import CardTags from "../CardTags";
 import { Button } from "~/components/Button";
 import { Tooltip } from "react-tooltip";
 import { Icon } from "@iconify/react";
+import { SerializeFrom } from "@remix-run/server-runtime";
 
 type Props = {
-  subscriptions: HomepageSubscription[];
-  handleSubscribeClick: (subscription: HomepageSubscription) => void;
+  subscriptions: SerializeFrom<HomepageSubscription>[];
+  handleSubscribeClick: (subscription: SerializeFrom<HomepageSubscription>) => void;
 };
 
 type CardProps = {
-  subscription: HomepageSubscription;
-  handleSubscribeClick: (subscription: HomepageSubscription) => void;
+  subscription: SerializeFrom<HomepageSubscription>;
+  handleSubscribeClick: (subscription: SerializeFrom<HomepageSubscription>) => void;
   index: number;
 };
 
@@ -64,7 +65,7 @@ const FeaturedCard = ({
               </div>
             ))}
           </Tooltip>
-          <CardTags meal={subscription.meal} justify="justify-start" />
+          <CardTags tags={subscription.meal.tags} justify="justify-start" />
           <Button
             text="Subscribe"
             variant="primary"

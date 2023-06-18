@@ -1,9 +1,21 @@
-import type { Address, Prisma, User, UserProfile } from "@prisma/client";
+import type { Prisma, User, UserProfile } from "@prisma/client";
 import bcrypt from "bcryptjs";
 
 import { prisma } from "~/db.server";
 
 export type { User } from "@prisma/client";
+
+// export type Address should return the address type from prisma but without the created at and updated at fields
+
+export type Address = Prisma.AddressGetPayload<{
+  select: {
+    id: true;
+    title: true;
+    body: true;
+    type: true;
+    userProfileId: true;
+  };
+}>;
 
 export type createAddressInput = {
   addressBody: Address["body"];

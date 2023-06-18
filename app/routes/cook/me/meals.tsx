@@ -10,14 +10,14 @@ import {
   useNavigate,
 } from "@remix-run/react";
 import { Button } from "~/components/Button";
-import type { Meal } from "@prisma/client";
+import type { Meal } from "~/models/meals.server";
 import { useModalContext } from "~/contexts/ModalContext";
 import CreateMealForm from "~/components/Meals/CreateMealForm";
 
 export async function loader({ request }: LoaderArgs) {
   const user = await getUser(request);
   invariant(user, "You must be logged in to view this page");
-  const meals = await getMealsByUserId(user.id);
+  const meals = await getMealsByUserId(user.id)
 
   return json({ meals });
 }
@@ -45,6 +45,10 @@ function Meals() {
   function handleCreateMeal() {
     setIsEnabled(true);
     setModalChildren(<CreateMealForm />);
+  }
+
+  if(!meals.length) {
+    return <></>
   }
 
   return (

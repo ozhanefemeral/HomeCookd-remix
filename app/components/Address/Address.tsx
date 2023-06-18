@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react";
-import type { Address} from "@prisma/client";
+import type { Address } from "~/models/user.server";
 import { AddressType } from "@prisma/client";
 
 type Props = {

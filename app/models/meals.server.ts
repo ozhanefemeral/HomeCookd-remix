@@ -1,4 +1,4 @@
-import type { Meal, User } from "@prisma/client";
+import type { User } from "@prisma/client";
 import { Prisma } from "@prisma/client";
 
 import { prisma } from "~/db.server";
@@ -16,10 +16,14 @@ export type MealDetail = Prisma.MealGetPayload<typeof selectMealDetail> & {
   totalPublished: number;
 };
 
-export type MealWithCook = Prisma.MealGetPayload<{
-  include: {
-    cook: true;
-  };
+export type Meal = Prisma.MealGetPayload<{
+  select: {
+    id: true;
+    description: true;
+    price: true;
+    image: true;
+    title: true;
+  }
 }>;
 
 export async function getMealById(id: Meal["id"]) {
@@ -40,21 +44,18 @@ export async function getRandomMeals() {
 }
 
 export async function getRandomMeal() {
-  return prisma.meal.findFirst({
-  });
+  return prisma.meal.findFirst({});
 }
 
 export async function getAllMeals() {
   return prisma.meal.findMany({
     include: {
       cook: true,
-    }
+    },
   });
 }
 
-export async function createMeal(
-  data: Prisma.MealCreateInput
-) {
+export async function createMeal(data: Prisma.MealCreateInput) {
   return prisma.meal.create({
     data: {
       ...data,
@@ -65,20 +66,20 @@ export async function createMeal(
 export async function getMealsByUserId(cookedBy: User["id"]) {
   return prisma.meal.findMany({
     where: {
-      cookedBy
+      cookedBy,
     },
   });
 }
 
 export async function getMealDetails(id: Meal["id"]) {
-  const meal = await prisma.meal.findUnique({
+  const meal = (await prisma.meal.findUnique({
     where: {
       id,
     },
     include: {
       nutrition: true,
-    }
-  }) as MealDetail;
+    },
+  })) as MealDetail;
 
   const totalPublished = await prisma.subscription.findMany({
     where: {
@@ -86,22 +87,28 @@ export async function getMealDetails(id: Meal["id"]) {
     },
     include: {
       orders: true,
-    }
+    },
   });
 
   // each order in the subscription has quantity
   // earned can be calculated by multiplying the quantity with the price and summing it up
   const totalEarned = totalPublished.reduce((acc, curr) => {
-    return acc + curr.orders.reduce((acc, curr) => {
-      return acc + curr.quantity * meal.price;
-    }, 0);
+    return (
+      acc +
+      curr.orders.reduce((acc, curr) => {
+        return acc + curr.quantity * meal.price;
+      }, 0)
+    );
   }, 0);
 
   // total ordered is sum of all quantities in all orders
   const totalOrdered = totalPublished.reduce((acc, curr) => {
-    return acc + curr.orders.reduce((acc, curr) => {
-      return acc + curr.quantity;
-    }, 0);
+    return (
+      acc +
+      curr.orders.reduce((acc, curr) => {
+        return acc + curr.quantity;
+      }, 0)
+    );
   }, 0);
 
   return {

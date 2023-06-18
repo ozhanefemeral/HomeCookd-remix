@@ -1,6 +1,7 @@
-import type { MealWithCook } from "~/models/meals.server"; 
+import { Meal } from "~/models/meals.server";
 
-export default function MealCardBig({ meal }: { meal: MealWithCook }) {
+
+export default function MealCardBig({ meal }: { meal: Meal }) {
 
   return (
     // big card with image on top and meal name, cook name and price on bottom

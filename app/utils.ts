@@ -148,9 +148,6 @@ export const formatMealTag = (tag: MealTags): string => {
   }
 };
 
-export const sortMealTags = (tags: MealTags[]) => {
-};
-
 export const mealTags = [
   {
     tag: MealTags.VEGETARIAN,

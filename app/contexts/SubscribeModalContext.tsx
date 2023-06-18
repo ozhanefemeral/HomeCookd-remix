@@ -1,10 +1,11 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import type { HomepageSubscription } from "~/models/subscription.server";
 import { useModalContext } from "./ModalContext";
+import { SerializeFrom } from "@remix-run/server-runtime";
 
 interface SubscribeContextProps {
-  subscription?: HomepageSubscription;
-  setSubscription: (subscription: HomepageSubscription) => void;
+  subscription?: SerializeFrom<HomepageSubscription>;
+  setSubscription: (subscription: SerializeFrom<HomepageSubscription>) => void;
 }
 
 const SubscribeFormContext = createContext<SubscribeContextProps>({
@@ -22,7 +23,7 @@ export const SubscribeFormProvider = ({
   children: React.ReactNode;
 }) => {
   const [subscription, setSubscription] = useState<
-    HomepageSubscription | undefined
+  SerializeFrom<HomepageSubscription> | undefined
   >(undefined);
 
   const { isEnabled, setIsEnabled } = useModalContext();

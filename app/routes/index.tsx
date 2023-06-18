@@ -1,10 +1,10 @@
 import { Link, useLoaderData, useNavigate } from "@remix-run/react";
-import type { LoaderArgs } from "@remix-run/server-runtime";
-import { json } from "@remix-run/server-runtime";
+import type { LoaderArgs, SerializeFrom } from "@remix-run/server-runtime";
 import { useEffect, useState } from "react";
 import { Button } from "~/components/Button";
 import SubscriptionCard from "~/components/Subscriptions/Cards/HomeCard";
 import SubscribeForm from "~/components/Subscriptions/SubscribeForm";
+import { json } from "@remix-run/node";
 import type {
   HomepageSubscription} from "~/models/subscription.server";
 import {
@@ -14,16 +14,16 @@ import {
 } from "~/models/subscription.server";
 
 import AppLogo from "../assets/svg/enfes_logo.svg";
-import { useOptionalCook, useOptionalUser } from "~/utils";
+import { useOptionalUser } from "~/utils";
 import { FeaturedSubscriptions } from "~/components/Subscriptions/Featured/FeaturedSubscriptions";
 import { useSubscribeFormContext } from "~/contexts/SubscribeModalContext";
 import { useModalContext } from "~/contexts/ModalContext";
 
 export async function loader({ request }: LoaderArgs) {
   // const userId = await requireUserId(request);
-  const featuredSubscriptions = await getFeaturedSubscriptions();
-  const todaysSubscriptions = await getTodaysSubscriptions();
-  const expiringSubscriptions = await getExpiringSubscriptions();
+  const featuredSubscriptions = await getFeaturedSubscriptions() || [];
+  const todaysSubscriptions = await getTodaysSubscriptions() || [];
+  const expiringSubscriptions = await getExpiringSubscriptions() || [];
   return json({
     featuredSubscriptions,
     todaysSubscriptions,
@@ -36,12 +36,12 @@ export default function Index() {
   const navigate = useNavigate();
   const { setSubscription: setClickedSubscription } =
     useSubscribeFormContext();
-  const { isEnabled, setIsEnabled, setModalChildren } = useModalContext();
+  const { setModalChildren } = useModalContext();
 
   const { featuredSubscriptions, todaysSubscriptions, expiringSubscriptions } =
     useLoaderData<typeof loader>();
 
-  function handleSubscribeClick(subscription: HomepageSubscription) {
+  function handleSubscribeClick(subscription: SerializeFrom<HomepageSubscription>) {
     if (user) {
       setClickedSubscription(subscription);
       setModalChildren(<SubscribeForm />);

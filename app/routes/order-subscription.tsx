@@ -10,7 +10,8 @@ export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
   const form_quantity = formData.get("quantity") as string;
   const form_deliveryTime = formData.get("deliveryTime") as string;
-  const subscriptionId = formData.get("subscriptionId");
+  const subscriptionId = formData.get("subscriptionId") as string;
+  const addressId = formData.get("addressId") as string;
 
   // get current datetime and set the hour to form deliveryTime
   const deliveryTime = new Date();
@@ -27,13 +28,15 @@ export const action: ActionFunction = async ({ request }) => {
   invariant(form_quantity, "quantity is required");
   invariant(subscriptionId, "subscriptionId is required");
   invariant(userId, "userId is required");
+  invariant(addressId, "addressId is required");
 
   try {
     const order = await orderSubscription(
-      subscriptionId as string,
+      subscriptionId,
       quantity,
       deliveryTime,
-      userId
+      userId,
+      addressId,
     );
 
     invariant(order, "order is required");

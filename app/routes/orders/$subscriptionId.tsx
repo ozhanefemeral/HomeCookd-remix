@@ -9,7 +9,7 @@ import { getSubscriptionOrderById } from "~/models/subscription.server";
 import { getUserAddresses } from "~/models/user.server";
 import { getUserProfile } from "~/session.server";
 import { Icon } from '@iconify/react';
-import type { Address } from "@prisma/client";
+import type { Address } from "~/models/user.server";
 
 export async function loader({ request, params }: LoaderArgs) {
   const { subscriptionId } = params;

@@ -1,4 +1,9 @@
-import type { Address, Subscription, SubscriptionOrder, User } from "@prisma/client";
+import type {
+  Address,
+  Subscription,
+  SubscriptionOrder,
+  User,
+} from "@prisma/client";
 import { Prisma } from "@prisma/client";
 
 import { prisma } from "~/db.server";
@@ -15,27 +20,83 @@ export type createSubscriptionInput = {
   cook: Subscription["cookedBy"];
 };
 
-const selectSubscriptionWithMeal = Prisma.validator<Prisma.SubscriptionArgs>()({
-  include: {
-    meal: true,
-  },
-});
+const homepageSubscriptionSelect =
+  Prisma.validator<Prisma.SubscriptionSelect>()({
+    id: true,
+    title: true,
+    catchphrase: true,
+    price: true,
+    orderHours: true,
+    limit: true,
+    meal: {
+      select: {
+        image: true,
+        tags: true,
+      },
+    },
+    cook: {
+      select: {
+        name: true,
+        avatar: true,
+      },
+    },
+  });
 
-export type SubscriptionWithMeal = Prisma.SubscriptionGetPayload<
-  typeof selectSubscriptionWithMeal
->;
-
-const selectHomepageSubscription = Prisma.validator<Prisma.SubscriptionArgs>()({
-  include: {
-    cook: true,
-    meal: true,
-  },
-});
+const homepageSubscriptionArgs =
+  Prisma.validator<Prisma.SubscriptionArgs>()({
+    include:{
+      meal: {
+        select: {
+          image: true,
+          tags: true,
+          price: true,
+        },
+      },
+      cook: {
+        select: {
+          name: true,
+          avatar: true,
+        },
+      },
+    }
+  });
 
 export type HomepageSubscription = Prisma.SubscriptionGetPayload<
-  typeof selectHomepageSubscription
+  typeof homepageSubscriptionArgs
 > & {
   reservationCount: number;
+};
+
+const cookSubscriptionSelect = Prisma.validator<Prisma.SubscriptionSelect>()({
+  id: true,
+  title: true,
+  price: true,
+  orderHours: true,
+  limit: true,
+  catchphrase: true,
+  meal: {
+    select: {
+      image: true,
+      id: true,
+    },
+  },
+});
+
+const cookSubscriptionArgs = Prisma.validator<Prisma.SubscriptionArgs>()({
+  include: {
+    meal: {
+      select: {
+        image: true,
+        id: true,
+      },
+    },
+  },
+});
+
+export type CookPageSubscription = Prisma.SubscriptionGetPayload<
+  typeof cookSubscriptionArgs
+> & {
+  reservationCount?: number;
 };
 
 export async function getSubscriptionById(
@@ -57,7 +118,9 @@ export async function deleteSubscription(id: Subscription["id"]) {
   });
 }
 
-export async function createSubscription(subscription: createSubscriptionInput) {
+export async function createSubscription(
+  subscription: createSubscriptionInput
+) {
   return prisma.subscription.create({
     data: {
       title: subscription.title,
@@ -66,20 +129,35 @@ export async function createSubscription(subscription: createSubscriptionInput) 
       mealId: subscription.meal,
       price: subscription.price,
       cookedBy: subscription.cook,
-    }
+    },
   });
 }
 
 export async function getFeaturedSubscriptions() {
   // get 3 random subscriptions
-  const subscriptions = (await prisma.subscription.findMany({
+  const subscriptions = await prisma.subscription.findMany({
     // random 3 subscriptions
     take: 3,
-    include: {
-      cook: true,
-      meal: true,
+    select: {
+      id: true,
+      title: true,
+      price: true,
+      orderHours: true,
+      limit: true,
+      catchphrase: true,
+      cook: {
+        select: {
+          name: true,
+          avatar: true,
+        },
+      },
+      meal: {
+        select: {
+          image: true,
+        },
+      },
     },
-  })) as HomepageSubscription[];
+  });
 
   // find how many reservations each subscription has
   const reservations = await prisma.subscriptionOrder.findMany({
@@ -96,7 +174,7 @@ export async function getFeaturedSubscriptions() {
 
   // add reservations to subscriptions
   return subscriptions.map((s) => {
-    const _s = s;
+    const _s = s as HomepageSubscription;
 
     // each reservation has a quantity so we need to sum them
     _s.reservationCount = reservations
@@ -139,7 +217,7 @@ export async function orderSubscription(
       quantity,
       deliveryTime,
       userId,
-      addressId
+      addressId,
     },
   });
 }
@@ -161,14 +239,12 @@ export async function getSubscriptionOrderById(id: SubscriptionOrder["id"]) {
 }
 
 export async function getSubscriptionsByUserId(id: User["id"]) {
-  const subscriptions = (await prisma.subscription.findMany({
+  const subscriptions = await prisma.subscription.findMany({
     where: {
       cookedBy: id,
     },
-    include: {
-      meal: true,
-    },
-  })) as HomepageSubscription[];
+    select: cookSubscriptionSelect,
+  });
 
   const reservations = await prisma.subscriptionOrder.findMany({
     where: {
@@ -184,7 +260,7 @@ export async function getSubscriptionsByUserId(id: User["id"]) {
   });
 
   return subscriptions.map((s) => {
-    const _s = s;
+    const _s = s as CookPageSubscription;
 
     _s.reservationCount = reservations
       .filter((r) => r.subscriptionId === s.id)
@@ -217,10 +293,7 @@ export async function getTodaysSubscriptions(page = 0, limit = 8) {
         gte: new Date(),
       },
     },
-    include: {
-      cook: true,
-      meal: true,
-    },
+    select: homepageSubscriptionSelect,
     skip: page * limit,
     take: limit,
   })) as HomepageSubscription[];
@@ -262,8 +335,17 @@ export async function getExpiringSubscriptions(page = 0, limit = 8) {
       },
     },
     include: {
-      cook: true,
-      meal: true,
+      cook: {
+        select: {
+          name: true,
+          avatar: true,
+        },
+      },
+      meal: {
+        select: {
+          image: true,
+        },
+      },
     },
     skip: page * limit,
     take: limit,

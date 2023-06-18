@@ -65,7 +65,7 @@ function SubscribeForm() {
         <div>
           <h1 className="text-2xl font-bold">{subscription!.title}</h1>
           <h3 className="mb-2 text-sm">{cook!.name}</h3>
-          <CardTags meal={meal} justify="justify-start" />
+          <CardTags tags={meal.tags} justify="justify-start" />
         </div>
 
         <div className="flex gap-4">

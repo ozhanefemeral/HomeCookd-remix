@@ -1,13 +1,13 @@
 import React from "react";
-
-import type { LoaderArgs} from "@remix-run/node";
+import type { LoaderArgs, SerializeFrom} from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { getUser } from "~/session.server";
 import invariant from "tiny-invariant";
 import { getSubscriptionsByUserId } from "~/models/subscription.server";
 import { Outlet, useLoaderData, useMatches, useNavigate } from "@remix-run/react";
 import { Button } from "~/components/Button";
-import type { HomepageSubscription } from "~/models/subscription.server";
+import type { CookPageSubscription } from "~/models/subscription.server";
+
 export async function loader({ request }: LoaderArgs) {
   const user = await getUser(request);
   invariant(user, "You must be logged in to view this page");
@@ -25,19 +25,19 @@ function Subscriptions() {
 
   const { subscriptionId } = matches[matches.length - 1].params;
 
-  function viewOrders(subscription: HomepageSubscription) {
+  function viewOrders(subscription: SerializeFrom<CookPageSubscription>) {
     navigate(`/cook/me/subscriptions/${subscription.id}`);
   }
 
-  function viewMeal(subscription: HomepageSubscription) {
+  function viewMeal(subscription: SerializeFrom<CookPageSubscription>) {
     navigate(`/cook/me/meals/${subscription.meal.id}`);
   }
 
-  function createSubscription(subscription: HomepageSubscription) {
+  function createSubscription(subscription: SerializeFrom<CookPageSubscription>) {
     navigate(`createSubscription/${subscription.id}`);
   }
 
-  function isSelectedSubscription(subscription: HomepageSubscription) {
+  function isSelectedSubscription(subscription: SerializeFrom<CookPageSubscription>) {
     return subscriptionId === subscription.id;
   }
 
