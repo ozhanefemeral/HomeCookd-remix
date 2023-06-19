@@ -344,19 +344,7 @@ export async function getExpiringSubscriptions(page = 0, limit = 8) {
         hasSome: hourRange.map((h) => h.toString()),
       },
     },
-    include: {
-      cook: {
-        select: {
-          name: true,
-          avatar: true,
-        },
-      },
-      meal: {
-        select: {
-          image: true,
-        },
-      },
-    },
+    select: homepageSubscriptionSelect,
     skip: page * limit,
     take: limit,
   })) as HomepageSubscription[];
