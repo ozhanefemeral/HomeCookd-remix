@@ -4,7 +4,7 @@ import ReserveCount from "../ReserveCount";
 import { Button } from "../../Button";
 import { Icon } from "@iconify/react";
 import { Tooltip } from "react-tooltip";
-import { SerializeFrom } from "@remix-run/server-runtime";
+import type { SerializeFrom } from "@remix-run/server-runtime";
 
 type Props = {
   subscription: SerializeFrom<HomepageSubscription>;
@@ -18,7 +18,7 @@ const FeaturedSubscriptionHomePage = ({
   if(!subscription) return null;
   const { meal, cook } = subscription;
 
-  const canOrder = subscription.reservationCount < subscription.limit;
+  const canOrder = subscription.reservationCount && subscription.reservationCount < subscription.limit;
 
   return (
     //card with max width of 360px
@@ -54,7 +54,7 @@ const FeaturedSubscriptionHomePage = ({
       </div>
 
       <ReserveCount
-        reservationCount={subscription.reservationCount}
+        reservationCount={subscription.reservationCount ? subscription.reservationCount : 0}
         limit={subscription.limit}
       />
 

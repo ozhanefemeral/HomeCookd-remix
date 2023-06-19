@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import type { HomepageSubscription } from "~/models/subscription.server";
 import { useModalContext } from "./ModalContext";
-import { SerializeFrom } from "@remix-run/server-runtime";
+import type { SerializeFrom } from "@remix-run/server-runtime";
 
 interface SubscribeContextProps {
   subscription?: SerializeFrom<HomepageSubscription>;

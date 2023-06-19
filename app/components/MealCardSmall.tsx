@@ -1,6 +1,6 @@
 import { NavLink } from "@remix-run/react";
 import MealTagTooltip from "./MealTagTooltip";
-import { Meal } from "~/models/meals.server";
+import type { Meal } from "~/models/meals.server";
 
 type MealCardSmallProps = {
   meal: Meal;

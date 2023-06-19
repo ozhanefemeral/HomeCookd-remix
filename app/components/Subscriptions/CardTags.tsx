@@ -1,6 +1,6 @@
 import type { Meal } from "@prisma/client";
 import MealTag from "./MealTag";
-import { SerializeFrom } from "@remix-run/server-runtime";
+import type { SerializeFrom } from "@remix-run/server-runtime";
 
 type Props = {
   tags: SerializeFrom<Meal>["tags"];

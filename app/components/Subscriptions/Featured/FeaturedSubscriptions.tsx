@@ -4,7 +4,7 @@ import CardTags from "../CardTags";
 import { Button } from "~/components/Button";
 import { Tooltip } from "react-tooltip";
 import { Icon } from "@iconify/react";
-import { SerializeFrom } from "@remix-run/server-runtime";
+import type { SerializeFrom } from "@remix-run/server-runtime";
 
 type Props = {
   subscriptions: SerializeFrom<HomepageSubscription>[];
@@ -22,6 +22,8 @@ const FeaturedCard = ({
   handleSubscribeClick,
   index,
 }: CardProps) => {
+  console.log(subscription);
+  
   const anchorId = `featured-subscription-${index}`;
   return (
     <div className="flex flex-col rounded-lg border md:flex-row">
