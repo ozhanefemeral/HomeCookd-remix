@@ -38,7 +38,7 @@ function $mealId() {
         </div>
       </div>
       <div className="my-4">
-        <CardTags tags={meal.tags} justify="justify-start" wrap="wrap" />
+        <CardTags tags={meal.tags} justify="justify-start" />
       </div>
       {nutrition && (
         <div className="flex gap-4 my-4">

@@ -32,11 +32,11 @@ const homepageCookSelect = Prisma.validator<Prisma.UserSelect>()({
 });
 
 const homepageMealArgs = Prisma.validator<Prisma.MealArgs>()({
-  select: homepageMealSelect
+  select: homepageMealSelect,
 });
 
 const homepageCookArgs = Prisma.validator<Prisma.UserArgs>()({
-  select: homepageCookSelect
+  select: homepageCookSelect,
 });
 
 const homepageSubscriptionSelect =
@@ -87,6 +87,10 @@ const cookSubscriptionSelect = Prisma.validator<Prisma.SubscriptionSelect>()({
 
 const cookSubscriptionArgs = Prisma.validator<Prisma.SubscriptionArgs>()({
   select: {
+    id: true,
+    title: true,
+    price: true,
+    limit: true,
     meal: {
       select: {
         image: true,
@@ -149,10 +153,9 @@ export async function getFeaturedSubscriptions() {
       limit: true,
       catchphrase: true,
       cook: homepageCookArgs,
-      meal: homepageMealArgs
-      },
+      meal: homepageMealArgs,
     },
-  );
+  });
 
   // find how many reservations each subscription has
   const reservations = await prisma.subscriptionOrder.findMany({

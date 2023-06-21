@@ -1,8 +1,8 @@
 import { Icon } from "@iconify/react";
-import { SerializeFrom } from "@remix-run/server-runtime";
+import type { SerializeFrom } from "@remix-run/server-runtime";
 import React from "react";
 import { Tooltip } from "react-tooltip";
-import { HomepageSubscription } from "~/models/subscription.server";
+import type { HomepageSubscription } from "~/models/subscription.server";
 
 function ReserveCount({
   subscription,
