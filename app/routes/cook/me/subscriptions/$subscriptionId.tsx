@@ -42,7 +42,6 @@ function $subscriptionId() {
         <table className="w-full border-separate border-spacing-2">
           <thead>
             <tr>
-              <th className="text-left">Image</th>
               <th className="text-left">Name</th>
               <th className="text-left">Quantity</th>
               <th className="text-left">Total Price</th>
@@ -52,13 +51,6 @@ function $subscriptionId() {
           <tbody>
             {orders.map((order) => (
               <tr key={order.id}>
-                <td>
-                  <img
-                    src={order.user.avatar}
-                    alt={order.user.profile?.name}
-                    width={64}
-                  />
-                </td>
                 <td>{order.user.profile?.name}</td>
                 <td>{order.quantity}</td>
                 <td>{order.quantity * subscription?.price}</td>
