@@ -120,6 +120,19 @@ export const mapMealTagToEmoji = (tag: MealTags): string => {
       return "💎";
     case MealTags.HIGH_PROTEIN:
       return "🏋️‍♂️";
+    case MealTags.LOW_FAT:
+      return "🥗";
+    case MealTags.SEA_FOOD:
+      return "🦞";
+    case MealTags.MIDDLE_EASTERN:
+      return "🥙";
+    case MealTags.ITALIAN:
+      return "🍝";
+    case MealTags.COLD:
+      return "🧊";
+    case MealTags.COMFORT_FOOD:
+      return "🍔";
+
     default:
       return "";
   }
@@ -141,8 +154,18 @@ export const formatMealTag = (tag: MealTags): string => {
       return "Trending";
     case MealTags.HIGH_PROTEIN:
       return "High Protein";
-      case MealTags.LOW_FAT:
+    case MealTags.LOW_FAT:
       return "Low Fat";
+    case MealTags.SEA_FOOD:
+      return "Sea Food";
+    case MealTags.MIDDLE_EASTERN:
+      return "Middle Eastern";
+    case MealTags.ITALIAN:
+      return "Italian";
+    case MealTags.COLD:
+      return "Cold";
+    case MealTags.COMFORT_FOOD:
+      return "Comfort Food";
     default:
       return "";
   }
@@ -188,7 +211,32 @@ export const mealTags = [
     tag: MealTags.LOW_FAT,
     emoji: "🥗",
     label: "Low Fat",
-  }
+  },
+  {
+    tag: MealTags.SEA_FOOD,
+    emoji: "🦞",
+    label: "Sea Food",
+  },
+  {
+    tag: MealTags.COMFORT_FOOD,
+    emoji: "🍔",
+    label: "Comfort Food",
+  },
+  {
+    tag: MealTags.MIDDLE_EASTERN,
+    emoji: "🥙",
+    label: "Middle Eastern",
+  },
+  {
+    tag: MealTags.ITALIAN,
+    emoji: "🍝",
+    label: "Italian",
+  },
+  {
+    tag: MealTags.COLD,
+    emoji: "🧊",
+    label: "Cold",
+  },
 ];
 
 export const daysAbbrCapitalized = {
@@ -267,6 +315,7 @@ export const capitalizeFirstLetter = (string: string): string => {
   return `${string.charAt(0).toUpperCase()}${string.toLowerCase().slice(1)}`;
 };
 
-export function joinIngredients(ingredients: string[]) {
-  return ingredients.join(", ")
+export function joinIngredients(ingredients?: string[]) {
+  if (!ingredients) return "";
+  return ingredients.join(", ");
 }

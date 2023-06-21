@@ -26,6 +26,11 @@ enum MealTags {
   BIG_PORTION
   HIGH_PROTEIN
   LOW_FAT
+  SEA_FOOD
+  COMFORT_FOOD
+  MIDDLE_EASTERN
+  ITALIAN
+  COLD
 }
 
 enum AddressType {

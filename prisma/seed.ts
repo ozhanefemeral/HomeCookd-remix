@@ -69,6 +69,11 @@ enum MealTags {
   BIG_PORTION = "BIG_PORTION",
   HIGH_PROTEIN = "HIGH_PROTEIN",
   LOW_FAT = "LOW_FAT",
+  SEA_FOOD = "SEA_FOOD",
+  COMFORT_FOOD = "COMFORT_FOOD",
+  MIDDLE_EASTERN = "MIDDLE_EASTERN",
+  ITALIAN = "ITALIAN",
+  COLD = "COLD",
 }
 
 const mealTags: MealTags[] = [
@@ -80,6 +85,11 @@ const mealTags: MealTags[] = [
   MealTags.BIG_PORTION,
   MealTags.HIGH_PROTEIN,
   MealTags.LOW_FAT,
+  MealTags.SEA_FOOD,
+  MealTags.COMFORT_FOOD,
+  MealTags.MIDDLE_EASTERN,
+  MealTags.ITALIAN,
+  MealTags.COLD,
 ];
 
 const generateRandomTags = () => {
@@ -203,7 +213,7 @@ async function seed() {
   const polishUser = await prisma.user.create({
     data: {
       email: "polish@example.com",
-      name: "Dominika",
+      name: "Mikołaj",
       password: userPassword,
       avatar: faker.image.avatar(),
     },
@@ -364,6 +374,50 @@ async function seed() {
         description:
           "Delve into an aromatic journey to the Middle East with our savory Falafel. These golden, crunchy gems are expertly crafted from a blend of chickpeas, aromatic herbs, and a symphony of spices, fried to a crispy perfection while retaining a tender, flavorful interior. Tucked in a warm pita bread with a generous splash of tangy tahini sauce, crisp lettuce, fresh tomatoes, and pickled cucumbers, each bite is an explosion of rich, earthy flavors and textures. This vegan delight is not just a meal; it's a taste adventure that brings the vibrant spirit of Middle Eastern street food right to your doorstep. Try our Falafel – it's more than food, it's an experience!",
       },
+      {
+        title: "Tortilla Española",
+        price: 38,
+        cookedBy: spanishUser.id,
+        image:
+          "https://images.unsplash.com/photo-1599232288126-7dbd2127db14?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80",
+        tags: [MealTags.VEGETARIAN, MealTags.TRENDING, MealTags.COMFORT_FOOD],
+        description:
+          "Experience the taste of Spain with our Tortilla Española. This classic Spanish omelette is made with eggs, potatoes, and onions, resulting in a hearty and flavorful dish. Served warm with a side of fresh salad, each slice is a delicious combination of textures and a true representation of Spanish culinary heritage. Enjoy the authentic flavors of Tortilla Española and immerse yourself in Spanish gastronomy.",
+      },
+      {
+        title: "Kibbeh",
+        price: 36,
+        cookedBy: lebaneseUser.id,
+        image:
+          "https://plus.unsplash.com/premium_photo-1667546202642-e3c506786caa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=873&q=80",
+        tags: [
+          MealTags.MIDDLE_EASTERN,
+          MealTags.HIGH_PROTEIN,
+          MealTags.TRENDING,
+        ],
+        description:
+          "Transport your taste buds to Lebanon with our Kibbeh. These savory meatballs are made with ground beef or lamb, cracked wheat, onions, and a blend of aromatic spices. Deep-fried to perfection, each bite offers a crispy exterior and a juicy, flavorful center. Served with a side of refreshing tzatziki sauce and a medley of pickles, Kibbeh is a beloved dish in Lebanese cuisine that will leave you wanting more.",
+      },
+      {
+        title: "Gazpacho",
+        price: 28,
+        cookedBy: spanishUser.id,
+        image:
+          "https://images.unsplash.com/photo-1662469827900-e2d865491f53?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Z2F6cGFjaG98ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=1400&q=60",
+        tags: [MealTags.VEGETARIAN, MealTags.LOW_FAT, MealTags.COLD],
+        description:
+          "Cool down with a refreshing bowl of Gazpacho, a chilled Spanish soup. Made with ripe tomatoes, cucumbers, bell peppers, garlic, and a hint of olive oil, this vibrant soup bursts with flavors and nutrients. Served with a drizzle of extra virgin olive oil and garnished with fresh herbs, Gazpacho is the perfect way to enjoy the essence of summer in Spain.",
+      },
+      {
+        title: "Pulpo a la Gallega",
+        price: 45,
+        cookedBy: spanishUser.id,
+        image:
+          "https://images.unsplash.com/photo-1526243070121-8040f7c9cc1c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8b2N0b3B1cyUyMG1lYWx8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=1400&q=60",
+        tags: [MealTags.SEA_FOOD, MealTags.TRENDING, MealTags.HIGH_PROTEIN],
+        description:
+          "Indulge in the taste of Galicia with our Pulpo a la Gallega, also known as Galician-style octopus. Tender octopus is boiled to perfection and then seasoned with sea salt, Spanish paprika, and drizzled with extra virgin olive oil. Served on a bed of sliced potatoes, each bite offers a delightful combination of flavors and textures. Experience the rich culinary heritage of Spain with this beloved seafood dish.",
+      },
     ],
   });
 
@@ -383,7 +437,7 @@ async function seed() {
       {
         title: "Pierogi Ukraińskie",
         price: 42,
-        orderHours: ["12:00", "18:00"],
+        orderHours: ["15:00", "18:00"],
         limit: 10,
         cookedBy: polishUser.id,
         mealId: meals[1].id,
@@ -397,6 +451,43 @@ async function seed() {
         cookedBy: lebaneseUser.id,
         mealId: meals[2].id,
         catchphrase: "Spice up your nights!",
+      },
+      {
+        title: "Tortilla Española",
+        price: 38,
+        orderHours: ["12:00", "18:00"],
+        limit: 10,
+        cookedBy: spanishUser.id,
+        mealId: meals[3].id,
+        catchphrase: "Experience the taste of Spain!",
+      },
+      {
+        title: "Kibbeh",
+        price: 36,
+        orderHours: ["19:00", "20:00", "21:00"],
+        limit: 40,
+        cookedBy: lebaneseUser.id,
+        mealId: meals[4].id,
+        catchphrase: "Transport your taste buds to Lebanon!",
+      },
+      {
+        title: "Gazpacho",
+        price: 28,
+        orderHours: ["10:00", "11:00", "12:00"],
+        limit: 10,
+        cookedBy: spanishUser.id,
+        mealId: meals[5].id,
+        catchphrase: "Cool down with a refreshing bowl of Gazpacho!",
+      },
+      {
+        title: "Pulpo a la Gallega",
+        price: 45,
+        // different order hours
+        orderHours: ["12:00", "18:00", "20:00"],
+        limit: 10,
+        cookedBy: spanishUser.id,
+        mealId: meals[6].id,
+        catchphrase: "Indulge in the taste of Galicia!",
       },
     ],
   });
@@ -445,6 +536,20 @@ async function seed() {
         }),
         deliveryTime: faker.date.future(),
         addressId: addresses[2].id,
+      },
+      {
+        subscriptionId: subscriptions[4].id,
+        userId: consumerUser.id,
+        quantity: 40,
+        deliveryTime: faker.date.future(),
+        addressId: addresses[0].id,
+      },
+      {
+        subscriptionId: subscriptions[3].id,
+        userId: consumerUser.id,
+        quantity: 10,
+        deliveryTime: faker.date.future(),
+        addressId: addresses[0].id,
       },
     ],
   });
