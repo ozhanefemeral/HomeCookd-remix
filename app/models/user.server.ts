@@ -93,7 +93,6 @@ export async function getUserAddresses(id: UserProfile["id"]) {
 }
 
 export async function createAddress(address: createAddressInput) {
-  console.log(address);
 
   return prisma.address.create({
     data: {

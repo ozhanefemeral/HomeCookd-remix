@@ -22,7 +22,6 @@ const FeaturedCard = ({
   handleSubscribeClick,
   index,
 }: CardProps) => {
-  console.log(subscription);
   
   const anchorId = `featured-subscription-${index}`;
   return (

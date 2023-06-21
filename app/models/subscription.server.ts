@@ -306,8 +306,6 @@ export async function getTodaysSubscriptions(page = 0, limit = 8) {
     take: limit,
   })) as HomepageSubscription[];
 
-  console.log(subscriptions);
-
   const reservations = await prisma.subscriptionOrder.findMany({
     where: {
       subscriptionId: {
