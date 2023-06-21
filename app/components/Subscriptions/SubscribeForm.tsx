@@ -5,11 +5,12 @@ import React, { useEffect, useState } from "react";
 import { HomepageSubscription } from "~/models/subscription.server";
 import { ModalBase, ModalBaseProps } from "../Modals/ModalBase";
 import CardTags from "./CardTags";
-import ReserveCount from "./ReserveCount";
+import ReserveCount from "./ReserveDetails";
 import { Button } from "../Button";
 import { useSubscribeFormContext } from "~/contexts/SubscribeModalContext";
 import { useModalContext } from "~/contexts/ModalContext";
 import invariant from "tiny-invariant";
+import { joinIngredients } from "~/utils";
 
 function SubscribeForm() {
   const [quantity, setQuantity] = useState(1);
@@ -52,20 +53,25 @@ function SubscribeForm() {
             alt="avatar"
           />
         </div>
-
-        {/* meal tags */}
       </div>
 
       <ReserveCount
-        reservationCount={subscription!.reservationCount!}
-        limit={subscription!.limit}
+        subscription={subscription}
       />
 
       <div className="flex w-full flex-col gap-4 p-6">
-        <div>
+        <div className="flex flex-col gap-2">
           <h1 className="text-2xl font-bold">{subscription!.title}</h1>
-          <h3 className="mb-2 text-sm">{cook!.name}</h3>
+          <h3 className="text-sm">{cook!.name}</h3>
           <CardTags tags={meal.tags} justify="justify-start" />
+          <details>
+            <summary className="text-sm font-bold">Description</summary>
+            <p>{meal.description}</p>
+          </details>
+          <details>
+            <summary className="text-sm font-bold">Ingredients</summary>
+            <p>{joinIngredients(meal.nutrition?.ingredients)} </p>
+          </details>
         </div>
 
         <div className="flex gap-4">
