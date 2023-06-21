@@ -5,12 +5,11 @@ import { Button } from "~/components/Button";
 import SubscriptionCard from "~/components/Subscriptions/Cards/HomeCard";
 import SubscribeForm from "~/components/Subscriptions/SubscribeForm";
 import { json } from "@remix-run/node";
-import type {
-  HomepageSubscription} from "~/models/subscription.server";
+import type { HomepageSubscription } from "~/models/subscription.server";
 import {
   getExpiringSubscriptions,
   getFeaturedSubscriptions,
-  getTodaysSubscriptions
+  getTodaysSubscriptions,
 } from "~/models/subscription.server";
 
 import AppLogo from "../assets/svg/enfes_logo.svg";
@@ -21,9 +20,9 @@ import { useModalContext } from "~/contexts/ModalContext";
 
 export async function loader({ request }: LoaderArgs) {
   // const userId = await requireUserId(request);
-  const featuredSubscriptions = await getFeaturedSubscriptions() || [];
-  const todaysSubscriptions = await getTodaysSubscriptions() || [];
-  const expiringSubscriptions = await getExpiringSubscriptions() || [];
+  const featuredSubscriptions = (await getFeaturedSubscriptions()) || [];
+  const todaysSubscriptions = (await getTodaysSubscriptions()) || [];
+  const expiringSubscriptions = (await getExpiringSubscriptions()) || [];
   return json({
     featuredSubscriptions,
     todaysSubscriptions,
@@ -34,14 +33,15 @@ export async function loader({ request }: LoaderArgs) {
 export default function Index() {
   const user = useOptionalUser();
   const navigate = useNavigate();
-  const { setSubscription: setClickedSubscription } =
-    useSubscribeFormContext();
+  const { setSubscription: setClickedSubscription } = useSubscribeFormContext();
   const { setModalChildren } = useModalContext();
 
   const { featuredSubscriptions, todaysSubscriptions, expiringSubscriptions } =
     useLoaderData<typeof loader>();
 
-  function handleSubscribeClick(subscription: SerializeFrom<HomepageSubscription>) {
+  function handleSubscribeClick(
+    subscription: SerializeFrom<HomepageSubscription>
+  ) {
     if (user) {
       setClickedSubscription(subscription);
       setModalChildren(<SubscribeForm />);
@@ -88,8 +88,26 @@ export default function Index() {
         />
 
         <div className="sm:py-8 md:px-4">
+          {expiringSubscriptions.length > 0 && (
+            <div>
+              <h3 className="mb-2 ml-4 text-4xl font-bold tracking-tight">
+                {/* Don't miss out with an emoji indicating short time left */}
+                Expiring Soon ⏳
+              </h3>
+              <div className="grid grid-cols-1 gap-y-12 gap-x-6 p-4  sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ">
+                {expiringSubscriptions.map((subscription) => (
+                  <SubscriptionCard
+                    subscription={subscription}
+                    handleSubscribeClick={handleSubscribeClick}
+                    key={subscription.id}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+
           <h3 className="mb-2 ml-4 text-4xl font-bold tracking-tight">
-            Around you 📍
+            Today's Specials 🍕
           </h3>
           <div className="grid grid-cols-1 gap-y-12 gap-x-6 p-4  sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ">
             {todaysSubscriptions.map((subscription) => (
@@ -101,23 +119,6 @@ export default function Index() {
             ))}
           </div>
         </div>
-
-        {expiringSubscriptions.length > 0 && (
-          <div className="md:px-4">
-            <h3 className="mb-2 ml-4 text-4xl font-bold tracking-tight">
-              Don't miss out 🤩
-            </h3>
-            <div className="grid grid-cols-1 gap-y-12 gap-x-6 p-4  sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ">
-              {expiringSubscriptions.map((subscription) => (
-                <SubscriptionCard
-                  subscription={subscription}
-                  handleSubscribeClick={handleSubscribeClick}
-                  key={subscription.id}
-                />
-              ))}
-            </div>
-          </div>
-        )}
       </div>
     </main>
   );

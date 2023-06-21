@@ -1,6 +1,6 @@
 import type { HomepageSubscription } from "~/models/subscription.server";
 import CardTags from "../CardTags";
-import ReserveCount from "../ReserveCount";
+import ReserveCount from "../ReserveDetails";
 import { Button } from "../../Button";
 import { Icon } from "@iconify/react";
 import { Tooltip } from "react-tooltip";
@@ -8,17 +8,21 @@ import type { SerializeFrom } from "@remix-run/server-runtime";
 
 type Props = {
   subscription: SerializeFrom<HomepageSubscription>;
-  handleSubscribeClick: (subscription: SerializeFrom<HomepageSubscription>) => void;
+  handleSubscribeClick: (
+    subscription: SerializeFrom<HomepageSubscription>
+  ) => void;
 };
 
 const FeaturedSubscriptionHomePage = ({
   subscription,
   handleSubscribeClick,
 }: Props) => {
-  if(!subscription) return null;
+  if (!subscription) return null;
   const { meal, cook } = subscription;
 
-  const canOrder = subscription.reservationCount && subscription.reservationCount < subscription.limit;
+  const canOrder =
+    typeof subscription.reservationCount === "number" && 
+    subscription.reservationCount < subscription.limit;
 
   return (
     //card with max width of 360px
@@ -36,41 +40,28 @@ const FeaturedSubscriptionHomePage = ({
             src={cook.avatar || "https://dummyimage.com/256x256"}
             alt="avatar"
           />
-          <div
-            className="slate-900 mt-2 flex items-center justify-center gap-1 text-lg font-bold"
-            id={subscription.id}
-          >
-            <Icon icon="ic:round-access-time" width={18} />
-            {subscription.orderHours[0]}
-          </div>
-          <Tooltip place="left" anchorId={subscription.id} className="tooltip">
-            {subscription.orderHours.map((hour) => (
-              <div className="text-md flex items-center justify-center gap-1 font-bold" key={hour}>
-                {hour}
-              </div>
-            ))}
-          </Tooltip>
+          <h3 className="pt-1 text-center text-sm font-semibold">
+            {cook.name}
+          </h3>
         </div>
       </div>
 
       <ReserveCount
-        reservationCount={subscription.reservationCount ? subscription.reservationCount : 0}
-        limit={subscription.limit}
+        subscription={subscription}
       />
 
       <div className="flex h-full w-full flex-col gap-4 p-4">
         <div className="mb-2">
           <h1 className="mr-24 text-2xl font-bold">{subscription.title}</h1>
-          <h3 className="text-sm">{cook.name}</h3>
+          <p className="text-sm">{subscription.catchphrase}</p>
         </div>
         {/* green 700, full width, rounded lg button "Order" */}
 
         {/* align button to bottom */}
         <div className="mt-auto">
-          <p className="text-sm my-2 text-center">{subscription.catchphrase}</p>
           <CardTags tags={meal.tags} />
           <Button
-            onClick={() => handleSubscribeClick(subscription!)}
+            onClick={() => {canOrder && handleSubscribeClick(subscription)}}
             disabled={!canOrder}
             text="Subscribe"
             className="mt-4 w-full"
