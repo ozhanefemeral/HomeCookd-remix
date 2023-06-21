@@ -12,7 +12,7 @@ import {
   getTodaysSubscriptions,
 } from "~/models/subscription.server";
 
-import AppLogo from "../assets/svg/enfes_logo.svg";
+import AppLogo from "../assets/img/homecookd_logo.png";
 import { useOptionalUser } from "~/utils";
 import { FeaturedSubscriptions } from "~/components/Subscriptions/Featured/FeaturedSubscriptions";
 import { useSubscribeFormContext } from "~/contexts/SubscribeModalContext";
@@ -57,13 +57,13 @@ export default function Index() {
         style={{
           position: "absolute",
           top: "16px",
-          left: "16px",
+          left: "32px",
         }}
       >
-        <img src={AppLogo} width={80} alt="Enfes Logo" />
+        <img src={AppLogo} width={120} alt="Enfes Logo" />
       </Link>
       {user && (
-        <Link to="/cook/me" className="absolute top-4 right-4">
+        <Link to="/cook/me" className="absolute top-4 right-8">
           <Button
             text="Dashboard"
             variant="primary"
@@ -72,7 +72,7 @@ export default function Index() {
         </Link>
       )}
       {!user && (
-        <Link to="/login" className="absolute top-4 right-4">
+        <Link to="/login" className="absolute top-4 right-8">
           <Button
             text="Login"
             variant="primary"
@@ -81,44 +81,45 @@ export default function Index() {
         </Link>
       )}
 
-      <div className="w-full pt-20 sm:pb-16">
+      <div className="flex w-full flex-col gap-8 px-8 pt-20 sm:pb-16">
         <FeaturedSubscriptions
           subscriptions={featuredSubscriptions}
           handleSubscribeClick={handleSubscribeClick}
         />
 
-        <div className="sm:py-8 md:px-4">
-          {expiringSubscriptions.length > 0 && (
-            <div>
-              <h3 className="mb-2 ml-4 text-4xl font-bold tracking-tight">
-                {/* Don't miss out with an emoji indicating short time left */}
-                Expiring Soon ⏳
-              </h3>
-              <div className="grid grid-cols-1 gap-y-12 gap-x-6 p-4  sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ">
-                {expiringSubscriptions.map((subscription) => (
-                  <SubscriptionCard
-                    subscription={subscription}
-                    handleSubscribeClick={handleSubscribeClick}
-                    key={subscription.id}
-                  />
-                ))}
-              </div>
+        {expiringSubscriptions.length > 0 && (
+          <div>
+            <h3 className="pb-4 text-4xl font-bold tracking-tight">
+              Expiring Soon ⏳
+            </h3>
+            <div className="grid grid-cols-1 gap-y-8 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 ">
+              {expiringSubscriptions.map((subscription) => (
+                <SubscriptionCard
+                  subscription={subscription}
+                  handleSubscribeClick={handleSubscribeClick}
+                  key={subscription.id}
+                />
+              ))}
             </div>
-          )}
-
-          <h3 className="mb-2 ml-4 text-4xl font-bold tracking-tight">
-            Today's Specials 🍕
-          </h3>
-          <div className="grid grid-cols-1 gap-y-12 gap-x-6 p-4  sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ">
-            {todaysSubscriptions.map((subscription) => (
-              <SubscriptionCard
-                subscription={subscription}
-                handleSubscribeClick={handleSubscribeClick}
-                key={subscription.id}
-              />
-            ))}
           </div>
-        </div>
+        )}
+
+        {todaysSubscriptions.length > 0 && (
+          <div>
+            <h3 className="pb-4 text-4xl font-bold tracking-tight">
+              Today's Specials 🍕
+            </h3>
+            <div className="grid grid-cols-1 gap-y-12 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
+              {todaysSubscriptions.map((subscription) => (
+                <SubscriptionCard
+                  subscription={subscription}
+                  handleSubscribeClick={handleSubscribeClick}
+                  key={subscription.id}
+                />
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </main>
   );

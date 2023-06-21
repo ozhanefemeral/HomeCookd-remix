@@ -1,14 +1,39 @@
-# Remix Blues Stack
+# HomeCookd
+<!-- image link -->
+[logo]: /app/assets//img/homecookd_logo.png
+![HomeCookd][logo]
 
-![The Remix Blues Stack](https://repository-images.githubusercontent.com/461012689/37d5bd8b-fa9c-4ab0-893c-f0a199d5012d)
+## Features
 
-Learn more about [Remix Stacks](https://remix.run/stacks).
+### 1. Discover Local Food Influencers and Home Cooks
 
-```
-npx create-remix@latest --template remix-run/blues-stack
-```
+Homecookd brings together a diverse community of food influencers and talented home cooks who offer a wide range of culinary specialties. From traditional family recipes to innovative fusion dishes, there's something for everyone. Browse through profiles, explore menus, and discover your new favorite chefs.
+
+![Discover](https://snipboard.io/pWC52g.jpg)
+
+### 2. Place Orders with Ease
+
+Ordering food with Homecookd is quick and convenient. Simply select your desired dishes from the available menus, customize your order with any specific preferences or dietary requirements, and proceed to checkout. You can even schedule deliveries in advance or opt for pickup if you prefer.
+
+![Order](https://snipboard.io/DYSKoy.jpg)
+
+## For Cooks
+
+### Create and Post Meals
+
+As a food influencer or home cook, you can easily create and post your meals on Homecookd. Showcase your culinary skills, provide enticing descriptions, and upload appealing pictures of your dishes. Make it easy for others to browse and order your mouthwatering creations.
+
+![Create and Post Meals](https://snipboard.io/ZvEu1G.jpg)
+
+### Track Your Income and Orders
+
+Homecookd provides you with a comprehensive dashboard to track your income and orders. Gain insights into your earnings, view detailed order histories, and keep track of your performance. Stay organized and efficiently manage your culinary business with Homecookd's intuitive interface.
+
+![Track Your Income and Orders](https://snipboard.io/mQGXKc.jpg)
 
 ## What's in the stack
+
+Built with Blues Stack of Remix, this app comes with:
 
 - [Multi-region Fly app deployment](https://fly.io/docs/reference/scaling/) with [Docker](https://www.docker.com/)
 - [Multi-region Fly PostgreSQL Cluster](https://fly.io/docs/getting-started/multi-region-databases/)
@@ -23,14 +48,6 @@ npx create-remix@latest --template remix-run/blues-stack
 - Code formatting with [Prettier](https://prettier.io)
 - Linting with [ESLint](https://eslint.org)
 - Static Types with [TypeScript](https://typescriptlang.org)
-
-Not a fan of bits of the stack? Fork it, change it, and use `npx create-remix --template your/repo`! Make it your own.
-
-## Quickstart
-
-Click this button to create a [Gitpod](https://gitpod.io) workspace with the project set up, Postgres started, and Fly pre-installed
-
-[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/remix-run/blues-stack/tree/main)
 
 ## Development
 
