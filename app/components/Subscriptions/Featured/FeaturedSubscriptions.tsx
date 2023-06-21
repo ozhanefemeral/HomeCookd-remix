@@ -5,15 +5,20 @@ import { Button } from "~/components/Button";
 import { Tooltip } from "react-tooltip";
 import { Icon } from "@iconify/react";
 import type { SerializeFrom } from "@remix-run/server-runtime";
+import ReserveCount from "../ReserveDetails";
 
 type Props = {
   subscriptions: SerializeFrom<HomepageSubscription>[];
-  handleSubscribeClick: (subscription: SerializeFrom<HomepageSubscription>) => void;
+  handleSubscribeClick: (
+    subscription: SerializeFrom<HomepageSubscription>
+  ) => void;
 };
 
 type CardProps = {
   subscription: SerializeFrom<HomepageSubscription>;
-  handleSubscribeClick: (subscription: SerializeFrom<HomepageSubscription>) => void;
+  handleSubscribeClick: (
+    subscription: SerializeFrom<HomepageSubscription>
+  ) => void;
   index: number;
 };
 
@@ -22,10 +27,10 @@ const FeaturedCard = ({
   handleSubscribeClick,
   index,
 }: CardProps) => {
-  
   const anchorId = `featured-subscription-${index}`;
   return (
-    <div className="flex flex-col rounded-lg border md:flex-row">
+    <div className="relative flex flex-col rounded-lg border md:flex-row">
+      <ReserveCount subscription={subscription} />
       <div className="h-auto w-96 md:mb-0">
         <img
           src={subscription.meal.image}
@@ -34,38 +39,21 @@ const FeaturedCard = ({
         />
       </div>
       <div className="flex w-full flex-[3] flex-col gap-4 p-4">
-        <div className="flex">
+        <div>
           <img
-            className="mr-2 h-24 w-24 rounded-lg object-cover"
+            className="mr-2 h-16 w-16 rounded-lg object-cover"
             src={subscription.cook.avatar}
             alt={`${subscription.cook.name}'s avatar`}
           />
           <span className="text-lg font-medium">{subscription.cook.name}</span>
         </div>
+
         <div>
           <h2 className="text-2xl font-bold">{subscription.title}</h2>
           <p className="text-md">{subscription.catchphrase}</p>
         </div>
 
         <div className="mt-auto">
-          <div
-            className="slate-900 my-2 flex w-fit items-center gap-1 text-lg font-bold"
-            id={anchorId}
-          >
-            <Icon icon="ic:round-access-time" width={18} />
-            {subscription.orderHours[0]}
-          </div>
-          <Tooltip
-            place="right"
-            anchorId={anchorId}
-            className="tooltip"
-          >
-            {subscription.orderHours.map((hour) => (
-              <div className="text-lg flex items-center justify-center gap-1 font-bold" key={hour}>
-                {hour}
-              </div>
-            ))}
-          </Tooltip>
           <CardTags tags={subscription.meal.tags} justify="justify-start" />
           <Button
             text="Subscribe"
@@ -84,7 +72,7 @@ export const FeaturedSubscriptions = ({
   handleSubscribeClick,
 }: Props) => {
   return (
-    <div className="flex flex-nowrap gap-8 overflow-x-auto pb-4 w-screen px-2 md:px-4">
+    <div className="flex w-full flex-nowrap gap-8 overflow-x-auto pb-4">
       {subscriptions.map((subscription, index) => (
         <FeaturedCard
           subscription={subscription}

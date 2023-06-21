@@ -51,8 +51,8 @@ const FeaturedSubscriptionHomePage = ({
       />
 
       <div className="flex h-full w-full flex-col gap-4 p-4">
-        <div className="mb-2">
-          <h1 className="mr-24 text-2xl font-bold">{subscription.title}</h1>
+        <div className="pb-2 pr-24">
+          <h1 className="text-2xl font-bold">{subscription.title}</h1>
           <p className="text-sm">{subscription.catchphrase}</p>
         </div>
         {/* green 700, full width, rounded lg button "Order" */}

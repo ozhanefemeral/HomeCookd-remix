@@ -4,14 +4,14 @@ import type { SerializeFrom } from "@remix-run/server-runtime";
 
 type Props = {
   tags: SerializeFrom<Meal>["tags"];
-  justify?: "justify-between" | "justify-center" | "justify-start";
-  wrap?: "wrap" | "nowrap";
+  justify?: "justify-start" | "justify-center" | "justify-between";
+  wrap?: "flex-wrap" | "flex-nowrap";
 };
 
-function CardTags({ tags, justify = "justify-between", wrap ="nowrap" }: Props) {
+function CardTags({ tags, justify = "justify-start", wrap ="flex-nowrap" }: Props) {
   return (
     <div
-      className={`flex flex-row items-center gap-2 md:items-end ${justify} ${wrap}`}
+      className={`flex flex-row w-full items-center gap-2 md:items-end ${justify} ${wrap}`}
     >
       {tags.map((tag) => (
         <MealTag key={tag} tag={tag} />
