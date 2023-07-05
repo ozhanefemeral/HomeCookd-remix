@@ -16,6 +16,8 @@ import { getUser, getUserProfile } from "./session.server";
 import tailwindStylesheetUrl from "./styles/tailwind.css";
 import reactTooltipStylesheetUrl from "react-tooltip/dist/react-tooltip.css";
 import siteStylesheetUrl from "./assets/css/styles.css";
+import swiperStylesheetUrl from "swiper/css";
+import swiperPaginationStylesheetUrl from "swiper/css/pagination";
 import { getUserProfileByUserId } from "./models/user.server";
 import {
   SubscribeFormProvider,
@@ -31,6 +33,8 @@ export const links: LinksFunction = () => {
     { rel: "stylesheet", href: tailwindStylesheetUrl },
     { rel: "stylesheet", href: reactTooltipStylesheetUrl },
     { rel: "stylesheet", href: siteStylesheetUrl },
+    { rel: "stylesheet", href: swiperStylesheetUrl },
+    { rel: "stylesheet", href: swiperPaginationStylesheetUrl },
   ];
 };
 
