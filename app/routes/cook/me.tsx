@@ -1,15 +1,21 @@
 import { LoaderArgs, redirect } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import {
-  Form,
-  Outlet,
-  useNavigate,
-} from "@remix-run/react";
+import { Form, Outlet, useNavigate } from "@remix-run/react";
 import { Button } from "~/components/Button";
+import { getCookProfile, getUser, getUserProfile } from "~/session.server";
 import { useUser } from "~/utils";
 
-// TODO
-// AUTOMATICALLY NAVIGATE TO THAT DAY OF THE WEEK
+export async function loader({ request }: LoaderArgs) {
+  const userProfile = await getUserProfile(request);
+  const cookProfile = await getCookProfile(request);
+  const user = await getUser(request);
+
+  return json({
+    userProfile,
+    cookProfile,
+    user,
+  });
+}
 
 export default function SubscriptionsPage() {
   const user = useUser();
@@ -37,8 +43,8 @@ export default function SubscriptionsPage() {
         </Form>
       </header>
 
-      <main className="flex flex-col md:flex-row p-4 gap-4">
-        <ul className="flex flex-row md:flex-col gap-4 border-r border-gray-300 pr-4">
+      <main className="flex flex-col gap-4 p-4 md:flex-row">
+        <ul className="flex flex-row gap-4 border-r border-gray-300 pr-4 md:flex-col">
           <li>
             <Button
               text="Your subscriptions"
